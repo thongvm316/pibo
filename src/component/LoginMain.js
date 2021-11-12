@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Form, Input,  Modal} from 'antd';
 import '../index-342fc69c.css';
 import axios from "axios";
+import {Cookies} from "react-cookie"
 
 
 import Checkbox from "antd/es/checkbox/Checkbox";
@@ -9,6 +10,8 @@ import Checkbox from "antd/es/checkbox/Checkbox";
 export default function LoginMain(){
     const [isVisible, setIsVisible] = useState(true)
     const [loginForm] = Form.useForm();
+
+    const cookies = new Cookies()
 
     useEffect(() => {
 
@@ -22,31 +25,28 @@ export default function LoginMain(){
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/pims/api/v1/031/attributes/10039";
 
         axios({
-            method: 'post',
+            method: 'get',
             url: url,
             data: {
-            }
+            },
         }).then(function (response) {
             alert(response.data?.message)
+            console.log(response)
         }).catch(function (error) {
             console.log(error);
             if (error.response) {
+                alert(error?.message)
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-                alert("1")
-                alert(error.response.data?.message);
                 console.log(error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
             } else if (error.request) {
-                alert("2")
                 // 요청이 이루어 졌으나 응답을 받지 못했습니다.
                 // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
                 // Node.js의 http.ClientRequest 인스턴스입니다.
                 console.log(error.request);
                 console.log(error)
             } else {
-                alert("3")
-
                 // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
                 console.log('Error', error.message);
             }
@@ -74,8 +74,12 @@ export default function LoginMain(){
 
             alert(response.data?.message);
             console.log(response);
-            console.log(response.headers);
-            // TestSend();
+            // console.log(response.headers);
+
+            cookies.set("pauth", response.data?.pauth)
+            cookies.set("pid", paramId)
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data?.pauth}`
+            TestSend();
             if ( response.data?.result === 'S'){
                 setIsVisible(false);
             }else{
