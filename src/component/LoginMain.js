@@ -30,8 +30,8 @@ export default function LoginMain(){
             data: {
             },
         }).then(function (response) {
-            alert(response.data?.message)
-            console.log(response)
+            alert(response.data?.message);
+            console.log("test" + response);
         }).catch(function (error) {
             console.log(error);
             if (error.response) {
