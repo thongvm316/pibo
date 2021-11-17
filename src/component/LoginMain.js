@@ -37,7 +37,7 @@ export default function LoginMain(){
             alert(JSON.stringify(response?.data));
         }).catch(function (error) {
             console.log(error);
-            alert(error?.message)
+            alert(error?.message);
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 console.log(error.response.data);
