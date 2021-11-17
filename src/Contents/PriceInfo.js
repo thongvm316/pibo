@@ -147,7 +147,7 @@ export default function ProductInfo(props){
 
         >
             <Space direction="vertical" size={12}>
-                <Text> 날짜로 조회 : </Text>
+                <Text> 날짜로 조회: </Text>
                 <DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
             </Space>
             <br/>
