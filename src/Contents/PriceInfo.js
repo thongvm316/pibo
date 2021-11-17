@@ -9,10 +9,50 @@ import BOInput from "../component/Input/BOInput";
 import moment from 'moment';
 import BOInputFull from "../component/Input/BOInputFull";
 import PropertyTitle from "../component/Text/PropertyTitle";
-
+import { DatePicker, Space } from 'antd';
+const { Title, Text, Link } = Typography;
 
 export default function ProductInfo(props){
     const [productForm] = Form.useForm();
+
+    const columns = [
+        {
+            title: '자재코드',
+            dataIndex: 'code',
+            key: 'code',
+        },
+        {
+            title: '제품명',
+            dataIndex: 'prodName',
+            key: 'prodName',
+        },
+        {
+            title: '수량',
+            dataIndex: 'count',
+            key: 'count',
+        },
+        {
+            title: '소비자가',
+            dataIndex: 'custPrice',
+            key: 'custPrice',
+        },
+        {
+            title: '비중(%)',
+            dataIndex: 'partOf',
+            key: 'partOf',
+        },
+        {
+            title: '1EA 당 환산가',
+            dataIndex: 'unitPrice',
+            key: 'unitPrice',
+        },
+        {
+            title: '할인율(%)',
+            dataIndex: 'discountRate',
+            key: 'discountRate',
+        },
+    ];
+
 
     useEffect(() => {
         productForm.setFieldsValue({
@@ -61,43 +101,6 @@ export default function ProductInfo(props){
         },
     ]
 
-    const columns = [
-        {
-            title: '날짜',
-            dataIndex: 'date',
-            key: 'date',
-        },
-        {
-            title: '마켓 이름',
-            dataIndex: 'market',
-            key: 'market',
-        },
-        {
-            title: 'SKU ID',
-            dataIndex: 'skuId',
-            key: 'skuId',
-        },
-        {
-            title: 'VI ID',
-            dataIndex: 'viId',
-            key: 'viId',
-        },
-        {
-            title: '상품명',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: '상품가격',
-            dataIndex: 'price',
-            key: 'price',
-        },
-        {
-            title: '조정된 가격',
-            dataIndex: 'adjustedPrice',
-            key: 'adjustedPrice',
-        },
-    ];
 
     const getToday = () => {
         const d = new Date();
@@ -117,35 +120,32 @@ export default function ProductInfo(props){
         console.log(fieldValue)
     }
 
+    const { RangePicker } = DatePicker;
+
+    const dateFormat = 'YYYY/MM/DD';
+    const weekFormat = 'MM/DD';
+    const monthFormat = 'YYYY/MM';
+
+    const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
+
+    const customFormat = value => `custom format: ${value.format(dateFormat)}`;
+
+    const customWeekStartEndFormat = value =>
+        `${moment(value).startOf('week').format(weekFormat)} ~ ${moment(value)
+            .endOf('week')
+            .format(weekFormat)}`;
+
+
     return (
     <>
-        <Card title="상품 가격 정보" type = "inner"
-              actions={[
-                  <div/>, <div/>, <div/>,
-                  <Button icon={<RedoOutlined />}> 초기화 </Button>,
-                  // <Button icon = {<CheckOutlined />} onClick={() => {registerProduct()}}> 등록 </Button>,
-                  <Button icon = {<CheckOutlined />} onClick={() => {alert('저장')}}> 가격조정 </Button>,
-                  <div/>, <div/>, <div/>,
-              ]}
-              size="small"
+        <Card title="가격 할인율 이력 조회" type = "inner"
         >
-            <Form
-                {...layout}
-                form={productForm}
-                onFinish={onFinish}
-            >
-                <Form.Item  label = "마켓 이름" name = "form_market"><Input/></Form.Item>
-                <Form.Item  label = "SKU ID" name = "form_sku_id"><Input/></Form.Item>
-                <Form.Item  label = "VI ID" name = "form_vi_id"><Input/></Form.Item>
-                <Form.Item  label = "상품명" name = "form_prod"><Input/></Form.Item>
-                <Form.Item  label = "가격" name = "form_price"><Input/></Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button type = "default"> 초기화 </Button>
-                    <Button type="primary" htmlType="submit" onClick={onSaveClick}>
-                        저장
-                    </Button>
-                </Form.Item>
-            </Form>
+            <Space direction="vertical" size={12}>
+                <Text> 날짜로 조회 : </Text>
+                <DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
+            </Space>
+            <br/>
+            <br/>
             <Table columns={columns} data={data} size="small"/>
         </Card>
 

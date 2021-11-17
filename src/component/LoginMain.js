@@ -21,21 +21,24 @@ export default function LoginMain(){
         setIsVisible(false);
     };
 
-    const TestSend = () => {
+    const TestSend = (pauth) => {
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/pims/api/v1/031/attributes/10039";
 
+        const pauth2 = cookies.get('pauth')
+        axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
         axios({
             method: 'get',
             url: url,
             data: {
             },
+            // config: config
         }).then(function (response) {
-            alert(response.data?.message)
-            console.log(response)
+            console.log(response?.data);
+            alert(JSON.stringify(response?.data));
         }).catch(function (error) {
             console.log(error);
+            alert(error?.message)
             if (error.response) {
-                alert(error?.message)
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 console.log(error.response.data);
                 console.log(error.response.status);
@@ -50,7 +53,6 @@ export default function LoginMain(){
                 // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
                 console.log('Error', error.message);
             }
-            console.log(error.config);
         });
     }
 
@@ -74,14 +76,12 @@ export default function LoginMain(){
 
             alert(response.data?.message);
             console.log(response);
-            // console.log(response.headers);
 
-            cookies.set("pauth", response.data?.pauth)
-            cookies.set("pid", paramId)
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data?.pauth}`
-            TestSend();
             if ( response.data?.result === 'S'){
                 setIsVisible(false);
+                cookies.set("pauth", response.headers?.pauth);
+                cookies.set("pid", paramId)
+                TestSend(response.data?.pauth);
             }else{
                 setIsVisible(true);
             }

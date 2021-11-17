@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button, Card,
     Row, Table, Form, Input, InputNumber, Col, Typography
@@ -11,11 +11,12 @@ import BOInputFull from "../component/Input/BOInputFull";
 import PropertyTitle from "../component/Text/PropertyTitle";
 import { Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
+const { Title, Text, Link } = Typography;
 
 
 export default function ProductAdjust(props){
     const [productForm] = Form.useForm();
+    const [stateText, setStateText] = useState("Ready")
 
     useEffect(() => {
         productForm.setFieldsValue({
@@ -53,39 +54,39 @@ export default function ProductAdjust(props){
 
     const columns = [
         {
-            title: '날짜',
-            dataIndex: 'date',
-            key: 'date',
+            title: '자재코드',
+            dataIndex: 'code',
+            key: 'code',
         },
         {
-            title: '마켓 이름',
-            dataIndex: 'market',
-            key: 'market',
+            title: '제품명',
+            dataIndex: 'prodName',
+            key: 'prodName',
         },
         {
-            title: '상품 번호',
-            dataIndex: 'productNo',
-            key: 'productNo',
+            title: '수량',
+            dataIndex: 'count',
+            key: 'count',
         },
         {
-            title: '브랜드 이름',
-            dataIndex: 'brand',
-            key: 'brand',
+            title: '소비자가',
+            dataIndex: 'custPrice',
+            key: 'custPrice',
         },
         {
-            title: '상품명',
-            dataIndex: 'name',
-            key: 'name',
+            title: '비중(%)',
+            dataIndex: 'partOf',
+            key: 'partOf',
         },
         {
-            title: '상품가격',
-            dataIndex: 'price',
-            key: 'price',
+            title: '1EA 당 환산가',
+            dataIndex: 'unitPrice',
+            key: 'unitPrice',
         },
         {
-            title: '할인정보',
-            dataIndex: 'bcast',
-            key: 'bcast',
+            title: '할인율(%)',
+            dataIndex: 'discountRate',
+            key: 'discountRate',
         },
     ];
 
@@ -93,6 +94,10 @@ export default function ProductAdjust(props){
         const d = new Date();
         return  d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
     }
+    const submitFile = () => {
+        alert("파일 uplaod")
+    }
+
     const registerProduct = () => {
         const fieldValue = productForm.getFieldsValue();
 
@@ -120,49 +125,11 @@ export default function ProductAdjust(props){
 
     return (
     <>
-        <div className="site-card-wrapper">
-            <Row gutter={32}>
-                <Col span={8}>
-                    <Card title="네이버 upload" extra={<a href="#">More</a>} style={{ width: 300 }}>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card title="쿠팡 upload" extra={<a href="#">More</a>} style={{ width: 300 }}>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Card>
-                </Col>
-            </Row>
-            <br/>
-            <Row gutter={32}>
-                <Col span={8}>
-                    <Card title="네이버 upload" extra={<a href="#">More</a>} style={{ width: 300 }}>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card title="쿠팡 upload" extra={<a href="#">More</a>} style={{ width: 300 }}>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Card>
-                </Col>
-            </Row>
-
-        </div>
-        <br/>
         <Card title="상품 가격 조정" type = "inner"
               actions={[
                   <div/>, <div/>, <div/>,
-                  <Button icon={<RedoOutlined />}> 초기화 </Button>,
-                  <Button icon = {<CheckOutlined />} onClick={() => {registerProduct()}}> 등록 </Button>,
-                  <Button icon = {<CheckOutlined />} onClick={() => {alert('저장')}}> 저장 </Button>,
+                  // <Button icon={<RedoOutlined />}> 초기화 </Button>,
+                  <Button icon = {<CheckOutlined />} onClick={() => {submitFile()}}> 제출 </Button>,
                   <div/>, <div/>, <div/>,
               ]}
               size="small"
@@ -172,22 +139,39 @@ export default function ProductAdjust(props){
                 form={productForm}
                 onFinish={onFinish}
             >
-
-                <Form.Item  size = "large" label = "날짜" name = "form_date"><Input/></Form.Item>
-                <Form.Item  label = "마켓 이름" name = "form_market"><Input/></Form.Item>
-                <Form.Item  label = "상품 번호" name = "form_prod_no"><Input/></Form.Item>
-                <Form.Item  label = "브랜드 이름" name = "form_brand"><Input/></Form.Item>
-                <Form.Item  label = "상품명" name = "form_prod"><Input/></Form.Item>
-                <Form.Item  label = "가격" name = "form_price"><Input/></Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button type = "default"> 초기화 </Button>
-                    <Button type="primary" htmlType="submit">
-                        제출
-                    </Button>
-                </Form.Item>
+                <Row gutter={32}>
+                    <Col span = {4} offset={2}>
+                        <Text level={3}>네이버 상품정보 : </Text>
+                    </Col>
+                    <Col span = {6}>
+                        <input type="file" name="file" onChange={null}/>
+                    </Col>
+                </Row>
+                <Row gutter={32}>
+                    <Col span = {4} offset={2}>
+                        <Text level={3}>쿠팡 상품정보 : </Text>
+                    </Col>
+                    <Col span = {6}>
+                        <input type="file" name="file" onChange={null}/>
+                    </Col>
+                </Row>
+                <Row gutter={32}>
+                    <Col span = {4} offset={2}>
+                        <Text level={3}>BMP 정보 : </Text>
+                    </Col>
+                    <Col span = {6}>
+                        <input type="file" name="file" onChange={null}/>
+                    </Col>
+                </Row>
+                <br/>
             </Form>
+            <br/>
             <Table columns={columns} size="small"/>
+            <br/>
+            {/*<Text>{stateText} </Text>*/}
+
         </Card>
+
 
 
     </>
