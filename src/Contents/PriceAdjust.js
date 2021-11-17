@@ -128,8 +128,8 @@ export default function ProductAdjust(props){
         <Card title="상품 가격 조정" type = "inner"
               actions={[
                   <div/>, <div/>, <div/>,
-                  // <Button icon={<RedoOutlined />}> 초기화 </Button>,
-                  <Button icon = {<CheckOutlined />} onClick={() => {submitFile()}}> 제출 </Button>,
+                  <Button icon={<RedoOutlined />} onClick={() => {submitFile()}}> 제출 </Button>,
+                  <Button icon = {<CheckOutlined />} onClick={() => {submitFile()}}> 엑셀 다운로드 </Button>,
                   <div/>, <div/>, <div/>,
               ]}
               size="small"

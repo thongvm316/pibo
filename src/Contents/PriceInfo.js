@@ -139,6 +139,12 @@ export default function ProductInfo(props){
     return (
     <>
         <Card title="가격 할인율 이력 조회" type = "inner"
+              actions={[
+                  <div/>, <div/>, <div/>,
+                  <Button icon = {<CheckOutlined />} onClick={() => {}}> 엑셀 다운로드 </Button>,
+                  <div/>, <div/>, <div/>,
+              ]}
+
         >
             <Space direction="vertical" size={12}>
                 <Text> 날짜로 조회 : </Text>
