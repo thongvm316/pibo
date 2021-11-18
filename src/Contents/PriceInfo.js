@@ -10,10 +10,52 @@ import moment from 'moment';
 import BOInputFull from "../component/Input/BOInputFull";
 import PropertyTitle from "../component/Text/PropertyTitle";
 import { DatePicker, Space } from 'antd';
+import FromTo from "../component/Input/FromTo";
 const { Title, Text, Link } = Typography;
 
 export default function ProductInfo(props){
     const [productForm] = Form.useForm();
+
+    const taskColumns = [
+        {
+            title: '닐짜',
+            dataIndex: 'date',
+            key: 'date',
+        },
+        {
+            title: '네이버 자료',
+            dataIndex: 'naverRaw',
+            key: 'naverRaw',
+        },
+        {
+            title: '쿠팡 자료',
+            dataIndex: 'coupangRaw',
+            key: 'coupangRaw',
+        },
+        {
+            title: 'BMS 자료',
+            dataIndex: 'BMSRaw',
+            key: 'BMSRaw',
+        },
+        {
+            title: '결과',
+            dataIndex: 'resultRaw',
+            key: 'resultRaw',
+            render: () => <Button>엑셀 다운로드 </Button>,
+        },
+    ];
+
+    const sampleData = [
+        {
+            key: '1',
+            date: '2021/11/21',
+            naverRaw: 'naver_raw_2021-11-21.xls',
+            coupangRaw: 'coupang_raw_2021-11-21.xls',
+            BMSRaw: 'BMS_raw_2021-11-21.xls',
+            resultRaw: '결과_2021-11-21.xls',
+        },
+    ]
+
 
     const columns = [
         {
@@ -146,13 +188,12 @@ export default function ProductInfo(props){
               ]}
 
         >
-            <Space direction="vertical" size={12}>
-                <Text> 날짜로 조회: </Text>
-                <DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
+            <Space direction={"horizontal"}>
+                <RangePicker />
+            <Button> 조   회 </Button>
             </Space>
+            <Table columns={taskColumns} dataSource={sampleData} size="small"/>
             <br/>
-            <br/>
-            <Table columns={columns} data={data} size="small"/>
         </Card>
 
 
