@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {
     Button, Card,
-    Row, Table, Form, Input, InputNumber, Col, Typography
+    Row, Table, Form, Input, InputNumber, Col, Typography, Calendar
 } from "antd";
 import {CheckOutlined,RedoOutlined } from "@ant-design/icons";
 import BOInput from "../component/Input/BOInput";
@@ -23,24 +23,14 @@ export default function ProductInfo(props){
             key: 'date',
         },
         {
-            title: '네이버 자료',
-            dataIndex: 'naverRaw',
-            key: 'naverRaw',
-        },
-        {
-            title: '쿠팡 자료',
-            dataIndex: 'coupangRaw',
-            key: 'coupangRaw',
-        },
-        {
-            title: 'BMS 자료',
-            dataIndex: 'BMSRaw',
-            key: 'BMSRaw',
+            title: '진행 상태',
+            dataIndex: 'status',
+            key: 'status',
         },
         {
             title: '결과',
-            dataIndex: 'resultRaw',
-            key: 'resultRaw',
+            dataIndex: 'result',
+            key: 'result',
             render: () => <Button>엑셀 다운로드 </Button>,
         },
     ];
@@ -49,10 +39,20 @@ export default function ProductInfo(props){
         {
             key: '1',
             date: '2021/11/21',
-            naverRaw: 'naver_raw_2021-11-21.xls',
-            coupangRaw: 'coupang_raw_2021-11-21.xls',
-            BMSRaw: 'BMS_raw_2021-11-21.xls',
-            resultRaw: '결과_2021-11-21.xls',
+            status: '완료',
+            result: 'result_2021-11-21.xls',
+        },
+        {
+            key: '2',
+            date: '2021/11/22',
+            status: '업로드 완료',
+            result: 'result_2021-11-22.xls',
+        },
+        {
+            key: '3',
+            date: '2021/11/23',
+            status: '계산 중',
+            result: 'result_2021-11-23.xls',
         },
     ]
 
@@ -177,17 +177,21 @@ export default function ProductInfo(props){
             .endOf('week')
             .format(weekFormat)}`;
 
+    function onPanelChange(value, mode) {
+        console.log(value.format('YYYY-MM-DD'), mode);
+    }
 
     return (
     <>
+
         <Card title="가격 할인율 이력 조회" type = "inner"
               actions={[
                   <div/>, <div/>, <div/>,
                   <Button icon = {<CheckOutlined />} onClick={() => {}}> 엑셀 다운로드 </Button>,
                   <div/>, <div/>, <div/>,
               ]}
-
         >
+
             <Space direction={"horizontal"}>
                 <RangePicker />
             <Button> 조   회 </Button>

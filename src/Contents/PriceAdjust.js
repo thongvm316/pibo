@@ -95,7 +95,7 @@ export default function ProductAdjust(props){
         return  d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
     }
     const submitFile = () => {
-        alert("파일 uplaod")
+        alert("업로드 완료.")
     }
 
     const registerProduct = () => {
@@ -129,7 +129,6 @@ export default function ProductAdjust(props){
               actions={[
                   <div/>, <div/>, <div/>,
                   <Button icon={<RedoOutlined />} onClick={() => {submitFile()}}> 제출 </Button>,
-                  <Button icon = {<CheckOutlined />} onClick={() => {submitFile()}}> 엑셀 다운로드 </Button>,
                   <div/>, <div/>, <div/>,
               ]}
               size="small"
@@ -155,20 +154,10 @@ export default function ProductAdjust(props){
                         <input type="file" name="file" onChange={null}/>
                     </Col>
                 </Row>
-                <Row gutter={32}>
-                    <Col span = {4} offset={2}>
-                        <Text level={3}>BMP 정보 : </Text>
-                    </Col>
-                    <Col span = {6}>
-                        <input type="file" name="file" onChange={null}/>
-                    </Col>
-                </Row>
                 <br/>
             </Form>
             <br/>
-            <Table columns={columns} size="small"/>
             <br/>
-            {/*<Text>{stateText} </Text>*/}
 
         </Card>
 
