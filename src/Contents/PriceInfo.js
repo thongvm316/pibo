@@ -185,16 +185,17 @@ export default function ProductInfo(props){
     <>
 
         <Card title="가격 할인율 이력 조회" type = "inner"
-              actions={[
-                  <div/>, <div/>, <div/>,
-                  <Button icon = {<CheckOutlined />} onClick={() => {}}> 엑셀 다운로드 </Button>,
-                  <div/>, <div/>, <div/>,
-              ]}
+              // actions={[
+              //     <div/>, <div/>, <div/>,
+              //     <Button icon = {<CheckOutlined />} onClick={() => {}}> 엑셀 다운로드 </Button>,
+              //     <div/>, <div/>, <div/>,
+              // ]}
         >
 
             <Space direction={"horizontal"}>
                 <RangePicker />
-            <Button> 조   회 </Button>
+            <Button> 초기화 </Button><Button> 조   회 </Button>
+
             </Space>
             <Table columns={taskColumns} dataSource={sampleData} size="small"/>
             <br/>

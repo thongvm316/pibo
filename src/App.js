@@ -2,13 +2,15 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UBOMain from "./component/UBOMain";
 import LoginMain from "./component/LoginMain";
+import {Cookies} from "react-cookie"
 
 
 function App() {
+  const cookies = new Cookies();
   return (
     <div className="App">
-        <LoginMain/>
-        <UBOMain/>
+        <LoginMain myCookies = {cookies}/>
+        <UBOMain myCookies = {cookies}/>
     </div>
   );
 }

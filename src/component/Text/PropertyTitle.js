@@ -2,8 +2,6 @@ import React from 'react';
 import {
     Col,
 
-    Form,
-    Input,
     Typography,
 } from "antd";
 

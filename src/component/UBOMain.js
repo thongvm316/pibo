@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import {Col, Layout, Menu, Row, Space,} from 'antd';
+import {Col, Layout, Menu, Space,} from 'antd';
 import '../index-342fc69c.css';
 import {
-    UserOutlined,
-    GiftOutlined, SearchOutlined, ReconciliationOutlined, MenuOutlined,
-    ReadOutlined, AndroidOutlined, SyncOutlined,
+   MenuOutlined,
+   SyncOutlined,
 } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import BOContents from "./BOContents";
@@ -13,10 +12,9 @@ const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 
-export default function UBOMain(){
+export default function UBOMain(props){
     const [collapsed, setCollapsed] = useState(false);
-    const [contents, setContents] = useState("")
-
+    const [contents, setContents] = useState("");
 
     const menuClick = (key, name) => {
         setContents(key?.key)
@@ -98,7 +96,7 @@ export default function UBOMain(){
                         minHeight: 280,
                     }}>
 
-                    <BOContents contentsKey = {contents}/>
+                    <BOContents contentsKey = {contents} myCookies = {props.myCookies} />
                 </Content>
             </Layout>
         </Layout>

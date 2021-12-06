@@ -11,12 +11,18 @@ import BOInputFull from "../component/Input/BOInputFull";
 import PropertyTitle from "../component/Text/PropertyTitle";
 import { Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import axios from "axios";
+import {Cookies} from "react-cookie"
+
 const { Title, Text, Link } = Typography;
 
 
 export default function ProductAdjust(props){
     const [productForm] = Form.useForm();
     const [stateText, setStateText] = useState("Ready")
+    const [uploadDisable, setuploadDisable] = useState(false)
+    const [naverFile, setNaverFile] = useState(null)
+    const [couFile, setCouFile] = useState(null)
 
     useEffect(() => {
         productForm.setFieldsValue({
@@ -50,8 +56,78 @@ export default function ProductAdjust(props){
         console.log(values);
         const fieldValue = productForm.getFieldsValue();
         console.log(fieldValue)
+        const formData = new FormData();
+        // formData.append("photo", files.length && files[0].uploadedFile);
+        // formData.append("comment", commentValue);
+        // formData.append("content_id", classData.content_id);
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/upload/ord-data";
+
+        alert(props.myCookies)
+        // const pauth2 = cookies.get('pauth')
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
+
+        // alert(pauth2);
+        return;
+
+        axios({
+            method: 'post',
+            url: url,
+            // data: {
+            //     id: paramId,
+            //     password: paramPassword,
+            // },
+            config: { withCredentials: true },
+
+        }).then(function (response) {
+
+            // alert(response.data?.message);
+            console.log(response);
+
+            if ( response.data?.result === 'S'){
+            }else{
+            }
+            return;
+        }).catch(function (error) {
+            console.log(error);
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+            else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            }
+            else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+
+
     };
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const formData = new FormData();
+    //     formData.append("photo", files.length && files[0].uploadedFile);
+    //     formData.append("comment", commentValue);
+    //     formData.append("content_id", classData.content_id);
+    //
+    //     axios({
+    //         method: "post",
+    //         url: STREAMING_COMMENT_URL,
+    //         data: formData,
+    //         headers: { "Content-Type": "multipart/form-data", Authorization: localStorage.getItem("access_token") }
+    //     });
+    //     setCommentValue("");
+    //     setFiles([]);
+    // };
     const columns = [
         {
             title: '자재코드',
@@ -94,16 +170,68 @@ export default function ProductAdjust(props){
         const d = new Date();
         return  d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
     }
+    const init = () => {
+        setuploadDisable(false)
+        setNaverFile(null);
+        setCouFile(null);
+    }
     const submitFile = () => {
-        alert("업로드 완료.")
+        const fieldValue = productForm.getFieldsValue();
+        setuploadDisable(true)
+        console.log(fieldValue);
+
+        const formData = new FormData();
+        // formData.append()
+        console.log(naverFile);
+        console.log(couFile);
+        formData.append("kakaoOrdFile", couFile);
+        formData.append("naverOrdFile", naverFile);
+
+        console.log(formData)
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/upload/ord-data";
+
+        const authStr =  `Bearer ${props.myCookies.get('pauth')}`;
+        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+
+        axios({
+            method: "post",
+            url: url,
+            data: formData,
+        }).then(function (response) {
+
+            alert(response.data?.message);
+            console.log(response);
+
+            if ( response.data?.result === 'S'){
+            }else{
+            }
+            return;
+        }).catch(function (error) {
+            console.log(error);
+            alert(error)
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+            else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            }
+            else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
     }
 
     const registerProduct = () => {
         const fieldValue = productForm.getFieldsValue();
-
-        alert("hlello")
-        // alert(fieldValue?.form_date);
-
     }
     const props2 = {
         name: 'file',
@@ -123,15 +251,22 @@ export default function ProductAdjust(props){
         },
     };
 
+    const handleNaverFileInput = (e) =>{
+        setNaverFile(e.target.files[0])
+    }
+    const handleCouFileInput = (e) =>{
+        setCouFile(e.target.files[0]);
+    }
+
     return (
     <>
-        <Card title="상품 가격 조정" type = "inner"
+        <Card title="상품 가격 업로드" type = "inner"
               actions={[
-                  <div/>, <div/>, <div/>,
-                  <Button icon={<RedoOutlined />} onClick={() => {submitFile()}}> 제출 </Button>,
-                  <div/>, <div/>, <div/>,
+                  <Button icon={<RedoOutlined />} onClick={() => {init()}} > 초기화 </Button>,
+                  <Button icon={<RedoOutlined />} onClick={() => {submitFile()}} disabled={uploadDisable}> 업로드 </Button>,
               ]}
               size="small"
+                style={{ width: 684, marginTop: 16 }}
         >
             <Form
                 {...layout}
@@ -139,26 +274,29 @@ export default function ProductAdjust(props){
                 onFinish={onFinish}
             >
                 <Row gutter={32}>
-                    <Col span = {4} offset={2}>
+                    <Col span = {6} offset={2}>
                         <Text level={3}>네이버 상품정보 : </Text>
                     </Col>
                     <Col span = {6}>
-                        <input type="file" name="file" onChange={null}/>
+                        <Form.Item name="navFile">
+                            <input type="file"
+                                   name="naverFile"
+                                   accept="image/*,audio/*,video/mp4,video/x-m4v,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,.csv"
+                                   onChange={e => handleNaverFileInput(e)}/>
+                        </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={32}>
-                    <Col span = {4} offset={2}>
+                    <Col span = {6} offset={2}>
                         <Text level={3}>쿠팡 상품정보 : </Text>
                     </Col>
                     <Col span = {6}>
-                        <input type="file" name="file" onChange={null}/>
+                        <Form.Item name="couFile">
+                        <input type="file" name="coupangFile"  onChange={e => handleCouFileInput(e)}/>
+                        </Form.Item>
                     </Col>
                 </Row>
-                <br/>
             </Form>
-            <br/>
-            <br/>
-
         </Card>
 
 

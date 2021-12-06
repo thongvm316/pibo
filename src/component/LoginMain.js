@@ -2,16 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {Form, Input,  Modal} from 'antd';
 import '../index-342fc69c.css';
 import axios from "axios";
-import {Cookies} from "react-cookie"
 
 
 import Checkbox from "antd/es/checkbox/Checkbox";
 
-export default function LoginMain(){
+export default function LoginMain(props){
     const [isVisible, setIsVisible] = useState(true)
     const [loginForm] = Form.useForm();
 
-    const cookies = new Cookies()
+    const cookies = props.myCookies;
 
     useEffect(() => {
 
@@ -21,17 +20,18 @@ export default function LoginMain(){
         setIsVisible(false);
     };
 
-    const TestSend = (pauth) => {
+    const TestSend = () => {
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/pims/api/v1/031/attributes/10039";
 
         const pauth2 = cookies.get('pauth')
         axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
+
+        // alert(`Bearer ${pauth2}`);
         axios({
             method: 'get',
             url: url,
             data: {
             },
-            // config: config
         }).then(function (response) {
             console.log(response?.data);
             alert(JSON.stringify(response?.data));
@@ -74,14 +74,14 @@ export default function LoginMain(){
 
         }).then(function (response) {
 
-            alert(response.data?.message);
+            // alert(response.data?.message);
             console.log(response);
 
             if ( response.data?.result === 'S'){
                 setIsVisible(false);
                 cookies.set("pauth", response.headers?.pauth);
                 cookies.set("pid", paramId)
-                TestSend(response.data?.pauth);
+                // TestSend();
             }else{
                 setIsVisible(true);
             }
