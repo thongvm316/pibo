@@ -19,10 +19,15 @@ const { Title, Text, Link } = Typography;
 
 export default function ProductAdjust(props){
     const [productForm] = Form.useForm();
+    const [bmsForm] = Form.useForm();
     const [stateText, setStateText] = useState("Ready")
     const [uploadDisable, setuploadDisable] = useState(false)
     const [naverFile, setNaverFile] = useState(null)
-    const [couFile, setCouFile] = useState(null)
+    const [kakaoFile, setKakaoFile] = useState(null)
+
+    const [bmsUploadDisable, setbmsUploadDisable] = useState(false)
+    const [bmsFile, setBmsFile] = useState(null)
+
 
     useEffect(() => {
         productForm.setFieldsValue({
@@ -170,21 +175,76 @@ export default function ProductAdjust(props){
         const d = new Date();
         return  d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
     }
+
+    const bmsInit = () => {
+        setbmsUploadDisable(false)
+        setBmsFile(null);
+    }
+
     const init = () => {
         setuploadDisable(false)
         setNaverFile(null);
-        setCouFile(null);
+        setKakaoFile(null);
     }
+
+    const bmsSubmitFile = () => {
+        setbmsUploadDisable(true)
+        const formData = new FormData();
+        // formData.append()
+        console.log(bmsFile);
+        formData.append("bmsPrdFile", bmsFile);
+
+        console.log(formData)
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/upload/prd-data";
+
+        const authStr =  `Bearer ${props.myCookies.get('pauth')}`;
+        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+
+        axios({
+            method: "post",
+            url: url,
+            data: formData,
+        }).then(function (response) {
+            alert(response.data?.message);
+            console.log(response);
+
+            if ( response.data?.result === 'S'){
+            }else{
+            }
+            return;
+        }).catch(function (error) {
+            console.log(error);
+            alert(error)
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+            else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            }
+            else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+    }
+
+
     const submitFile = () => {
-        const fieldValue = productForm.getFieldsValue();
         setuploadDisable(true)
-        console.log(fieldValue);
 
         const formData = new FormData();
         // formData.append()
         console.log(naverFile);
-        console.log(couFile);
-        formData.append("kakaoOrdFile", couFile);
+        console.log(kakaoFile);
+        formData.append("kakaoOrdFile", kakaoFile);
         formData.append("naverOrdFile", naverFile);
 
         console.log(formData)
@@ -251,22 +311,54 @@ export default function ProductAdjust(props){
         },
     };
 
+    const handleBmsFileInput = (e) =>{
+        setBmsFile(e.target.files[0])
+    }
+
     const handleNaverFileInput = (e) =>{
         setNaverFile(e.target.files[0])
     }
-    const handleCouFileInput = (e) =>{
-        setCouFile(e.target.files[0]);
+    const handleKakaoFileInput = (e) =>{
+        setKakaoFile(e.target.files[0]);
     }
 
     return (
     <>
+        <Card title="BMS 데이 업로드" type = "inner"
+              actions={[
+                  <Button icon={<RedoOutlined />} onClick={() => {bmsInit()}} > 초기화 </Button>,
+                  <Button icon={<RedoOutlined />} onClick={() => {bmsSubmitFile()}} disabled={bmsUploadDisable}> 업로드 </Button>,
+              ]}
+              size="small"
+                style={{ width: 684, marginTop: 16 }}
+        >
+            <Form
+                {...layout}
+                form={bmsForm}
+            >
+                <Row gutter={32}>
+                    <Col span = {6} offset={2}>
+                        <Text level={3}>BMS 정보 : </Text>
+                    </Col>
+                    <Col span = {6}>
+                        <Form.Item name="bmsFile">
+                            <input type="file"
+                                   name="bmsFile"
+                                   accept="image/*,audio/*,video/mp4,video/x-m4v,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,.csv"
+                                   onChange={e => handleBmsFileInput(e)}/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form>
+        </Card>
+
         <Card title="상품 가격 업로드" type = "inner"
               actions={[
                   <Button icon={<RedoOutlined />} onClick={() => {init()}} > 초기화 </Button>,
                   <Button icon={<RedoOutlined />} onClick={() => {submitFile()}} disabled={uploadDisable}> 업로드 </Button>,
               ]}
               size="small"
-                style={{ width: 684, marginTop: 16 }}
+              style={{ width: 684, marginTop: 16 }}
         >
             <Form
                 {...layout}
@@ -288,17 +380,16 @@ export default function ProductAdjust(props){
                 </Row>
                 <Row gutter={32}>
                     <Col span = {6} offset={2}>
-                        <Text level={3}>쿠팡 상품정보 : </Text>
+                        <Text level={3}>카카오 상품정보 : </Text>
                     </Col>
                     <Col span = {6}>
-                        <Form.Item name="couFile">
-                        <input type="file" name="coupangFile"  onChange={e => handleCouFileInput(e)}/>
+                        <Form.Item name="kakaoFile">
+                            <input type="file" name="kakaoFile"  onChange={e => handleKakaoFileInput(e)}/>
                         </Form.Item>
                     </Col>
                 </Row>
             </Form>
         </Card>
-
 
 
     </>
