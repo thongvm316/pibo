@@ -23,53 +23,53 @@ export default function PriceInfo(props){
     const resultOrdItemDTOColumns = [
         {
             title: '거래처 코드',
-            dataIndex: 'prtnCd',
-            key: 'prtnCd',
+            dataIndex: 'prtnId',
+            key: 'prtnId',
         },
         {
             title: '주문번호',
-            dataIndex: 'ordNo',
-            key: 'ordNo',
+            dataIndex: 'dbpaB2cMallOrdNo',
+            key: 'dbpaB2cMallOrdNo',
         },
         {
             title: '상품번호',
+            dataIndex: 'dbpaB2cMallPrdNo',
+            key: 'dbpaB2cMallPrdNo',
+        },
+        {
+            title: '자재코드',
             dataIndex: 'prdCd',
             key: 'prdCd',
         },
         {
-            title: '자재코드',
-            dataIndex: 'prdItemCd',
-            key: 'prdItemCd',
-        },
-        {
             title: '자재명',
-            dataIndex: 'prdItemNm',
-            key: 'prdItemNm',
+            dataIndex: 'prdNm',
+            key: 'prdNm',
         },
         {
             title: '수량',
-            dataIndex: 'prdItemQty',
-            key: 'prdItemQty',
+            dataIndex: 'prdQty',
+            key: 'prdQty',
         },
         {
             title: '상품 소비자가',
-            dataIndex: 'prdItemPrice',
-            key: 'prdItemPrice',
+            dataIndex: 'cnsmAmt',
+            key: 'cnsmAmt',
         },
         {
             title: '상품 비중',
-            dataIndex: 'prdItemRatio',
-            key: 'prdItemRatio',
+            dataIndex: 'purPrdPrt',
+            key: 'purPrdPrt',
         },
         {
             title: '환산가',
-            dataIndex: 'convPrice',
-            key: 'convPrice',
+            dataIndex: 'prdUtprConvAmt',
+            key: 'prdUtprConvAmt',
         },
         {
             title: '할인율',
-            dataIndex: 'dcRate',
-            key: 'dcRate',
+            dataIndex: 'dcRt',
+            key: 'dcRt',
         },
         ]
     ;
@@ -78,8 +78,8 @@ export default function PriceInfo(props){
     const resultOrdDTOColumns = [
         {
             title: '거래처 코드',
-            dataIndex: 'prtnCd',
-            key: 'prtnCd',
+            dataIndex: 'prtnId',
+            key: 'prtnId',
         },
         {
             title: '거래처명',
@@ -88,63 +88,63 @@ export default function PriceInfo(props){
         },
         {
             title: '결제일자',
-            dataIndex: 'payDt',
-            key: 'payDt',
+            dataIndex: 'stlmDttm',
+            key: 'stlmDttm',
         },
         {
             title: '주문번호',
-            dataIndex: 'ordNo',
-            key: 'ordNo',
+            dataIndex: 'dbpaB2cMallOrdNo',
+            key: 'dbpaB2cMallOrdNo',
         },
         {
             title: '상품명',
-            dataIndex: 'prdNm',
-            key: 'prdNm',
+            dataIndex: 'dispPrdNm',
+            key: 'dispPrdNm',
         },
         {
             title: '옵션명',
-            dataIndex: 'optNm',
-            key: 'optNm',
+            dataIndex: 'prdOptnNm',
+            key: 'prdOptnNm',
         },
         {
             title: '주문 수량',
-            dataIndex: 'ordQty',
-            key: 'ordQty',
+            dataIndex: 'ordPrdQty',
+            key: 'ordPrdQty',
         },
         {
             title: '옵션 가격',
-            dataIndex: 'optPrice',
-            key: 'optPrice',
+            dataIndex: 'optnPrdAmt',
+            key: 'optnPrdAmt',
         },
         {
             title: '총 할인 금액',
-            dataIndex: 'totalDcAmt',
-            key: 'totalDcAmt',
+            dataIndex: 'ttOrdPrdDcAmt',
+            key: 'ttOrdPrdDcAmt',
         },
         {
             title: '상품별 할인액',
-            dataIndex: 'prdDcAmt',
-            key: 'prdDcAmt',
+            dataIndex: 'prdTtDcAmt',
+            key: 'prdTtDcAmt',
         },
         {
             title: '쿠폰 등 할인액',
-            dataIndex: 'cpnDcAmt',
-            key: 'cpnDcAmt',
+            dataIndex: 'cpnAplyDcAmt',
+            key: 'cpnAplyDcAmt',
         },
         {
             title: '상품별 총 주문 금액',
-            dataIndex: 'totalOrdAmt',
-            key: 'totalOrdAmt',
+            dataIndex: 'ordPrdAmt',
+            key: 'ordPrdAmt',
         },
         {
             title: '배송비',
-            dataIndex: 'deliveryAmt',
-            key: 'deliveryAmt',
+            dataIndex: 'dlcsAmt',
+            key: 'dlcsAmt',
         },
         {
             title: '실 구매금액',
-            dataIndex: 'realOrdAmt',
-            key: 'realOrdAmt',
+            dataIndex: 'realPurAmt',
+            key: 'realPurAmt',
         },
     ];
 
