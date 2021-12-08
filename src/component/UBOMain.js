@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import BOContents from "./BOContents";
+import Row from "antd/es/descriptions/Row";
 const { Header, Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
@@ -37,7 +38,7 @@ export default function UBOMain(props){
                                       onClick={() => { setCollapsed(!collapsed)}} />
                     </Col>
                     <Col  span={24} style={{marginTop:"12px", marginLeft:"12px"}}>
-                        <Title level={3} >플랫폼 통합 BackOffice</Title>
+                        <Title level={5} >플랫폼 통합 BackOffice</Title>
                     </Col>
                 </Space>
             </Header>
