@@ -11,7 +11,7 @@ import PriceAdjust from "../Contents/PriceAdjust";
 
 export default function BOContents(props){
     const Keys = [
-        { contentsKey : "011", func: (<PriceInfo/>)},
+        { contentsKey : "011", func: (<PriceInfo  myCookies = {props.myCookies}/>)},
         { contentsKey : "012", func: (<PriceAdjust myCookies = {props.myCookies}/>)},
         { contentsKey : "111", func: (<ProductInfo/>)},
         { contentsKey : "112",  func: (<BatchUpdate/>)},

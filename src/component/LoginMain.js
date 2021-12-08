@@ -26,7 +26,6 @@ export default function LoginMain(props){
         const pauth2 = cookies.get('pauth')
         axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
 
-        // alert(`Bearer ${pauth2}`);
         axios({
             method: 'get',
             url: url,
