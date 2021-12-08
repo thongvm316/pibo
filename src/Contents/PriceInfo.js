@@ -1,24 +1,130 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button, Card,
     Row, Table, Form, Input, InputNumber, Col, Typography, Calendar
 } from "antd";
-import {CheckOutlined,RedoOutlined } from "@ant-design/icons";
-import BOInput from "../component/Input/BOInput";
-import {Cookies} from "react-cookie";
 
 import moment from 'moment';
-import BOInputFull from "../component/Input/BOInputFull";
-import PropertyTitle from "../component/Text/PropertyTitle";
 import { DatePicker, Space } from 'antd';
-import FromTo from "../component/Input/FromTo";
 import axios from "axios";
 const { Title, Text, Link } = Typography;
 
 
 export default function PriceInfo(props){
     const [productForm] = Form.useForm();
+    const [searchResult, setSearchResult] = useState([]);
 
+
+    const ordDTOColumns = [
+        {
+            title: '거래처코드',
+            dataIndex: 'prtnId',
+            key: 'prtnId',
+        },
+        {
+            title: '거래처명',
+            dataIndex: 'prtnNm',
+            key: 'prtnNm',
+        },
+        {
+            title: '결제일자',
+            dataIndex: 'stlmDttm',
+            key: 'stlmDttm',
+        },
+        {
+            title: '주문번호',
+            dataIndex: 'dbpaB2cMallOrdNo',
+            key: 'dbpaB2cMallOrdNo',
+        },
+        {
+            title: '상품번호',
+            dataIndex: 'dbpaB2cMallPrdNo',
+            key: 'dbpaB2cMallPrdNo',
+        },
+        {
+            title: '상품명',
+            dataIndex: 'dispPrdNm',
+            key: 'dispPrdNm',
+        },
+
+        {
+            title: '옵션명',
+            dataIndex: 'prdOptnNm',
+            key: 'prdOptnNm',
+        },
+        {
+            title: '주문수량',
+            dataIndex: 'ordPrdQty',
+            key: 'ordPrdQty',
+        },
+        {
+            title: '옵션가격',
+            dataIndex: 'optnPrdAmt',
+            key: 'optnPrdAmt',
+        },
+        {
+            title: '총할인액',
+            dataIndex: 'ttOrdPrdDcAmt',
+            key: 'ttOrdPrdDcAmt',
+        },
+        {
+            title: '상품별할인금액',
+            dataIndex: 'prdTtDcAmt',
+            key: 'prdTtDcAmt',
+        },
+        {
+            title: '쿠폰등 할인금액',
+            dataIndex: 'cpnAplyDcAmt',
+            key: 'cpnAplyDcAmt',
+        },
+        {
+            title: '주문별 총주문금액',
+            dataIndex: 'ordPrdAmt',
+            key: 'ordPrdAmt',
+        },
+        {
+            title: '배송비',
+            dataIndex: 'dlcsAmt',
+            key: 'dlcsAmt',
+        },
+        {
+            title: '실구매금액',
+            dataIndex: 'realPurAmt',
+            key: 'realPurAmt',
+        },
+
+        {
+            title: '자재코드',
+            dataIndex: 'prdCd',
+            key: 'prdCd',
+        },
+        {
+            title: '자재명',
+            dataIndex: 'prdNm',
+            key: 'prdNm',
+        },
+        {
+            title: '소비자가',
+            dataIndex: 'cnsmAmt',
+            key: 'cnsmAmt',
+        },
+        {
+            title: '비중',
+            dataIndex: 'purPrdPrt',
+            key: 'purPrdPrt',
+        },
+        {
+            title: '1EA 당 환산',
+            dataIndex: 'prdUtprConvAmt',
+            key: 'prdUtprConvAmt',
+        },
+        {
+            title: '할인율',
+            dataIndex: 'dcRt',
+            key: 'dcRt',
+        },
+
+    ];
 
     const resultOrdItemDTOColumns = [
         {
@@ -74,86 +180,6 @@ export default function PriceInfo(props){
         ]
     ;
 
-
-    const resultOrdDTOColumns = [
-        {
-            title: '거래처 코드',
-            dataIndex: 'prtnId',
-            key: 'prtnId',
-        },
-        {
-            title: '거래처명',
-            dataIndex: 'prtnNm',
-            key: 'prtnNm',
-        },
-        {
-            title: '결제일자',
-            dataIndex: 'stlmDttm',
-            key: 'stlmDttm',
-        },
-        {
-            title: '주문번호',
-            dataIndex: 'dbpaB2cMallOrdNo',
-            key: 'dbpaB2cMallOrdNo',
-        },
-        {
-            title: '상품명',
-            dataIndex: 'dispPrdNm',
-            key: 'dispPrdNm',
-        },
-        {
-            title: '옵션명',
-            dataIndex: 'prdOptnNm',
-            key: 'prdOptnNm',
-        },
-        {
-            title: '주문 수량',
-            dataIndex: 'ordPrdQty',
-            key: 'ordPrdQty',
-        },
-        {
-            title: '옵션 가격',
-            dataIndex: 'optnPrdAmt',
-            key: 'optnPrdAmt',
-        },
-        {
-            title: '총 할인 금액',
-            dataIndex: 'ttOrdPrdDcAmt',
-            key: 'ttOrdPrdDcAmt',
-        },
-        {
-            title: '상품별 할인액',
-            dataIndex: 'prdTtDcAmt',
-            key: 'prdTtDcAmt',
-        },
-        {
-            title: '쿠폰 등 할인액',
-            dataIndex: 'cpnAplyDcAmt',
-            key: 'cpnAplyDcAmt',
-        },
-        {
-            title: '상품별 총 주문 금액',
-            dataIndex: 'ordPrdAmt',
-            key: 'ordPrdAmt',
-        },
-        {
-            title: '배송비',
-            dataIndex: 'dlcsAmt',
-            key: 'dlcsAmt',
-        },
-        {
-            title: '실 구매금액',
-            dataIndex: 'realPurAmt',
-            key: 'realPurAmt',
-        },
-    ];
-
-    const sampleResultData = [
-        {
-        },
-
-    ];
-
     const taskColumns = [
         {
             title: '닐짜',
@@ -200,46 +226,6 @@ export default function PriceInfo(props){
         },
     ]
 
-
-    const columns = [
-        {
-            title: '자재코드',
-            dataIndex: 'code',
-            key: 'code',
-        },
-        {
-            title: '제품명',
-            dataIndex: 'prodName',
-            key: 'prodName',
-        },
-        {
-            title: '수량',
-            dataIndex: 'count',
-            key: 'count',
-        },
-        {
-            title: '소비자가',
-            dataIndex: 'custPrice',
-            key: 'custPrice',
-        },
-        {
-            title: '비중(%)',
-            dataIndex: 'partOf',
-            key: 'partOf',
-        },
-        {
-            title: '1EA 당 환산가',
-            dataIndex: 'unitPrice',
-            key: 'unitPrice',
-        },
-        {
-            title: '할인율(%)',
-            dataIndex: 'discountRate',
-            key: 'discountRate',
-        },
-    ];
-
-
     useEffect(() => {
         productForm.setFieldsValue({
             form_date: getToday(),
@@ -272,19 +258,6 @@ export default function PriceInfo(props){
         const fieldValue = productForm.getFieldsValue();
         console.log(fieldValue)
     };
-
-    const data = [
-        {
-            key: '1',
-            date: '2021/10/01',
-            market: '쿠팡',
-            skuId: 11111111,
-            viId: 22222222,
-            name: '미장센 헬로크림 6WB 웜브라운',
-            price: 2497,
-            adjustedPrice: 0,
-        },
-    ]
 
 
     const getToday = () => {
@@ -320,25 +293,50 @@ export default function PriceInfo(props){
             .endOf('week')
             .format(weekFormat)}`;
 
+    const addSearchResult = (record) => {
+        // alert(JSON.stringify(record))
+        let r = JSON.parse(JSON.stringify(searchResult))
+        alert(JSON.stringify(record))
+        alert(JSON.stringify(r))
+        r.push(record)
+        setSearchResult(r)
+
+    }
+
+    const addEachResult = (currentValue, index) => {
+        let result = currentValue;
+        const ordItemList = currentValue?.ordItemList;
+        if (!result) return;
+        delete result?.ordItemList;
+
+        setSearchResult([]);
+        let refSearchResult = new Array();
+        ordItemList.forEach((value, index, array)=>{
+            const record = Object.assign(currentValue, value)
+            refSearchResult.push(JSON.parse(JSON.stringify(record)))
+        });
+        setSearchResult(refSearchResult)
+
+    }
+
+    const makeSearchResult = (result) => {
+        if (!result?.ordPriceList)
+            return;
+        result?.ordPriceList.forEach(addEachResult);
+    }
+
     const sampleSearchClick = () => {
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result";
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2020-11-01";
 
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
 
         axios({
             method: 'get',
             url: url,
-            data: {
-                "date" : 2020110,
-                "limit" : 20 ,
-                "offset": 1
-            },
         }).then(function (response) {
-            console.log(response?.data);
-            alert(JSON.stringify(response?.data));
+            makeSearchResult(response?.data)
         }).catch(function (error) {
             console.log(error);
-            alert(error?.message);
             alert(JSON.stringify(error.response?.data))
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
@@ -380,7 +378,7 @@ export default function PriceInfo(props){
             <br/>
             <Table columns={taskColumns} dataSource={sampleData} size="small"/>
             <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button>샘플 다운로드</Button>
-            <Table columns={resultOrdItemDTOColumns} dataSource={sampleResultData} size="small"/>
+            <Table columns={ordDTOColumns} dataSource={searchResult} size="small"  scroll={{ x: 2400 }}/>
 
         </Card>
 

@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Col, Layout, Menu, Space,Row} from 'antd';
 import '../index-342fc69c.css';
 import {
-   MenuOutlined,
-   SyncOutlined,
+    GiftOutlined,
+    MenuOutlined, ReadOutlined, ReconciliationOutlined, SearchOutlined,
+    SyncOutlined, UserOutlined,
 } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import BOContents from "./BOContents";
