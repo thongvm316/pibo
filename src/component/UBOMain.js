@@ -33,12 +33,12 @@ export default function UBOMain(props){
 
             >
                 <Space>
-                    <Col span={1}>
-                        <MenuOutlined style={{ fontSize: '24px', color: '#08c' }}
-                                      onClick={() => { setCollapsed(!collapsed)}} />
-                    </Col>
+                    {/*<Col span={1}>*/}
+                    {/*    <MenuOutlined style={{ fontSize: '24px', color: '#08c' }}*/}
+                    {/*                  onClick={() => { setCollapsed(!collapsed)}} />*/}
+                    {/*</Col>*/}
                     <Col  span={24} style={{marginTop:"12px", marginLeft:"12px"}}>
-                        <Title level={5} >플랫폼 통합 BackOffice</Title>
+                        <Title level={3} >플랫폼 통합 BackOffice</Title>
                     </Col>
                 </Space>
             </Header>
