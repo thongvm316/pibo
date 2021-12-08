@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Col, Layout, Menu, Space,} from 'antd';
+import {Col, Layout, Menu, Space,Row} from 'antd';
 import '../index-342fc69c.css';
 import {
    MenuOutlined,
@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import BOContents from "./BOContents";
-import Row from "antd/es/descriptions/Row";
 const { Header, Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
@@ -32,15 +31,15 @@ export default function UBOMain(props){
                 }}
 
             >
-                <Space>
                     {/*<Col span={1}>*/}
                     {/*    <MenuOutlined style={{ fontSize: '24px', color: '#08c' }}*/}
                     {/*                  onClick={() => { setCollapsed(!collapsed)}} />*/}
                     {/*</Col>*/}
-                    <Col  span={24} style={{marginTop:"12px", marginLeft:"12px"}}>
-                        <Title level={3} >플랫폼 통합 BackOffice</Title>
+                    <Col  style={{marginTop:"12px"}}>
+                    {/*        <MenuOutlined style={{ fontSize: '24px', color: '#08c' }}*/}
+                    {/*                      onClick={() => { setCollapsed(!collapsed)}} />*/}
+                       <Title level={3} >플랫폼 통합 BackOffice</Title>
                     </Col>
-                </Space>
             </Header>
         <Layout>
             <Sider
