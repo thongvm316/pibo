@@ -302,34 +302,41 @@ export default function PriceInfo(props){
         setSearchResult(r)
 
     }
-
     const addEachResult = (currentValue, index) => {
+
         let result = currentValue;
         const ordItemList = currentValue?.ordItemList;
         if (!result) return;
         delete result?.ordItemList;
 
-        setSearchResult([]);
         let refSearchResult = new Array();
         ordItemList.forEach((value, index, array)=>{
             const record = Object.assign(currentValue, value)
             refSearchResult.push(JSON.parse(JSON.stringify(record)))
         });
-        setSearchResult(refSearchResult)
 
+        setSearchResult(Object.assign(searchResult, refSearchResult));
     }
 
     const makeSearchResult = (result) => {
         if (!result?.ordPriceList)
             return;
-        result?.ordPriceList.forEach(addEachResult);
+        let refSearchResult = new Array();
+        result?.ordPriceList.forEach((value, index, array)=>{
+            const ordItemList = value?.ordItemList;
+            delete value?.ordItemList;
+
+            ordItemList.forEach((value2, index2, array2)=>{
+                const record = Object.assign(value, value2)
+                refSearchResult.push(JSON.parse(JSON.stringify(record)))
+            });
+        });
+        setSearchResult(refSearchResult)
     }
 
     const sampleSearchClick = () => {
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
-
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
-
         axios({
             method: 'get',
             url: url,
