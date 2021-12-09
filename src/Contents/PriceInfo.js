@@ -322,13 +322,22 @@ export default function PriceInfo(props){
         if (!result?.ordPriceList)
             return;
         let refSearchResult = new Array();
+
         result?.ordPriceList.forEach((value, index, array)=>{
             const ordItemList = value?.ordItemList;
             delete value?.ordItemList;
+            let count = 0;
 
             ordItemList.forEach((value2, index2, array2)=>{
-                const record = Object.assign(value, value2)
-                refSearchResult.push(JSON.parse(JSON.stringify(record)))
+                count ++;
+
+                if (count === 1){
+                    const record = Object.assign(value, value2)
+                    refSearchResult.push(JSON.parse(JSON.stringify(record)))
+                } else {
+                    let record = Object.assign({}, value2)
+                    refSearchResult.push(JSON.parse(JSON.stringify(record)))
+                }
             });
         });
         setSearchResult(refSearchResult)
