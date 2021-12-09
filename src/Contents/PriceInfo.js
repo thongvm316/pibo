@@ -326,7 +326,7 @@ export default function PriceInfo(props){
     }
 
     const sampleSearchClick = () => {
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2020-11-01";
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
 
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
 
