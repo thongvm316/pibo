@@ -7,13 +7,19 @@ import {
 import moment from 'moment';
 import { DatePicker, Space } from 'antd';
 import axios from "axios";
+import { Pagination } from 'antd';
 const { Title, Text, Link } = Typography;
+
 
 
 export default function PriceInfo(props){
     const [productForm] = Form.useForm();
     const [searchResult, setSearchResult] = useState([]);
-
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(1);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(20);
+    const [clickedPage, setClickedPage] = useState(1);
 
     const ordDTOColumns = [
         {
@@ -323,6 +329,10 @@ export default function PriceInfo(props){
             return;
         let refSearchResult = new Array();
 
+        setCurrent(result?.offset);
+        setTotal(result?.total);
+        setPageSize(result?.limit);
+
         result?.ordPriceList.forEach((value, index, array)=>{
             const ordItemList = value?.ordItemList;
             delete value?.ordItemList;
@@ -344,7 +354,9 @@ export default function PriceInfo(props){
     }
 
     const sampleSearchClick = () => {
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(clickedPage);
+
+        console.log(url);
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
@@ -370,7 +382,6 @@ export default function PriceInfo(props){
                 console.log('Error', error.message);
             }
         });
-
     }
     function onPanelChange(value, mode) {
         console.log(value.format('YYYY-MM-DD'), mode);
@@ -394,7 +405,27 @@ export default function PriceInfo(props){
             <br/>
             <Table columns={taskColumns} dataSource={sampleData} size="small"/>
             <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button>샘플 다운로드</Button>
-            <Table columns={ordDTOColumns} dataSource={searchResult} size="small"  scroll={{ x: 2400 }}/>
+            {/*<Button onClick={alert("hello")}>샘플 조회</Button> <Button>샘플 다운로드</Button>*/}
+            <Table columns={ordDTOColumns}
+                   dataSource={searchResult}
+                   pagination={{
+                       pageSize: 1000,
+                       hideOnSinglePage: true
+                   }}
+
+                   size="small"  scroll={{ x: 2400 }}/>
+
+           <Pagination
+                       current={current}
+                       total={total}
+                       pageSize={pageSize}
+                       showSizeChanger = {false}
+                       showTotal={total => `Total ${total} items`}
+                       onChange={(page, pageSize) => {
+                           setClickedPage(page);
+                           sampleSearchClick();
+                       }}
+                       />
 
         </Card>
 
