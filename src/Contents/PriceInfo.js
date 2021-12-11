@@ -20,6 +20,8 @@ export default function PriceInfo(props){
     const [page, setPage] = useState(1);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(20);
+    const [fromDate, setFromDate] = useState("");
+    const [toDate, setToDate] = useState("");
 
     const ordDTOColumns = [
         {
@@ -422,6 +424,53 @@ export default function PriceInfo(props){
         console.log(value.format('YYYY-MM-DD'), mode);
     }
 
+    const onRangePickerChange = (dates, dateStrings) => {
+        console.log('From: ', dates[0], ', to: ', dates[1]);
+        console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+        setFromDate(dateStrings[0]);
+        setToDate(dateStrings[1]);
+    }
+
+    const onSearchClick = () => {
+        if (!fromDate){
+            alert("no from date");
+            return;
+        }
+        if (!toDate){
+            alert("no to date");
+            return;
+        }
+
+        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result/history?startDate=${fromDate}&endDate=${toDate}`;
+
+        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+        axios({
+            method: 'get',
+            url: url,
+        }).then(function (response) {
+            alert(JSON.stringify(response?.data));
+        }).catch(function (error) {
+            console.log(error);
+            alert(JSON.stringify(error.response?.data))
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            } else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+        });
+    }
+
+
     return (
     <>
 
@@ -434,8 +483,8 @@ export default function PriceInfo(props){
         >
 
             <Space direction={"horizontal"}>
-                <RangePicker />
-            <Button> 초기화 </Button><Button> 조   회 </Button>
+                <RangePicker onChange={onRangePickerChange}/>
+            <Button> 초기화 </Button><Button onClick={onSearchClick}> 조   회 </Button>
             </Space>
             <br/>
             <Table columns={taskColumns} dataSource={sampleData} size="small"/>
