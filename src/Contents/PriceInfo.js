@@ -8,8 +8,9 @@ import moment from 'moment';
 import { DatePicker, Space } from 'antd';
 import axios from "axios";
 import { Pagination } from 'antd';
-const { Title, Text, Link } = Typography;
+import FileSaver from 'file-saver';
 
+const { Title, Text, Link } = Typography;
 
 
 export default function PriceInfo(props){
@@ -19,7 +20,6 @@ export default function PriceInfo(props){
     const [page, setPage] = useState(1);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(20);
-    const [clickedPage, setClickedPage] = useState(1);
 
     const ordDTOColumns = [
         {
@@ -336,12 +336,11 @@ export default function PriceInfo(props){
         result?.ordPriceList.forEach((value, index, array)=>{
             const ordItemList = value?.ordItemList;
             delete value?.ordItemList;
-            let count = 0;
+            let isFirst = true;
 
             ordItemList.forEach((value2, index2, array2)=>{
-                count ++;
-
-                if (count === 1){
+                if (isFirst){
+                    isFirst = false;
                     const record = Object.assign(value, value2)
                     refSearchResult.push(JSON.parse(JSON.stringify(record)))
                 } else {
@@ -353,10 +352,46 @@ export default function PriceInfo(props){
         setSearchResult(refSearchResult)
     }
 
-    const sampleSearchClick = () => {
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(clickedPage);
+    const sampleDownloadClick = () => {
+        const url = 'https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=2020110';
 
-        console.log(url);
+        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+        axios({
+            method: 'get',
+            url: url,
+        }).then(function (response) {
+            console.log(response?.data)
+            const blob = new Blob([response?.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            FileSaver.saveAs(blob, 'result2020110.xlsx');
+        }).catch(function (error) {
+            console.log(error);
+            alert(JSON.stringify(error.response?.data))
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            } else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+        });
+
+    }
+
+    const sampleSearchClick = (page) => {
+        let offset = 1;
+        if ( typeof(page) === "number"){
+            offset = page;
+        }
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(offset);
+
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
@@ -404,7 +439,7 @@ export default function PriceInfo(props){
             </Space>
             <br/>
             <Table columns={taskColumns} dataSource={sampleData} size="small"/>
-            <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button>샘플 다운로드</Button>
+            <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>
             {/*<Button onClick={alert("hello")}>샘플 조회</Button> <Button>샘플 다운로드</Button>*/}
             <Table columns={ordDTOColumns}
                    dataSource={searchResult}
@@ -413,7 +448,7 @@ export default function PriceInfo(props){
                        hideOnSinglePage: true
                    }}
 
-                   size="small"  scroll={{ x: 2400 }}/>
+                   size="small"  scroll={{ x: 2800 }}/>
 
            <Pagination
                        current={current}
@@ -422,8 +457,7 @@ export default function PriceInfo(props){
                        showSizeChanger = {false}
                        showTotal={total => `Total ${total} items`}
                        onChange={(page, pageSize) => {
-                           setClickedPage(page);
-                           sampleSearchClick();
+                           sampleSearchClick(page);
                        }}
                        />
 
