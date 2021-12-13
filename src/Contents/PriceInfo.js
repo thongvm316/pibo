@@ -323,16 +323,17 @@ export default function PriceInfo(props){
     }
 
     const sampleDownloadClick = () => {
-        const url = 'https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=2020110';
+        const url = 'https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=2021-12-06';
 
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
             url: url,
+            responseType: 'arraybuffer',
         }).then(function (response) {
             console.log(response?.data)
             const blob = new Blob([response?.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            FileSaver.saveAs(blob, 'result2020110.xlsx');
+            FileSaver.saveAs(blob, 'result_2021-12-06.xlsx');
         }).catch(function (error) {
             console.log(error);
             alert(JSON.stringify(error.response?.data))
