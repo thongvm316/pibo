@@ -22,6 +22,7 @@ export default function PriceInfo(props){
     const [pageSize, setPageSize] = useState(20);
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
+    const [historyResult, setHistoryResult] = useState([]);
 
     const ordDTOColumns = [
         {
@@ -134,59 +135,40 @@ export default function PriceInfo(props){
 
     ];
 
-    const resultOrdItemDTOColumns = [
-        {
-            title: '거래처 코드',
-            dataIndex: 'prtnId',
-            key: 'prtnId',
-        },
-        {
-            title: '주문번호',
-            dataIndex: 'dbpaB2cMallOrdNo',
-            key: 'dbpaB2cMallOrdNo',
-        },
-        {
-            title: '상품번호',
-            dataIndex: 'dbpaB2cMallPrdNo',
-            key: 'dbpaB2cMallPrdNo',
-        },
-        {
-            title: '자재코드',
-            dataIndex: 'prdCd',
-            key: 'prdCd',
-        },
-        {
-            title: '자재명',
-            dataIndex: 'prdNm',
-            key: 'prdNm',
-        },
-        {
-            title: '수량',
-            dataIndex: 'prdQty',
-            key: 'prdQty',
-        },
-        {
-            title: '상품 소비자가',
-            dataIndex: 'cnsmAmt',
-            key: 'cnsmAmt',
-        },
-        {
-            title: '상품 비중',
-            dataIndex: 'purPrdPrt',
-            key: 'purPrdPrt',
-        },
-        {
-            title: '환산가',
-            dataIndex: 'prdUtprConvAmt',
-            key: 'prdUtprConvAmt',
-        },
-        {
-            title: '할인율',
-            dataIndex: 'dcRt',
-            key: 'dcRt',
-        },
-        ]
-    ;
+    const searchClick = ( enabled, date) => {
+        console.log(enabled, date)
+        if (!enabled)
+            return;
+
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
+        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+        axios({
+            method: 'get',
+            url: url,
+        }).then(function (response) {
+            alert(JSON.stringify(response?.data))
+            makeSearchResult(response?.data)
+        }).catch(function (error) {
+            console.log(error);
+            alert(JSON.stringify(error.response?.data))
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            } else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+        });
+
+    }
 
     const taskColumns = [
         {
@@ -201,38 +183,24 @@ export default function PriceInfo(props){
         },
         {
             title: '조회',
-            dataIndex: 'search',
-            key: 'search',
-            render: () => <Button> 조회 </Button>,
+            dataIndex: 'downloadFlg',
+            key: 'downloadFlg',
+            render: (text,record) => <>
+                {/*{alert(text)}*/}
+                <Button disabled={!text}
+                        onClick = {() => searchClick(text, record.date)}
+
+                > 조회 </Button>
+            </>,
         },
         {
             title: '다운로드',
-            dataIndex: 'download',
-            key: 'download',
-            render: () => <Button>엑셀 다운로드 </Button>,
+            dataIndex: 'downloadFlg',
+            key: 'downloadFlg',
+            render: (text, record) => <><Button disabled={!text}>엑셀 다운로드 </Button></>
         },
     ];
 
-    const sampleData = [
-        {
-            key: '1',
-            date: '2021/11/21',
-            status: '완료',
-            result: 'result_2021-11-21.xls',
-        },
-        {
-            key: '2',
-            date: '2021/11/22',
-            status: '업로드 완료',
-            result: 'result_2021-11-22.xls',
-        },
-        {
-            key: '3',
-            date: '2021/11/23',
-            status: '계산 중',
-            result: 'result_2021-11-23.xls',
-        },
-    ]
 
     useEffect(() => {
         productForm.setFieldsValue({
@@ -431,6 +399,10 @@ export default function PriceInfo(props){
         setToDate(dateStrings[1]);
     }
 
+    const makeHistoryTable = (data) =>{
+        setHistoryResult(JSON.parse(JSON.stringify(data.history)));
+    }
+
     const onSearchClick = () => {
         if (!fromDate){
             alert("no from date");
@@ -448,7 +420,7 @@ export default function PriceInfo(props){
             method: 'get',
             url: url,
         }).then(function (response) {
-            alert(JSON.stringify(response?.data));
+            makeHistoryTable(response?.data);
         }).catch(function (error) {
             console.log(error);
             alert(JSON.stringify(error.response?.data))
@@ -487,9 +459,20 @@ export default function PriceInfo(props){
             <Button> 초기화 </Button><Button onClick={onSearchClick}> 조   회 </Button>
             </Space>
             <br/>
-            <Table columns={taskColumns} dataSource={sampleData} size="small"/>
+            <Table columns={taskColumns} dataSource={historyResult} size="small"/>
             <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>
             {/*<Button onClick={alert("hello")}>샘플 조회</Button> <Button>샘플 다운로드</Button>*/}
+            <Pagination
+                current={current}
+                total={total}
+                pageSize={pageSize}
+                showSizeChanger = {false}
+                showTotal={total => `Total ${total} items`}
+                onChange={(page, pageSize) => {
+                    sampleSearchClick(page);
+                }}
+            />
+
             <Table columns={ordDTOColumns}
                    dataSource={searchResult}
                    pagination={{
@@ -499,16 +482,6 @@ export default function PriceInfo(props){
 
                    size="small"  scroll={{ x: 2800 }}/>
 
-           <Pagination
-                       current={current}
-                       total={total}
-                       pageSize={pageSize}
-                       showSizeChanger = {false}
-                       showTotal={total => `Total ${total} items`}
-                       onChange={(page, pageSize) => {
-                           sampleSearchClick(page);
-                       }}
-                       />
 
         </Card>
 
