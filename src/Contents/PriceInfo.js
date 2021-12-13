@@ -9,6 +9,8 @@ import { DatePicker, Space } from 'antd';
 import axios from "axios";
 import { Pagination } from 'antd';
 import FileSaver from 'file-saver';
+import AsyncTable from "./AsyncTable";
+
 
 const { Title, Text, Link } = Typography;
 
@@ -16,10 +18,9 @@ const { Title, Text, Link } = Typography;
 export default function PriceInfo(props){
     const [productForm] = Form.useForm();
     const [searchResult, setSearchResult] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(1);
-    const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(20);
+    const [searchTotal, setSearchTotal] = useState(0);
+    const [searchCurrent, setSearchCurrent] = useState(1);
+    const [searchPageSize, setSearchPageSize] = useState(20);
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [historyResult, setHistoryResult] = useState([]);
@@ -182,22 +183,16 @@ export default function PriceInfo(props){
             key: 'status',
         },
         {
-            title: '조회',
+            title: 'Action',
             dataIndex: 'downloadFlg',
             key: 'downloadFlg',
             render: (text,record) => <>
                 {/*{alert(text)}*/}
                 <Button disabled={!text}
                         onClick = {() => searchClick(text, record.date)}
-
                 > 조회 </Button>
+                <Button disabled={!text}>엑셀 다운로드 </Button>
             </>,
-        },
-        {
-            title: '다운로드',
-            dataIndex: 'downloadFlg',
-            key: 'downloadFlg',
-            render: (text, record) => <><Button disabled={!text}>엑셀 다운로드 </Button></>
         },
     ];
 
@@ -299,9 +294,9 @@ export default function PriceInfo(props){
             return;
         let refSearchResult = new Array();
 
-        setCurrent(result?.offset);
-        setTotal(result?.total);
-        setPageSize(result?.limit);
+        setSearchCurrent(result?.offset);
+        setSearchTotal(result?.total);
+        setSearchPageSize(result?.limit);
 
         result?.ordPriceList.forEach((value, index, array)=>{
             const ordItemList = value?.ordItemList;
@@ -462,26 +457,43 @@ export default function PriceInfo(props){
             <Table columns={taskColumns} dataSource={historyResult} size="small"/>
             <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>
             {/*<Button onClick={alert("hello")}>샘플 조회</Button> <Button>샘플 다운로드</Button>*/}
-            <Pagination
-                current={current}
-                total={total}
-                pageSize={pageSize}
-                showSizeChanger = {false}
-                showTotal={total => `Total ${total} items`}
-                onChange={(page, pageSize) => {
+            {/*<Pagination*/}
+            {/*    current={current}*/}
+            {/*    total={total}*/}
+            {/*    pageSize={pageSize}*/}
+            {/*    showSizeChanger = {false}*/}
+            {/*    showTotal={total => `Total ${total} items`}*/}
+            {/*    onChange={(page, pageSize) => {*/}
+            {/*        sampleSearchClick(page);*/}
+            {/*    }}*/}
+            {/*/>*/}
+
+            {/*<Table columns={ordDTOColumns}*/}
+            {/*       dataSource={searchResult}*/}
+            {/*       pagination={{*/}
+            {/*           pageSize: 1000,*/}
+            {/*           hideOnSinglePage: true*/}
+            {/*       }}*/}
+
+            {/*       size="small"  scroll={{ x: 2800 }}/>*/}
+
+            <AsyncTable
+                asyncCurrent={searchCurrent}
+                asyncTotal={searchTotal}
+                asyncPageSize={searchPageSize}
+                asyncOnChange={(page, pageSize) => {
                     sampleSearchClick(page);
                 }}
-            />
 
-            <Table columns={ordDTOColumns}
-                   dataSource={searchResult}
-                   pagination={{
-                       pageSize: 1000,
-                       hideOnSinglePage: true
-                   }}
 
-                   size="small"  scroll={{ x: 2800 }}/>
-
+                asyncColumns={ordDTOColumns}
+                asyncDataSource = {searchResult}
+                asyncPagination = {{
+                    pageSize: 1000,
+                    hideOnSinglePage: true
+                }}
+                asyncScroll={{ x: 2800 }}
+        />
 
         </Card>
 
