@@ -18,9 +18,15 @@ const { Title, Text, Link } = Typography;
 export default function PriceInfo(props){
     const [productForm] = Form.useForm();
     const [searchResult, setSearchResult] = useState([]);
+
     const [searchTotal, setSearchTotal] = useState(0);
     const [searchCurrent, setSearchCurrent] = useState(1);
     const [searchPageSize, setSearchPageSize] = useState(20);
+
+    const [historyTotal, setHistoryTotal] = useState(0);
+    const [historyCurrent, setHistoryCurrent] = useState(1);
+    const [historyPageSize, setHistoryPageSize] = useState(20);
+
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [historyResult, setHistoryResult] = useState([]);
@@ -141,13 +147,14 @@ export default function PriceInfo(props){
         if (!enabled)
             return;
 
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
+        // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
             url: url,
         }).then(function (response) {
-            alert(JSON.stringify(response?.data))
+            // alert(JSON.stringify(response?.data))
             makeSearchResult(response?.data)
         }).catch(function (error) {
             console.log(error);
@@ -441,7 +448,6 @@ export default function PriceInfo(props){
 
     return (
     <>
-
         <Card title="가격 할인율 이력 조회" type = "inner"
               // actions={[
               //     <div/>, <div/>, <div/>,
@@ -454,29 +460,28 @@ export default function PriceInfo(props){
                 <RangePicker onChange={onRangePickerChange}/>
             <Button> 초기화 </Button><Button onClick={onSearchClick}> 조   회 </Button>
             </Space>
-            <br/>
-            <Table columns={taskColumns} dataSource={historyResult} size="small"/>
+            <br/><br/>
+            <AsyncTable
+                asyncCurrent={historyCurrent}
+                asyncTotal={historyTotal}
+                asyncPageSize={historyPageSize}
+                asyncOnChange={(page, pageSize) => {
+                    // sampleSearchClick(page);
+                }}
+
+                asyncColumns = {taskColumns}
+                asyncDataSource = {historyResult}
+                asyncPagination = {{
+                    pageSize: 1000,
+                    hideOnSinglePage: true
+                }}
+                // asyncScroll={{x:2000  }}
+
+            />
+            <br/><br/>
+
+
             <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>
-            {/*<Button onClick={alert("hello")}>샘플 조회</Button> <Button>샘플 다운로드</Button>*/}
-            {/*<Pagination*/}
-            {/*    current={current}*/}
-            {/*    total={total}*/}
-            {/*    pageSize={pageSize}*/}
-            {/*    showSizeChanger = {false}*/}
-            {/*    showTotal={total => `Total ${total} items`}*/}
-            {/*    onChange={(page, pageSize) => {*/}
-            {/*        sampleSearchClick(page);*/}
-            {/*    }}*/}
-            {/*/>*/}
-
-            {/*<Table columns={ordDTOColumns}*/}
-            {/*       dataSource={searchResult}*/}
-            {/*       pagination={{*/}
-            {/*           pageSize: 1000,*/}
-            {/*           hideOnSinglePage: true*/}
-            {/*       }}*/}
-
-            {/*       size="small"  scroll={{ x: 2800 }}/>*/}
 
             <AsyncTable
                 asyncCurrent={searchCurrent}
