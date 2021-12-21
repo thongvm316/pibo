@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col, Layout, Menu, Space,Row} from 'antd';
 import '../index-342fc69c.css';
 import {
@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import BOContents from "./BOContents";
+import axios from "axios";
 const { Header, Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
@@ -16,10 +17,79 @@ const { SubMenu } = Menu;
 export default function UBOMain(props){
     const [collapsed, setCollapsed] = useState(false);
     const [contents, setContents] = useState("");
+    const [menuTree, setMenuTree] =  useState([]);
 
     const menuClick = (key, name) => {
         setContents(key?.key)
     }
+
+    const makeJson2MenuTree = (menuList, arr)  => {
+        if(!arr)
+            return;
+
+        if(!menuList)
+            return;
+
+        for (const menu of menuList) {
+            let obj = {}
+            obj.title = menu?.menuNm;
+            obj.key = menu?.menuId;
+            obj.isLeaf = (menu?.leafYn === "Y");
+            obj.children = [];
+            if(menu.subMenu){
+                makeJson2MenuTree(menu.subMenu, obj.children);
+            }
+            // alert(JSON.stringify(obj))
+            arr.push(obj);
+        }
+        return arr;
+    }
+
+    const getMenuList = () => {
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/api/menu";
+        const pauth2 = props.myCookies.get('pauth')
+        axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
+
+        axios({
+            method: 'get',
+            url: url,
+            config: { withCredentials: true },
+
+        }).then(function (response) {
+            let arr = [];
+            // alert(JSON.stringify(makeJson2MenuTree(response.data?.menuList, arr)));
+            setMenuTree(makeJson2MenuTree(response.data?.menuList, arr));
+
+        }).catch(function (error) {
+            alert(error?.response?.data);
+            console.log(error);
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+            else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            }
+            else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+
+    }
+
+
+    useEffect(() => {
+        getMenuList();
+    }, []);
+
 
     const sampleMenu = [
             {"title":"PIMS","key":"PIMS","isLeaf":"N",
@@ -34,14 +104,14 @@ export default function UBOMain(props){
         ];
 
 
-    // const [childMenu, setChildMenu] = useState([]);
-    const menuMap = sampleMenu.map((menu) => {
-        if (menu.isLeaf === "Y") {
+    const menuMap = menuTree.map((menu) => {
+        if (menu?.isLeaf) {
             return <Menu.Item key={menu.key} onClick={(key) => {
                 menuClick(menu.key)
             }}>{menu.title}</Menu.Item>
         } else {
             return <>
+
                 <SubMenu key={menu.key} icon={<ReconciliationOutlined/>} title={menu.title}>
                     {menu.children.map((sub)=>{
                         if(sub.isLeaf === "Y"){

@@ -20,41 +20,6 @@ export default function LoginMain(props){
         setIsVisible(false);
     };
 
-    const TestSend = () => {
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/pims/api/v1/031/attributes/10039";
-
-        const pauth2 = cookies.get('pauth')
-        axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
-
-        axios({
-            method: 'get',
-            url: url,
-            data: {
-            },
-        }).then(function (response) {
-            console.log(response?.data);
-            alert(JSON.stringify(response?.data));
-        }).catch(function (error) {
-            console.log(error);
-            alert(error?.message);
-            if (error.response) {
-                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
-                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
-                // Node.js의 http.ClientRequest 인스턴스입니다.
-                console.log(error.request);
-                console.log(error)
-            } else {
-                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-                console.log('Error', error.message);
-            }
-        });
-    }
-
     const menuLoad = () => {
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/api/menu";
         const pauth2 = cookies.get('pauth')
@@ -66,8 +31,12 @@ export default function LoginMain(props){
             config: { withCredentials: true },
 
         }).then(function (response) {
-            alert(JSON.stringify(response.data));
+            // alert(JSON.stringify(response.data));
             console.log(response);
+            props.setMenuTree(response?.data?.menuList);
+            // alert(JSON.stringify(response?.data?.menuList));
+
+            // props.setMenuTree([1,2,3,4]);
         }).catch(function (error) {
             alert(error?.response?.data);
             console.log(error);
