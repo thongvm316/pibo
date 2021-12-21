@@ -147,8 +147,9 @@ export default function PriceInfo(props){
         if (!enabled)
             return;
 
-        // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
+        // alert(date);
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
+        // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
@@ -301,6 +302,7 @@ export default function PriceInfo(props){
             return;
         let refSearchResult = new Array();
 
+        alert(JSON.stringify(result));
         setSearchCurrent(result?.offset);
         setSearchTotal(result?.total);
         setSearchPageSize(result?.limit);
@@ -403,6 +405,7 @@ export default function PriceInfo(props){
     }
 
     const makeHistoryTable = (data) =>{
+        alert(JSON.stringify(data.history))
         setHistoryResult(JSON.parse(JSON.stringify(data.history)));
     }
 
@@ -458,7 +461,7 @@ export default function PriceInfo(props){
 
             <Space direction={"horizontal"}>
                 <RangePicker onChange={onRangePickerChange}/>
-            <Button> 초기화 </Button><Button onClick={onSearchClick}> 조   회 </Button>
+            <Button onClick={onSearchClick}> 조   회 </Button>
             </Space>
             <br/><br/>
             <AsyncTable

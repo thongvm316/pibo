@@ -55,6 +55,46 @@ export default function LoginMain(props){
         });
     }
 
+    const menuLoad = () => {
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/api/menu";
+        const pauth2 = cookies.get('pauth')
+        axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
+
+        axios({
+            method: 'get',
+            url: url,
+            config: { withCredentials: true },
+
+        }).then(function (response) {
+            alert(response.data?.message);
+            console.log(response);
+            alert(response.data?.message);
+
+        }).catch(function (error) {
+            alert(error?.response?.data);
+            console.log(error);
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+            else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            }
+            else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+
+    }
+
     const loginOk = () => {
         const fieldValue = loginForm.getFieldsValue();
         const paramId = fieldValue['id'];
@@ -80,7 +120,7 @@ export default function LoginMain(props){
                 setIsVisible(false);
                 cookies.set("pauth", response.headers?.pauth);
                 cookies.set("pid", paramId)
-                // TestSend();
+                menuLoad();
             }else{
                 setIsVisible(true);
             }
