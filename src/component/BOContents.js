@@ -9,6 +9,8 @@ import SynonymDic from "../Contents/SynonymDic";
 import PriceInfo from "../Contents/PriceInfo";
 import PriceAdjust from "../Contents/PriceAdjust";
 
+import MenuTree from "../Contents/MenuTree";
+
 export default function BOContents(props){
     const Keys = [
         { contentsKey : "011", func: (<PriceInfo  myCookies = {props.myCookies}/>)},
@@ -20,6 +22,8 @@ export default function BOContents(props){
         { contentsKey : "121",  func: (<AttributeInfo/>)},
         { contentsKey : "122",  func: (<NoticeInfo/>)},
         { contentsKey : "211",  func: (<SynonymDic/>)},
+        { contentsKey : "43",  func: (<MenuTree   myCookies = {props.myCookies}/>)},
+
     ];
     const writeContents = () =>{
         for (const content of Keys) {

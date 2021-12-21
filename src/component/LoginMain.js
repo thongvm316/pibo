@@ -66,10 +66,8 @@ export default function LoginMain(props){
             config: { withCredentials: true },
 
         }).then(function (response) {
-            alert(response.data?.message);
+            alert(JSON.stringify(response.data));
             console.log(response);
-            alert(response.data?.message);
-
         }).catch(function (error) {
             alert(error?.response?.data);
             console.log(error);

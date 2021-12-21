@@ -23,7 +23,7 @@ export default function AsyncTable(props){
                     showSizeChanger = {false}
                     showTotal={ (total)  => `Total ${props.asyncTotal} items`}
                     onChange={props.asyncOnChange}
-                />
+                /><br/>
 
                 <Table columns={props.asyncColumns}
                        dataSource={props.asyncDataSource}

@@ -147,7 +147,6 @@ export default function PriceInfo(props){
         if (!enabled)
             return;
 
-        // alert(date);
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
         // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
@@ -155,11 +154,9 @@ export default function PriceInfo(props){
             method: 'get',
             url: url,
         }).then(function (response) {
-            // alert(JSON.stringify(response?.data))
             makeSearchResult(response?.data)
         }).catch(function (error) {
             console.log(error);
-            alert(JSON.stringify(error.response?.data))
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 console.log(error.response.data);
@@ -246,14 +243,13 @@ export default function PriceInfo(props){
     const registerProduct = () => {
         const fieldValue = productForm.getFieldsValue();
 
-        alert("hlello")
         // alert(fieldValue?.form_date);
 
     }
 
     const onSaveClick = () => {
         const fieldValue = productForm.getFieldsValue();
-        alert('abao')
+        // alert('abao')
         console.log(fieldValue)
     }
 
@@ -275,8 +271,8 @@ export default function PriceInfo(props){
     const addSearchResult = (record) => {
         // alert(JSON.stringify(record))
         let r = JSON.parse(JSON.stringify(searchResult))
-        alert(JSON.stringify(record))
-        alert(JSON.stringify(r))
+        // alert(JSON.stringify(record))
+        // alert(JSON.stringify(r))
         r.push(record)
         setSearchResult(r)
 
@@ -302,7 +298,7 @@ export default function PriceInfo(props){
             return;
         let refSearchResult = new Array();
 
-        alert(JSON.stringify(result));
+        // alert(JSON.stringify(result));
         setSearchCurrent(result?.offset);
         setSearchTotal(result?.total);
         setSearchPageSize(result?.limit);
@@ -340,7 +336,7 @@ export default function PriceInfo(props){
             FileSaver.saveAs(blob, 'result_2021-12-06.xlsx');
         }).catch(function (error) {
             console.log(error);
-            alert(JSON.stringify(error.response?.data))
+            // alert(JSON.stringify(error.response?.data))
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 console.log(error.response.data);
@@ -375,7 +371,7 @@ export default function PriceInfo(props){
             makeSearchResult(response?.data)
         }).catch(function (error) {
             console.log(error);
-            alert(JSON.stringify(error.response?.data))
+            // alert(JSON.stringify(error.response?.data))
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 console.log(error.response.data);
@@ -405,17 +401,17 @@ export default function PriceInfo(props){
     }
 
     const makeHistoryTable = (data) =>{
-        alert(JSON.stringify(data.history))
+        // alert(JSON.stringify(data.history))
         setHistoryResult(JSON.parse(JSON.stringify(data.history)));
     }
 
     const onSearchClick = () => {
         if (!fromDate){
-            alert("no from date");
+            alert("시작 날짜를 넣아주세요.");
             return;
         }
         if (!toDate){
-            alert("no to date");
+            alert("종료 날짜를 넣아주세요.");
             return;
         }
 
@@ -484,7 +480,7 @@ export default function PriceInfo(props){
             <br/><br/>
 
 
-            <Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>
+            {/*<Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>*/}
 
             <AsyncTable
                 asyncCurrent={searchCurrent}
