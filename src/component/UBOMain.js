@@ -92,7 +92,7 @@ export default function UBOMain(props){
 
 
     const sampleMenu = [
-            {"title":"PIMS","key":"PIMS","isLeaf":"N",
+            {"title":"PIMS","key":"PIMS","isLeaf":"Y",
                 "children":[
                     {"title":"PIMS01","key":"PIMS01","isLeaf":true, "children":[]},
                     {"title":"PIMS02","key":"PIMS02","isLeaf":true, "children":[]},
@@ -104,34 +104,24 @@ export default function UBOMain(props){
         ];
 
 
-    const menuMap = menuTree.map((menu) => {
-        if (menu?.isLeaf) {
-            return <Menu.Item key={menu.key} onClick={(key) => {
-                menuClick(menu.key)
-            }}>{menu.title}</Menu.Item>
+    /*
+    *  createMenu
+    *  isLeaf == Y 인 경우 SubMenu 로 createMenu 재귀 호출
+    *  isLeaf == N 인 경우 Menu 를 생성
+    * */
+    const createMenu = (menu) => {
+        if(menu.isLeaf === "Y") {
+            return <SubMenu key={menu.key} icon={<ReconciliationOutlined/>} title={menu.title}>
+                { menu.children.map((sub) => {
+                    return createMenu(sub);
+                })}
+            </SubMenu>
         } else {
-            return <>
+            return <Menu.Item key={menu.key} onClick={(key) => menuClick(menu.key)}> {menu.title} </Menu.Item>
+            }
+    }
 
-                <SubMenu key={menu.key} icon={<ReconciliationOutlined/>} title={menu.title}>
-                    {menu.children.map((sub)=>{
-                        if(sub.isLeaf === "Y"){
-                            return <Menu.Item key={sub.key} onClick={(key) => {
-                                menuClick(sub.key)
-                            }}>{sub.title}</Menu.Item>
-                    }else{
-                            return <SubMenu key={sub.key} icon={<ReconciliationOutlined/>} title={sub.title}>
-                                { sub.children.map((sub2) => {
-                                    return <Menu.Item key={sub2.key} onClick={(key) =>
-                                         menuClick(sub2.key)}> sub2.title </Menu.Item>
-
-                                })}
-                            </SubMenu>
-                    }
-                    })}
-                </SubMenu>
-            </>
-        }
-    })
+    const menuMap = menuTree.map((menu) => createMenu(menu));
 
     return (
         <>
