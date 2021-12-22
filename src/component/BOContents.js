@@ -12,9 +12,11 @@ import PriceAdjust from "../Contents/PriceAdjust";
 import MenuTree from "../Contents/MenuTree";
 
 export default function BOContents(props){
+    const PRICE_INFO = "DBPA_RST";
+    const PRICE_ADJUST = "DBPA_RST";
     const Keys = [
-        { contentsKey : "011", func: (<PriceInfo  myCookies = {props.myCookies}/>)},
-        { contentsKey : "012", func: (<PriceAdjust myCookies = {props.myCookies}/>)},
+        { contentsKey : PRICE_INFO, func: (<PriceInfo  myCookies = {props.myCookies}/>)},
+        { contentsKey : PRICE_ADJUST, func: (<PriceAdjust myCookies = {props.myCookies}/>)},
         { contentsKey : "111", func: (<ProductInfo/>)},
         { contentsKey : "112",  func: (<BatchUpdate/>)},
         { contentsKey : "113",  func: (<MallInfo/>)},

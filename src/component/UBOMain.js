@@ -57,8 +57,9 @@ export default function UBOMain(props){
 
         }).then(function (response) {
             let arr = [];
-            // alert(JSON.stringify(makeJson2MenuTree(response.data?.menuList, arr)));
             setMenuTree(makeJson2MenuTree(response.data?.menuList, arr));
+            // console.log(response.data?.menuList);
+            console.log(JSON.stringify(menuTree));
 
         }).catch(function (error) {
             alert(error?.response?.data);
@@ -92,33 +93,28 @@ export default function UBOMain(props){
 
 
     const sampleMenu = [
-            {"title":"PIMS","key":"PIMS","isLeaf":"Y",
+            {"title":"PIMS","key":"PIMS","isLeaf":false,
                 "children":[
                     {"title":"PIMS01","key":"PIMS01","isLeaf":true, "children":[]},
                     {"title":"PIMS02","key":"PIMS02","isLeaf":true, "children":[]},
                     {"title":"PIMS03","key":"PIMS03","isLeaf":true, "children":[]},
                 ]},
-            {"title":"BCM","key":"BCM","isLeaf":"N","children":[]},
-            {"title":"가격조정","key":"DBPA","isLeaf":"N","children":[]},
-            {"title":"관리자 관리","key":"ADNIN","isLeaf":"N","children":[]}
+            {"title":"BCM","key":"BCM","isLeaf":true,"children":[]},
+            {"title":"가격조정","key":"DBPA","isLeaf":true,"children":[]},
+            {"title":"관리자 관리","key":"ADNIN","isLeaf":true,"children":[]}
         ];
 
 
-    /*
-    *  createMenu
-    *  isLeaf == Y 인 경우 SubMenu 로 createMenu 재귀 호출
-    *  isLeaf == N 인 경우 Menu 를 생성
-    * */
     const createMenu = (menu) => {
-        if(menu.isLeaf === "Y") {
+        if(menu.isLeaf) {
+            return <Menu.Item key={menu.key} onClick={(key) => menuClick(key)}> {menu.title} </Menu.Item>
+        } else {
             return <SubMenu key={menu.key} icon={<ReconciliationOutlined/>} title={menu.title}>
                 { menu.children.map((sub) => {
                     return createMenu(sub);
                 })}
             </SubMenu>
-        } else {
-            return <Menu.Item key={menu.key} onClick={(key) => menuClick(menu.key)}> {menu.title} </Menu.Item>
-            }
+        }
     }
 
     const menuMap = menuTree.map((menu) => createMenu(menu));
