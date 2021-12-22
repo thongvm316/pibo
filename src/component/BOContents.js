@@ -13,7 +13,7 @@ import MenuTree from "../Contents/MenuTree";
 
 export default function BOContents(props){
     const PRICE_INFO = "DBPA_RST";
-    const PRICE_ADJUST = "DBPA_RST";
+    const PRICE_ADJUST = "DBPA_CALC";
     const Keys = [
         { contentsKey : PRICE_INFO, func: (<PriceInfo  myCookies = {props.myCookies}/>)},
         { contentsKey : PRICE_ADJUST, func: (<PriceAdjust myCookies = {props.myCookies}/>)},
