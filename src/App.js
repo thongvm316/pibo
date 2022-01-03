@@ -8,13 +8,19 @@ import 'antd/dist/antd.css';
 
 function App() {
   const cookies = new Cookies();
-  return (
+  const [menuTree, setMenuTree] =  useState([]);
+
+    return (
     <div className="App">
         <LoginMain
             myCookies = {cookies}
+            menuTree = {menuTree}
+            setMenuTree = {setMenuTree}
         />
         <UBOMain
             myCookies = {cookies}
+            menuTree = {menuTree}
+            setMenuTree = {setMenuTree}
         />
     </div>
   );

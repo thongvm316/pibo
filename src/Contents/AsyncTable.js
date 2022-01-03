@@ -21,7 +21,7 @@ export default function AsyncTable(props){
                     total={props.asyncTotal}
                     pageSize={props.asyncPageSize}
                     showSizeChanger = {false}
-                    showTotal={ (total)  => `Total ${props.asyncTotal} items`}
+                    showTotal={ (total)  => `[${props.searchDate}] Total ${props.asyncTotal} items`}
                     onChange={props.asyncOnChange}
                 /><br/>
 

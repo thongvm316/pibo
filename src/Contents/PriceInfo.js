@@ -18,6 +18,7 @@ const { Title, Text, Link } = Typography;
 export default function PriceInfo(props){
     const [productForm] = Form.useForm();
     const [searchResult, setSearchResult] = useState([]);
+    const [searchResultDate, setSearchResultDate] = useState("");
 
     const [searchTotal, setSearchTotal] = useState(0);
     const [searchCurrent, setSearchCurrent] = useState(1);
@@ -142,19 +143,28 @@ export default function PriceInfo(props){
 
     ];
 
-    const searchClick = ( enabled, date) => {
+    const searchClick = (enabled, date, page) => {
+
+        let offset = 1;
+        if ( typeof(page) === "number"){
+            offset = page;
+        }
+        //     const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(offset);
+        //
+
         console.log(enabled, date)
         if (!enabled)
             return;
+        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=${String(date)}&offset=${String(offset)}`;
 
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date);
+        // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date) + '';
         // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
             url: url,
         }).then(function (response) {
-            makeSearchResult(response?.data)
+            makeSearchResult(response?.data, date)
         }).catch(function (error) {
             console.log(error);
             if (error.response) {
@@ -194,9 +204,9 @@ export default function PriceInfo(props){
             render: (text,record) => <>
                 {/*{alert(text)}*/}
                 <Button disabled={!text}
-                        onClick = {() => searchClick(text, record.date)}
+                        onClick = {() => searchClick(text, record.date, 1)}
                 > 조회 </Button>
-                <Button disabled={!text}>엑셀 다운로드 </Button>
+                <Button disabled={!text} onClick={() => excelDownloadClick(record.date)}>엑셀 다운로드 </Button>
             </>,
         },
     ];
@@ -293,7 +303,7 @@ export default function PriceInfo(props){
         setSearchResult(Object.assign(searchResult, refSearchResult));
     }
 
-    const makeSearchResult = (result) => {
+    const makeSearchResult = (result, date) => {
         if (!result?.ordPriceList)
             return;
         let refSearchResult = new Array();
@@ -319,7 +329,8 @@ export default function PriceInfo(props){
                 }
             });
         });
-        setSearchResult(refSearchResult)
+        setSearchResultDate(date);
+        setSearchResult(refSearchResult);
     }
 
     const sampleDownloadClick = () => {
@@ -354,21 +365,21 @@ export default function PriceInfo(props){
             }
         });
 
+
     }
+    const excelDownloadClick = (date) => {
+        // const url = 'https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=" + date2021-12-06';
+        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=" + date;
 
-    const sampleSearchClick = (page) => {
-        let offset = 1;
-        if ( typeof(page) === "number"){
-            offset = page;
-        }
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(offset);
-
-        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
             url: url,
+            responseType: 'arraybuffer',
         }).then(function (response) {
-            makeSearchResult(response?.data)
+            console.log(response?.data)
+            const blob = new Blob([response?.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+            FileSaver.saveAs(blob, `result_${date}.xlsx`);
         }).catch(function (error) {
             console.log(error);
             // alert(JSON.stringify(error.response?.data))
@@ -389,6 +400,39 @@ export default function PriceInfo(props){
             }
         });
     }
+    // const sampleSearchClick = (page) => {
+    //     let offset = 1;
+    //     if ( typeof(page) === "number"){
+    //         offset = page;
+    //     }
+    //     const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(offset);
+    //
+    //     axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
+    //     axios({
+    //         method: 'get',
+    //         url: url,
+    //     }).then(function (response) {
+    //         makeSearchResult(response?.data)
+    //     }).catch(function (error) {
+    //         console.log(error);
+    //         // alert(JSON.stringify(error.response?.data))
+    //         if (error.response) {
+    //             // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+    //             console.log(error.response.data);
+    //             console.log(error.response.status);
+    //             console.log(error.response.headers);
+    //         } else if (error.request) {
+    //             // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+    //             // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+    //             // Node.js의 http.ClientRequest 인스턴스입니다.
+    //             console.log(error.request);
+    //             console.log(error)
+    //         } else {
+    //             // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+    //             console.log('Error', error.message);
+    //         }
+    //     });
+    // }
     function onPanelChange(value, mode) {
         console.log(value.format('YYYY-MM-DD'), mode);
     }
@@ -425,7 +469,7 @@ export default function PriceInfo(props){
             makeHistoryTable(response?.data);
         }).catch(function (error) {
             console.log(error);
-            alert(JSON.stringify(error.response?.data))
+            // alert(JSON.stringify(error.response?.data))
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 console.log(error.response.data);
@@ -460,25 +504,15 @@ export default function PriceInfo(props){
             <Button onClick={onSearchClick}> 조   회 </Button>
             </Space>
             <br/><br/>
-            <AsyncTable
-                asyncCurrent={historyCurrent}
-                asyncTotal={historyTotal}
-                asyncPageSize={historyPageSize}
-                asyncOnChange={(page, pageSize) => {
-                    // sampleSearchClick(page);
-                }}
 
-                asyncColumns = {taskColumns}
-                asyncDataSource = {historyResult}
-                asyncPagination = {{
-                    pageSize: 1000,
-                    hideOnSinglePage: true
-                }}
-                // asyncScroll={{x:2000  }}
-
-            />
+            <Table columns={taskColumns}
+                   dataSource={historyResult}
+                   pagination={{
+                       pageSize: 1000,
+                       hideOnSinglePage: true}
+                   }
+                   size="small" />
             <br/><br/>
-
 
             {/*<Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>*/}
 
@@ -487,12 +521,13 @@ export default function PriceInfo(props){
                 asyncTotal={searchTotal}
                 asyncPageSize={searchPageSize}
                 asyncOnChange={(page, pageSize) => {
-                    sampleSearchClick(page);
+                    searchClick(true, searchResultDate, page);
                 }}
 
 
                 asyncColumns={ordDTOColumns}
                 asyncDataSource = {searchResult}
+                searchDate = {searchResultDate}
                 asyncPagination = {{
                     pageSize: 1000,
                     hideOnSinglePage: true

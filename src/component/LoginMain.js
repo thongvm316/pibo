@@ -20,6 +20,28 @@ export default function LoginMain(props){
         setIsVisible(false);
     };
 
+    const makeJson2MenuTree = (menuList, arr)  => {
+        if(!arr)
+            return;
+
+        if(!menuList)
+            return;
+
+        for (const menu of menuList) {
+            let obj = {}
+            obj.title = menu?.menuNm;
+            obj.key = menu?.menuId;
+            obj.isLeaf = (menu?.leafYn === "Y");
+            obj.children = [];
+            if(menu.subMenu){
+                makeJson2MenuTree(menu.subMenu, obj.children);
+            }
+            // alert(JSON.stringify(obj))
+            arr.push(obj);
+        }
+        return arr;
+    }
+
     const menuLoad = () => {
         const url = "https://i-dev-piboapi.amorepacific.com/pibo/api/menu";
         const pauth2 = cookies.get('pauth')
@@ -32,13 +54,11 @@ export default function LoginMain(props){
 
         }).then(function (response) {
             // alert(JSON.stringify(response.data));
-            console.log(response);
-            props.setMenuTree(response?.data?.menuList);
-            // alert(JSON.stringify(response?.data?.menuList));
-
-            // props.setMenuTree([1,2,3,4]);
+            let arr = [];
+            props.setMenuTree(makeJson2MenuTree(response.data?.menuList, arr));
+            console.log(JSON.stringify(props.menuTree));
         }).catch(function (error) {
-            alert(error?.response?.data);
+            // alert(error?.response?.data);
             console.log(error);
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
@@ -80,7 +100,7 @@ export default function LoginMain(props){
 
         }).then(function (response) {
 
-            // alert(response.data?.message);
+            alert(response.data?.message);
             console.log(response);
 
             if ( response.data?.result === 'S'){
@@ -93,6 +113,8 @@ export default function LoginMain(props){
             }
             return;
         }).catch(function (error) {
+            alert(error.response.data?.message);
+
             console.log(error);
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
