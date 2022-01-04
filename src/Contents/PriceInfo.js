@@ -32,6 +32,7 @@ export default function PriceInfo(props){
     const [toDate, setToDate] = useState("");
     const [historyResult, setHistoryResult] = useState([]);
 
+
     const ordDTOColumns = [
         {
             title: '거래처코드',
@@ -144,21 +145,14 @@ export default function PriceInfo(props){
     ];
 
     const searchClick = (enabled, date, page) => {
-
         let offset = 1;
         if ( typeof(page) === "number"){
             offset = page;
         }
-        //     const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(offset);
-        //
-
         console.log(enabled, date)
         if (!enabled)
             return;
         const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=${String(date)}&offset=${String(offset)}`;
-
-        // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=" + String(date) + '';
-        // const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06";
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
@@ -400,39 +394,6 @@ export default function PriceInfo(props){
             }
         });
     }
-    // const sampleSearchClick = (page) => {
-    //     let offset = 1;
-    //     if ( typeof(page) === "number"){
-    //         offset = page;
-    //     }
-    //     const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=2021-12-06&offset=" + String(offset);
-    //
-    //     axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
-    //     axios({
-    //         method: 'get',
-    //         url: url,
-    //     }).then(function (response) {
-    //         makeSearchResult(response?.data)
-    //     }).catch(function (error) {
-    //         console.log(error);
-    //         // alert(JSON.stringify(error.response?.data))
-    //         if (error.response) {
-    //             // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-    //             console.log(error.response.data);
-    //             console.log(error.response.status);
-    //             console.log(error.response.headers);
-    //         } else if (error.request) {
-    //             // 요청이 이루어 졌으나 응답을 받지 못했습니다.
-    //             // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
-    //             // Node.js의 http.ClientRequest 인스턴스입니다.
-    //             console.log(error.request);
-    //             console.log(error)
-    //         } else {
-    //             // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-    //             console.log('Error', error.message);
-    //         }
-    //     });
-    // }
     function onPanelChange(value, mode) {
         console.log(value.format('YYYY-MM-DD'), mode);
     }
@@ -446,10 +407,30 @@ export default function PriceInfo(props){
 
     const makeHistoryTable = (data) =>{
         // alert(JSON.stringify(data.history))
+        // alert(data?.total); // 24
+        // alert(data?.limit); // 20
+        // alert(data?.offset); // 1
+
+        setHistoryCurrent(data?.offset);
+        setHistoryTotal(data?.total);
+        setHistoryPageSize(data?.limit);
+
+        setFromDate(data?.startDate);
+        setToDate(data?.endDate);
         setHistoryResult(JSON.parse(JSON.stringify(data.history)));
     }
-
-    const onSearchClick = () => {
+    /*
+    const searchClick = (enabled, date, page) => {
+        let offset = 1;
+        if ( typeof(page) === "number"){
+            offset = page;
+        }
+        console.log(enabled, date)
+        if (!enabled)
+            return;
+        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=${String(date)}&offset=${String(offset)}`;
+*/
+    const onHistorySearchClick = (page) => {
         if (!fromDate){
             alert("시작 날짜를 넣아주세요.");
             return;
@@ -458,9 +439,7 @@ export default function PriceInfo(props){
             alert("종료 날짜를 넣아주세요.");
             return;
         }
-
-        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result/history?startDate=${fromDate}&endDate=${toDate}`;
-
+        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result/history?startDate=${fromDate}&endDate=${toDate}&offset=${page}`;
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
@@ -501,17 +480,29 @@ export default function PriceInfo(props){
 
             <Space direction={"horizontal"}>
                 <RangePicker onChange={onRangePickerChange}/>
-            <Button onClick={onSearchClick}> 조   회 </Button>
+            <Button onClick={() => onHistorySearchClick(1) }> 조   회 </Button>
+
             </Space>
             <br/><br/>
 
-            <Table columns={taskColumns}
-                   dataSource={historyResult}
-                   pagination={{
-                       pageSize: 1000,
-                       hideOnSinglePage: true}
-                   }
-                   size="small" />
+            <AsyncTable
+                asyncCurrent={historyCurrent}
+                asyncTotal={historyTotal}
+                asyncPageSize={historyPageSize}
+                asyncOnChange={(page, pageSize) => {
+                    onHistorySearchClick(page);
+                }}
+
+
+                asyncColumns={taskColumns}
+                asyncDataSource = {historyResult}
+                fromDate = {fromDate}
+                toDate = {toDate}
+                asyncPagination = {{
+                    pageSize: 1000,
+                    hideOnSinglePage: true
+                }}
+            />
             <br/><br/>
 
             {/*<Button onClick={sampleSearchClick}>샘플 조회</Button> <Button onClick={sampleDownloadClick}>샘플 다운로드</Button>*/}
@@ -524,10 +515,9 @@ export default function PriceInfo(props){
                     searchClick(true, searchResultDate, page);
                 }}
 
-
                 asyncColumns={ordDTOColumns}
                 asyncDataSource = {searchResult}
-                searchDate = {searchResultDate}
+                date = {searchResultDate}
                 asyncPagination = {{
                     pageSize: 1000,
                     hideOnSinglePage: true
