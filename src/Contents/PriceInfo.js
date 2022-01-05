@@ -10,6 +10,12 @@ import axios from "axios";
 import { Pagination } from 'antd';
 import FileSaver from 'file-saver';
 import AsyncTable from "./AsyncTable";
+import {
+    DBPA_ORD_PRICE_RESULT_URL,
+    DOWNLOAD_ORD_PRICE_RESULT_URL,
+    ORD_PRICE_RESULT_HISTORY_URL,
+    ORD_PRICE_RESULT_URL
+} from "../config";
 
 
 const { Title, Text, Link } = Typography;
@@ -152,7 +158,10 @@ export default function PriceInfo(props){
         console.log(enabled, date)
         if (!enabled)
             return;
-        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=${String(date)}&offset=${String(offset)}`;
+        const url = process.env.REACT_APP_SERVER_HOST
+            + DBPA_ORD_PRICE_RESULT_URL
+            + `?date=${String(date)}&offset=${String(offset)}`;
+
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',
@@ -327,43 +336,10 @@ export default function PriceInfo(props){
         setSearchResult(refSearchResult);
     }
 
-    const sampleDownloadClick = () => {
-        const url = 'https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=2021-12-06';
-
-        axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
-        axios({
-            method: 'get',
-            url: url,
-            responseType: 'arraybuffer',
-        }).then(function (response) {
-            console.log(response?.data)
-            const blob = new Blob([response?.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            FileSaver.saveAs(blob, 'result_2021-12-06.xlsx');
-        }).catch(function (error) {
-            console.log(error);
-            // alert(JSON.stringify(error.response?.data))
-            if (error.response) {
-                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
-                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
-                // Node.js의 http.ClientRequest 인스턴스입니다.
-                console.log(error.request);
-                console.log(error)
-            } else {
-                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-                console.log('Error', error.message);
-            }
-        });
-
-
-    }
     const excelDownloadClick = (date) => {
-        // const url = 'https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=" + date2021-12-06';
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/download/ord-price-result?date=" + date;
+        const url = process.env.REACT_APP_SERVER_HOST
+            + DOWNLOAD_ORD_PRICE_RESULT_URL
+            + "?date=" + date;
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${props.myCookies.get('pauth')}`;
         axios({
@@ -419,17 +395,6 @@ export default function PriceInfo(props){
         setToDate(data?.endDate);
         setHistoryResult(JSON.parse(JSON.stringify(data.history)));
     }
-    /*
-    const searchClick = (enabled, date, page) => {
-        let offset = 1;
-        if ( typeof(page) === "number"){
-            offset = page;
-        }
-        console.log(enabled, date)
-        if (!enabled)
-            return;
-        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result?date=${String(date)}&offset=${String(offset)}`;
-*/
     const onHistorySearchClick = (page) => {
         if (!fromDate){
             alert("시작 날짜를 넣아주세요.");
@@ -439,7 +404,10 @@ export default function PriceInfo(props){
             alert("종료 날짜를 넣아주세요.");
             return;
         }
-        const url = `https://i-dev-piboapi.amorepacific.com/pibo/dbpa/ord-price-result/history?startDate=${fromDate}&endDate=${toDate}&offset=${page}`;
+        const url = process.env.REACT_APP_SERVER_HOST
+            + ORD_PRICE_RESULT_HISTORY_URL
+            + `?startDate=${fromDate}&endDate=${toDate}&offset=${page}`;
+
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
         axios({
             method: 'get',

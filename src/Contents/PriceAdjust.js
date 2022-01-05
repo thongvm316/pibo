@@ -1,20 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {
     Button, Card,
-    Row, Table, Form, Input, InputNumber, Col, Typography
+    Row,Form, Col, Typography
 } from "antd";
-import {CheckOutlined,RedoOutlined } from "@ant-design/icons";
-import BOInput from "../component/Input/BOInput";
-
-import moment from 'moment';
-import BOInputFull from "../component/Input/BOInputFull";
-import PropertyTitle from "../component/Text/PropertyTitle";
-import { Upload, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import {RedoOutlined } from "@ant-design/icons";
+import {  message } from 'antd';
 import axios from "axios";
-import {Cookies} from "react-cookie"
+import {DBPA_UPLOAD_ORD_DATA, DBPA_UPLOAD_PRD_DATA} from "../config";
 
-const { Title, Text, Link } = Typography;
+const {  Text } = Typography;
 
 
 export default function ProductAdjust(props){
@@ -56,39 +50,6 @@ export default function ProductAdjust(props){
         },
     };
 
-    const onFinish = (values: any) => {
-        console.log(values);
-        const fieldValue = productForm.getFieldsValue();
-        console.log(fieldValue)
-        const formData = new FormData();
-        // formData.append("photo", files.length && files[0].uploadedFile);
-        // formData.append("comment", commentValue);
-        // formData.append("content_id", classData.content_id);
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/upload/ord-data";
-        alert(props.myCookies)
-        // const pauth2 = cookies.get('pauth')
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
-        // alert(pauth2);
-        return;
-
-    };
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     const formData = new FormData();
-    //     formData.append("photo", files.length && files[0].uploadedFile);
-    //     formData.append("comment", commentValue);
-    //     formData.append("content_id", classData.content_id);
-    //
-    //     axios({
-    //         method: "post",
-    //         url: STREAMING_COMMENT_URL,
-    //         data: formData,
-    //         headers: { "Content-Type": "multipart/form-data", Authorization: localStorage.getItem("access_token") }
-    //     });
-    //     setCommentValue("");
-    //     setFiles([]);
-    // };
     const columns = [
         {
             title: '자재코드',
@@ -151,7 +112,8 @@ export default function ProductAdjust(props){
         formData.append("bmsPrdFile", bmsFile);
 
         console.log(formData)
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/upload/prd-data";
+        const url = process.env.REACT_APP_SERVER_HOST
+            + DBPA_UPLOAD_PRD_DATA;
 
         const authStr =  `Bearer ${props.myCookies.get('pauth')}`;
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
@@ -204,7 +166,8 @@ export default function ProductAdjust(props){
         formData.append("naverOrdFile", naverFile);
 
         console.log(formData)
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/dbpa/upload/ord-data";
+        const url = process.env.REACT_APP_SERVER_HOST
+            + DBPA_UPLOAD_ORD_DATA;
 
         const authStr =  `Bearer ${props.myCookies.get('pauth')}`;
         axios.defaults.headers.common['Authorization'] =  `Bearer ${props.myCookies.get('pauth')}`;
@@ -319,7 +282,7 @@ export default function ProductAdjust(props){
             <Form
                 {...layout}
                 form={productForm}
-                onFinish={onFinish}
+                // onFinish={onFinish}
             >
                 <Row gutter={32}>
                     <Col span = {6} offset={2}>

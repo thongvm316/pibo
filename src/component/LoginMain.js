@@ -5,6 +5,7 @@ import axios from "axios";
 
 
 import Checkbox from "antd/es/checkbox/Checkbox";
+import {LOGIN_URL, MENU_URL} from "../config";
 
 export default function LoginMain(props){
     const [isVisible, setIsVisible] = useState(true)
@@ -43,7 +44,8 @@ export default function LoginMain(props){
     }
 
     const menuLoad = () => {
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/api/menu";
+        const url = process.env.REACT_APP_SERVER_HOST + MENU_URL;
+
         const pauth2 = cookies.get('pauth')
         axios.defaults.headers.common['Authorization'] = `Bearer ${pauth2}`
 
@@ -87,8 +89,7 @@ export default function LoginMain(props){
         const paramId = fieldValue['id'];
         const paramPassword = fieldValue['password']
 
-        const url = "https://i-dev-piboapi.amorepacific.com/pibo/login";
-
+        const url = process.env.REACT_APP_SERVER_HOST + LOGIN_URL;
         axios({
             method: 'post',
             url: url,
