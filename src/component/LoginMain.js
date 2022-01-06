@@ -90,6 +90,7 @@ export default function LoginMain(props){
         const paramPassword = fieldValue['password']
 
         const url = process.env.REACT_APP_SERVER_HOST + LOGIN_URL;
+        alert(url)
         axios({
             method: 'post',
             url: url,

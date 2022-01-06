@@ -1,0 +1,1 @@
+ sudo cp -r ./build_dev /usr/local/opt/nginx/html/build 
