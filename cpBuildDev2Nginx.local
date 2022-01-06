@@ -1,2 +1,0 @@
-sudo rm -rf /usr/local/opt/nginx/html/build
-sudo cp -r ./build_dev /usr/local/opt/nginx/html/build 

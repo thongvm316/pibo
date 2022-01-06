@@ -1,1 +1,0 @@
- sudo cp -r ./build_prd /usr/local/opt/nginx/html/build 
