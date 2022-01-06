@@ -52,8 +52,8 @@ export default function PriceInfo(props){
         },
         {
             title: '결제일자',
-            dataIndex: 'stlmDttm',
-            key: 'stlmDttm',
+            dataIndex: 'stlmDttmStr',
+            key: 'stlmDttmStr',
         },
         {
             title: '주문번호',
@@ -83,38 +83,38 @@ export default function PriceInfo(props){
         },
         {
             title: '옵션가격',
-            dataIndex: 'optnPrdAmt',
-            key: 'optnPrdAmt',
+            dataIndex: 'optnPrdAmtStr',
+            key: 'optnPrdAmtStr',
         },
         {
             title: '총할인액',
-            dataIndex: 'ttOrdPrdDcAmt',
-            key: 'ttOrdPrdDcAmt',
+            dataIndex: 'ttOrdPrdDcAmtStr',
+            key: 'ttOrdPrdDcAmtStr',
         },
         {
             title: '상품별할인금액',
-            dataIndex: 'prdTtDcAmt',
-            key: 'prdTtDcAmt',
+            dataIndex: 'prdTtDcAmtStr',
+            key: 'prdTtDcAmtStr',
         },
         {
             title: '쿠폰등 할인금액',
-            dataIndex: 'cpnAplyDcAmt',
-            key: 'cpnAplyDcAmt',
+            dataIndex: 'cpnAplyDcAmtStr',
+            key: 'cpnAplyDcAmtStr'
         },
         {
             title: '주문별 총주문금액',
-            dataIndex: 'ordPrdAmt',
-            key: 'ordPrdAmt',
+            dataIndex: 'ordPrdAmtStr',
+            key: 'ordPrdAmtStr',
         },
         {
             title: '배송비',
-            dataIndex: 'dlcsAmt',
-            key: 'dlcsAmt',
+            dataIndex: 'dlcsAmtStr',
+            key: 'dlcsAmtStr',
         },
         {
             title: '실구매금액',
-            dataIndex: 'realPurAmt',
-            key: 'realPurAmt',
+            dataIndex: 'realPurAmtStr',
+            key: 'realPurAmtStr',
         },
 
         {
@@ -129,23 +129,23 @@ export default function PriceInfo(props){
         },
         {
             title: '소비자가',
-            dataIndex: 'cnsmAmt',
-            key: 'cnsmAmt',
+            dataIndex: 'cnsmAmtStr',
+            key: 'cnsmAmtStr',
         },
         {
             title: '비중',
-            dataIndex: 'purPrdPrt',
-            key: 'purPrdPrt',
+            dataIndex: 'purPrdPrtStr',
+            key: 'purPrdPrtStr',
         },
         {
             title: '1EA 당 환산',
-            dataIndex: 'prdUtprConvAmt',
-            key: 'prdUtprConvAmt',
+            dataIndex: 'prdUtprConvAmtStr',
+            key: 'prdUtprConvAmtStr',
         },
         {
             title: '할인율',
-            dataIndex: 'dcRt',
-            key: 'dcRt',
+            dataIndex: 'dcRtStr',
+            key: 'dcRtStr',
         },
 
     ];
