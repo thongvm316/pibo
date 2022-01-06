@@ -97,6 +97,7 @@ export default function LoginMain(props){
             config: { withCredentials: true },
 
         }).then(function (response) {
+            alert('test');
             alert(response.data?.message);
             console.log(response);
             if ( response.data?.result === 'S'){
