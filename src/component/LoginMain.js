@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Form, Input,  Modal} from 'antd';
 import '../index-342fc69c.css';
 import axios from "axios";
-
-
 import Checkbox from "antd/es/checkbox/Checkbox";
 import {LOGIN_URL, MENU_URL} from "../config";
 
@@ -81,7 +79,6 @@ export default function LoginMain(props){
             }
             console.log(error.config);
         });
-
     }
 
     const loginOk = () => {
@@ -90,7 +87,6 @@ export default function LoginMain(props){
         const paramPassword = fieldValue['password']
 
         const url = process.env.REACT_APP_SERVER_HOST + LOGIN_URL;
-        alert(url)
         axios({
             method: 'post',
             url: url,
@@ -101,10 +97,8 @@ export default function LoginMain(props){
             config: { withCredentials: true },
 
         }).then(function (response) {
-
             alert(response.data?.message);
             console.log(response);
-
             if ( response.data?.result === 'S'){
                 setIsVisible(false);
                 cookies.set("pauth", response.headers?.pauth);
@@ -113,7 +107,6 @@ export default function LoginMain(props){
             }else{
                 setIsVisible(true);
             }
-            return;
         }).catch(function (error) {
             alert(error.response.data?.message);
 

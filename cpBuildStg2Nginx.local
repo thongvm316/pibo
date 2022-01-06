@@ -1,1 +1,2 @@
+sudo rm -rf /usr/local/opt/nginx/html/build
 sudo cp -r ./build_stg /usr/local/opt/nginx/html/build
