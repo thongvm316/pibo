@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {
     Button, Card,
-    Row,Form, Col, Typography
+    Row, Form, Col, Typography, DatePicker
 } from "antd";
 import {RedoOutlined } from "@ant-design/icons";
 import {  message } from 'antd';
 import axios from "axios";
 import {DBPA_UPLOAD_ORD_DATA, DBPA_UPLOAD_PRD_DATA} from "../config";
+import moment from "moment";
 
 const {  Text } = Typography;
 
@@ -21,6 +22,9 @@ export default function ProductAdjust(props){
 
     const [bmsUploadDisable, setbmsUploadDisable] = useState(false)
     const [bmsFile, setBmsFile] = useState(null)
+    const [bmsDate, setBmsDate] = useState("")
+
+    const dateFormat = 'YYYY-MM-DD';
 
 
     useEffect(() => {
@@ -32,6 +36,7 @@ export default function ProductAdjust(props){
             form_prod:'',
             form_price:0,
     });
+        setBmsDate(getToday());
     }, []);
 
     const layout = {
@@ -110,8 +115,8 @@ export default function ProductAdjust(props){
         // formData.append()
         console.log(bmsFile);
         formData.append("bmsPrdFile", bmsFile);
+        formData.append("ordDate", bmsDate);
 
-        console.log(formData)
         const url = process.env.REACT_APP_SERVER_HOST
             + DBPA_UPLOAD_PRD_DATA;
 
@@ -165,7 +170,6 @@ export default function ProductAdjust(props){
         formData.append("kakaoOrdFile", kakaoFile);
         formData.append("naverOrdFile", naverFile);
 
-        console.log(formData)
         const url = process.env.REACT_APP_SERVER_HOST
             + DBPA_UPLOAD_ORD_DATA;
 
@@ -230,6 +234,18 @@ export default function ProductAdjust(props){
         },
     };
 
+    function getToDay(){
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth() +1;
+        const day = date.getDate();
+        const dateStr = year +
+            ( (month > 9)? "":"0") + month.toString()+
+            ( (day > 9)? "": "0") + day.toString();
+        return dateStr;
+    }
+
+
     const handleBmsFileInput = (e) =>{
         setBmsFile(e.target.files[0])
     }
@@ -240,6 +256,12 @@ export default function ProductAdjust(props){
     const handleKakaoFileInput = (e) =>{
         setKakaoFile(e.target.files[0]);
     }
+
+    const onBmsDateChange = (dates, dateString) => {
+        setBmsDate(dateString);
+        alert(dateString);
+    }
+
 
     return (
     <>
@@ -255,6 +277,15 @@ export default function ProductAdjust(props){
                 {...layout}
                 form={bmsForm}
             >
+                <Row gutter={32}>
+                    <Col span = {6} offset={2}>
+                        <Text level={3}> 날짜 : </Text>
+                    </Col>
+                    <Col span = {6}>
+                        <DatePicker defaultValue={moment(getToday(), dateFormat)} format={dateFormat}
+                        onChange = {onBmsDateChange}/>
+                    </Col>
+                </Row>
                 <Row gutter={32}>
                     <Col span = {6} offset={2}>
                         <Text level={3}>BMS 정보 : </Text>
