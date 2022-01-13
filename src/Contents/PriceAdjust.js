@@ -243,7 +243,7 @@ export default function ProductAdjust(props){
 
     return (
     <>
-        <Card title="BMS 데이 업로드" type = "inner"
+        <Card title="BMS 데이터 업로드" type = "inner"
               actions={[
                   <Button icon={<RedoOutlined />} onClick={() => {bmsInit()}} > 초기화 </Button>,
                   <Button icon={<RedoOutlined />} onClick={() => {bmsSubmitFile()}} disabled={bmsUploadDisable}> 업로드 </Button>,
