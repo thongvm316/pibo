@@ -1,6 +1,8 @@
 export const LOGIN_URL = '/pibo/api/login';
 export const MENU_URL = '/pibo/api/menu';
 export const DOWNLOAD_ORD_PRICE_FILE_URL = '/pibo/dbpa/download/ord-price-file';
+export const DOWNLOAD_ORD_PRICE_PERIOD_FILE_URL = '/pibo/dbpa/download/ord-price-file/period';
+export const DOWNLOAD_UPLOAD_FILE_URL = '/pibo/dbpa/download/upload-file';
 export const ORD_PRICE_RESULT_HISTORY_URL = '/pibo/dbpa/ord-price-result/history';
 export const DBPA_ORD_PRICE_RESULT_URL = '/pibo/dbpa/ord-price-result';
 export const DBPA_UPLOAD_PRD_DATA = '/pibo/dbpa/upload/prd-data';

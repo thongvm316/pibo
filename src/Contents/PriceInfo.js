@@ -14,7 +14,9 @@ import {
     DBPA_ORD_PRICE_RESULT_URL,
     DOWNLOAD_ORD_PRICE_FILE_URL,
     ORD_PRICE_RESULT_HISTORY_URL,
-    ORD_PRICE_RESULT_URL
+    DOWNLOAD_UPLOAD_FILE_URL,
+    DOWNLOAD_ORD_PRICE_PERIOD_FILE_URL
+
 } from "../config";
 
 
@@ -207,9 +209,12 @@ export default function PriceInfo(props){
             render: (text,record) => <>
                 {/*{alert(text)}*/}
                 <Button disabled={!text}
-                        onClick = {() => searchClick(text, record.date, 1)}
+                        onClick = {() => searchClick(text, record.date, 1)} style={{marginRight : "10px"}}
                 > 조회 </Button>
-                <Button disabled={!text} onClick={() => excelDownloadClick(record.date)}>엑셀 다운로드 </Button>
+                <Button disabled={!text} onClick={() => downloadFileClick(record.date, "bms")} style={{marginRight : "10px"}}>BMS</Button>
+                <Button disabled={!text} onClick={() => downloadFileClick(record.date, "naver")} style={{marginRight : "10px"}}>네이버</Button>
+                <Button disabled={!text} onClick={() => downloadFileClick(record.date, "kakao")} style={{marginRight : "10px"}}>카카오</Button>
+                <Button disabled={!text} onClick={() => downloadFileClick(record.date, "price")} style={{marginRight : "10px"}}>가격결과 다운로드 </Button>
             </>,
         },
     ];
@@ -336,10 +341,11 @@ export default function PriceInfo(props){
         setSearchResult(refSearchResult);
     }
 
-    const excelDownloadClick = (date) => {
+    const downloadFileClick = (date, type) => {
         const url = process.env.REACT_APP_SERVER_HOST
-            + DOWNLOAD_ORD_PRICE_FILE_URL
-            + "?date=" + date;
+            + (type == "price" ? DOWNLOAD_ORD_PRICE_FILE_URL : DOWNLOAD_UPLOAD_FILE_URL)
+            + "?date=" + date
+            + "&type=" + type;
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${props.myCookies.get('pauth')}`;
         axios({
@@ -349,7 +355,7 @@ export default function PriceInfo(props){
         }).then(function (response) {
             console.log(response?.data)
             const blob = new Blob([response?.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-            FileSaver.saveAs(blob, `result_${date}.xlsx`);
+            FileSaver.saveAs(blob, `${type}_${date}.xlsx`);
         }).catch(function (error) {
             console.log(error);
             // alert(JSON.stringify(error.response?.data))
@@ -370,6 +376,7 @@ export default function PriceInfo(props){
             }
         });
     }
+
     function onPanelChange(value, mode) {
         console.log(value.format('YYYY-MM-DD'), mode);
     }
@@ -435,6 +442,50 @@ export default function PriceInfo(props){
         });
     }
 
+    const downloadOrdPrdPeriodFile = () => {
+        if (!fromDate){
+            alert("시작 날짜를 넣아주세요.");
+            return;
+        }
+        if (!toDate){
+            alert("종료 날짜를 넣아주세요.");
+            return;
+        }
+        const url = process.env.REACT_APP_SERVER_HOST
+            + DOWNLOAD_ORD_PRICE_PERIOD_FILE_URL
+            + "?startDate=" + fromDate
+            + "&endDate=" + toDate;
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${props.myCookies.get('pauth')}`;
+        axios({
+            method: 'get',
+            url: url,
+            responseType: 'arraybuffer',
+        }).then(function (response) {
+            console.log(response?.data)
+            const blob = new Blob([response?.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+            FileSaver.saveAs(blob, `price_${fromDate}_${toDate}.xlsx`);
+        }).catch(function (error) {
+            console.log(error);
+            // alert(JSON.stringify(error.response?.data))
+            if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+                console.log(error.request);
+                console.log(error)
+            } else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+                console.log('Error', error.message);
+            }
+        });
+    }
+
 
     return (
     <>
@@ -448,8 +499,8 @@ export default function PriceInfo(props){
 
             <Space direction={"horizontal"}>
                 <RangePicker onChange={onRangePickerChange}/>
-            <Button onClick={() => onHistorySearchClick(1) }> 조   회 </Button>
-
+                <Button onClick={() => onHistorySearchClick(1) }> 조   회 </Button>
+                <Button onClick={() => downloadOrdPrdPeriodFile() }> 가격결과 파일 다운로드 </Button>
             </Space>
             <br/><br/>
 
