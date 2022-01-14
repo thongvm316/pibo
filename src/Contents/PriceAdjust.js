@@ -119,7 +119,7 @@ export default function ProductAdjust(props){
         // formData.append()
         console.log(bmsFile);
         formData.append("bmsPrdFile", bmsFile);
-        formData.append("ordDate", bmsDate);
+        formData.append("date", bmsDate);
 
         const url = process.env.REACT_APP_SERVER_HOST
             + DBPA_UPLOAD_PRD_DATA;
@@ -173,7 +173,7 @@ export default function ProductAdjust(props){
         console.log(kakaoFile);
         formData.append("kakaoOrdFile", kakaoFile);
         formData.append("naverOrdFile", naverFile);
-        formData.append("ordDate", ordPrdDate);
+        formData.append("date", ordPrdDate);
 
 
         const url = process.env.REACT_APP_SERVER_HOST
