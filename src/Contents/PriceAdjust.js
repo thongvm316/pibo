@@ -265,12 +265,10 @@ export default function ProductAdjust(props){
 
     const onBmsDateChange = (dates, dateString) => {
         setBmsDate(dateString);
-        alert(dateString);
     }
 
     const onOrdPrdDateChange = (dates, dateString) => {
         setOrdPrdDate(dateString);
-        alert(dateString);
     }
 
 
