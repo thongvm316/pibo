@@ -23,6 +23,7 @@ export default function ProductAdjust(props){
     const [bmsUploadDisable, setbmsUploadDisable] = useState(false)
     const [bmsFile, setBmsFile] = useState(null)
     const [bmsDate, setBmsDate] = useState("")
+    const [ordPrdDate, setOrdPrdDate] = useState("")
 
     const dateFormat = 'YYYY-MM-DD';
 
@@ -36,8 +37,11 @@ export default function ProductAdjust(props){
             form_prod:'',
             form_price:0,
     });
+
         setBmsDate(getToday());
+        setOrdPrdDate(getToday());
     }, []);
+
 
     const layout = {
         labelCol: { span: 4 },
@@ -169,6 +173,8 @@ export default function ProductAdjust(props){
         console.log(kakaoFile);
         formData.append("kakaoOrdFile", kakaoFile);
         formData.append("naverOrdFile", naverFile);
+        formData.append("ordDate", ordPrdDate);
+
 
         const url = process.env.REACT_APP_SERVER_HOST
             + DBPA_UPLOAD_ORD_DATA;
@@ -262,6 +268,11 @@ export default function ProductAdjust(props){
         alert(dateString);
     }
 
+    const onOrdPrdDateChange = (dates, dateString) => {
+        setOrdPrdDate(dateString);
+        alert(dateString);
+    }
+
 
     return (
     <>
@@ -282,7 +293,7 @@ export default function ProductAdjust(props){
                         <Text level={3}> 날짜 : </Text>
                     </Col>
                     <Col span = {6}>
-                        <DatePicker defaultValue={moment(getToday(), dateFormat)} format={dateFormat}
+                        <DatePicker format={dateFormat}
                         onChange = {onBmsDateChange}/>
                     </Col>
                 </Row>
@@ -315,6 +326,15 @@ export default function ProductAdjust(props){
                 form={productForm}
                 // onFinish={onFinish}
             >
+                <Row gutter={32}>
+                    <Col span = {6} offset={2}>
+                        <Text level={3}> 날짜 : </Text>
+                    </Col>
+                    <Col span = {6}>
+                        <DatePicker format={dateFormat}
+                                    onChange = {onOrdPrdDateChange}/>
+                    </Col>
+                </Row>
                 <Row gutter={32}>
                     <Col span = {6} offset={2}>
                         <Text level={3}>네이버 상품정보 : </Text>
