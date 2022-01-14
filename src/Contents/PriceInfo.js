@@ -12,7 +12,7 @@ import FileSaver from 'file-saver';
 import AsyncTable from "./AsyncTable";
 import {
     DBPA_ORD_PRICE_RESULT_URL,
-    DOWNLOAD_ORD_PRICE_RESULT_URL,
+    DOWNLOAD_ORD_PRICE_FILE_URL,
     ORD_PRICE_RESULT_HISTORY_URL,
     ORD_PRICE_RESULT_URL
 } from "../config";
@@ -338,7 +338,7 @@ export default function PriceInfo(props){
 
     const excelDownloadClick = (date) => {
         const url = process.env.REACT_APP_SERVER_HOST
-            + DOWNLOAD_ORD_PRICE_RESULT_URL
+            + DOWNLOAD_ORD_PRICE_FILE_URL
             + "?date=" + date;
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${props.myCookies.get('pauth')}`;
