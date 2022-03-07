@@ -5,6 +5,8 @@ import DailyActivity from '../src/components/dashboard/DailyActivity';
 import ProductPerfomance from '../src/components/dashboard/ProductPerfomance';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import FullLayout from '@/src/layouts/FullLayout';
+import EmptyLayout from '@/src/layouts/EmptyLayout';
 
 export default function Index() {
   const { t } = useTranslation('common');
@@ -25,6 +27,14 @@ export default function Index() {
       </Grid>
     </Grid>
   );
+}
+
+Index.getLayout = function getLayout(page) {
+  return (
+    <FullLayout>
+      <EmptyLayout>{page}</EmptyLayout>
+    </FullLayout>
+  )
 }
 
 export async function getStaticProps({ locale }) {

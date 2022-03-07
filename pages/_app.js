@@ -6,7 +6,6 @@ import CssBaseline from "@mui/material/CssBaseline"
 import { CacheProvider } from "@emotion/react"
 import theme from "../src/theme/theme"
 import createEmotionCache from "src/createEmotionCache"
-import FullLayout from "../src/layouts/FullLayout"
 import "styles/globals.scss"
 import { appWithTranslation } from "next-i18next"
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -14,6 +13,7 @@ const clientSideEmotionCache = createEmotionCache()
 
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const getLayout = Component.getLayout || ((page) => page)
 
   return (
     <CacheProvider value={emotionCache}>
@@ -23,9 +23,7 @@ function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <FullLayout>
-          <Component {...pageProps} />
-        </FullLayout>
+        {getLayout(<Component {...pageProps} />)}
       </ThemeProvider>
     </CacheProvider>
   )
