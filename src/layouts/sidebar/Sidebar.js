@@ -1,6 +1,6 @@
-import React from "react";
-import NextLink from "next/link";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react"
+import NextLink from "next/link"
+import PropTypes from "prop-types"
 import {
   Box,
   Drawer,
@@ -13,72 +13,90 @@ import {
   Collapse,
   ListItemIcon,
   ListItemText,
-} from "@mui/material";
-import FeatherIcon from "feather-icons-react";
-import Logo from "../logo/Logo";
-import Menuitems from "./MenuItems";
-import { useRouter } from "next/router";
+  ListSubheader,
+  ListItemButton,
+} from "@mui/material"
+import FeatherIcon from "feather-icons-react"
+import Logo from "../logo/Logo"
+import Menuitems from "./MenuItems"
+import { useRouter } from "next/router"
+import axiosClient from "@/api-client/axiosClient"
+import { hasChildren } from "./utils"
+
+const SingleLevel = ({ subMenuList, nestedLevel }) => {
+  return (
+    <NextLink href={subMenuList.menuId.toLowerCase()}>
+      <ListItemButton sx={{ pl: nestedLevel }}>
+        <ListItemText primary={subMenuList.menuNm} />
+      </ListItemButton>
+    </NextLink>
+  )
+}
+
+const MultiLevel = ({ subMenuList, nestedLevel }) => {
+  const [open, setOpen] = useState(false)
+
+  const handleClick = () => {
+    setOpen(!open)
+  }
+
+  return (
+    <React.Fragment>
+      <ListItemButton onClick={handleClick} sx={{ pl: nestedLevel }}>
+        <ListItemText primary={subMenuList.menuNm} />
+        {open ? <FeatherIcon icon="chevron-up" /> : <FeatherIcon icon="chevron-down" />}
+      </ListItemButton>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {subMenuList.subMenu.map((subMenu, key) => (
+            <MenuItem key={key} subMenuList={subMenu} nestedLevel={nestedLevel + 2} />
+          ))}
+        </List>
+      </Collapse>
+    </React.Fragment>
+  )
+}
+
+const MenuItem = ({ subMenuList, nestedLevel }) => {
+  const Component = hasChildren(subMenuList) ? MultiLevel : SingleLevel
+  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} />
+}
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true)
+  const [menuList, setMenuList] = React.useState([])
 
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"))
 
   const handleClick = (index) => {
-    if (open === index) {
-      setOpen((prevopen) => !prevopen);
-    } else {
-      setOpen(index);
-    }
-  };
-  let curl = useRouter();
-  const location = curl.pathname;
+    setOpen({ [index]: true })
+  }
+  let curl = useRouter()
+  const location = curl.pathname
+
+  useEffect(() => {
+    const callApi = axiosClient({
+      method: "get",
+      url: "https://i-dev-piboapi.amorepacific.com/pibo/api/menu",
+    })
+
+    callApi.then((response) => setMenuList(response.menuList))
+  }, [])
 
   const SidebarContent = (
-    <Box p={2} height="100%">
+    <Box p={3} height="100%">
       <Logo linkTo="/" title="Back Office" />
       <Box mt={2}>
         <List>
-          {Menuitems.map((item, index) => (
-            <List component="li" disablePadding key={item.title}>
-              <NextLink href={item.href}>
-                <ListItem
-                  onClick={() => handleClick(index)}
-                  button
-                  selected={location === item.href}
-                  sx={{
-                    mb: 1,
-                    ...(location === item.href && {
-                      color: "white",
-                      backgroundColor: (theme) =>
-                        `${theme.palette.primary.main}!important`,
-                    }),
-                  }}
-                >
-                  <ListItemIcon>
-                    <FeatherIcon
-                      style={{
-                        color: `${location === item.href ? "white" : ""} `,
-                      }}
-                      icon={item.icon}
-                      width="20"
-                      height="20"
-                    />
-                  </ListItemIcon>
-
-                  <ListItemText onClick={onSidebarClose}>
-                    {item.title}
-                  </ListItemText>
-                </ListItem>
-              </NextLink>
-            </List>
+          {menuList.map((subMenuList, index) => (
+            <MenuItem key={index} subMenuList={subMenuList} nestedLevel={2} />
           ))}
         </List>
       </Box>
 
       {/* <Buynow /> */}
     </Box>
-  );
+  )
   if (lgUp) {
     return (
       <Drawer
@@ -95,7 +113,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
       >
         {SidebarContent}
       </Drawer>
-    );
+    )
   }
   return (
     <Drawer
@@ -112,13 +130,13 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
     >
       {SidebarContent}
     </Drawer>
-  );
-};
+  )
+}
 
 Sidebar.propTypes = {
   isMobileSidebarOpen: PropTypes.bool,
   onSidebarClose: PropTypes.func,
   isSidebarOpen: PropTypes.bool,
-};
+}
 
-export default Sidebar;
+export default Sidebar
