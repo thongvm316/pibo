@@ -14,16 +14,18 @@ export default function Login() {
   const router = useRouter();
   const [result, setResult] = useState('');
 
-  const { login } = useAuth();
+  const { user, login } = useAuth({
+    revalidateOnMount: false,
+  });
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      username: '',
+      id: '',
       password: '',
     },
   });
 
-  const handleLoginClick = async () => {
+  const handleLoginClick = async (data) => {
     // const loginApi = authApi.loginApi({
     //   id: data.username,
     //   password: data.password,
@@ -31,8 +33,9 @@ export default function Login() {
 
     // loginApi.then((response) => setResult(response.result))
     try {
-      await login();
+      await login(data);
       console.log('redirect to dashboard');
+      // console.log(user || "no data")
     } catch (error) {
       console.log('login failed', error);
     }
@@ -64,12 +67,12 @@ export default function Login() {
           alignItems="center"
         >
           {/* <FeatherIcon icon="log-in" width={"100"} height="100" /> */}
-          <Logo linkTo="/" title="PIBO" />
+          <Logo linkTo="/" src="/static/images/logos/mainlogo.png" />
           <Typography variant="h1">{t('login-to-your-account')}</Typography>
         </Grid>
         <form onSubmit={handleSubmit(handleLoginClick)}>
           <Controller
-            name="username"
+            name="id"
             rules={{ required: 'Please enter username' }}
             control={control}
             render={({ field, fieldState: { error } }) => (
