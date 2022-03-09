@@ -8,7 +8,7 @@ import { useTranslation } from 'next-i18next';
 import FullLayout from '@/src/layouts/FullLayout';
 import EmptyLayout from '@/src/layouts/EmptyLayout';
 
-export default function Index() {
+export default function Home() {
   const { t } = useTranslation('common');
   return (
     <Grid container spacing={0}>
@@ -29,12 +29,8 @@ export default function Index() {
   );
 }
 
-Index.getLayout = function getLayout(page) {
-  return (
-    <FullLayout>
-      <EmptyLayout>{page}</EmptyLayout>
-    </FullLayout>
-  );
+Home.getLayout = function getLayout(page) {
+  return <FullLayout>{page}</FullLayout>;
 };
 
 export async function getStaticProps({ locale }) {
