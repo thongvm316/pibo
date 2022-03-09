@@ -13,6 +13,7 @@ import {
   ListSubheader,
 } from "@mui/material"
 import axiosClient from "@/api-client/axiosClient"
+import userApi from "@/api-client/userApi"
 import Logo from "../logo/Logo"
 import { hasChildren } from "./utils"
 
@@ -70,12 +71,9 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"))
 
   useEffect(() => {
-    const callApi = axiosClient({
-      method: "get",
-      url: "https://i-dev-piboapi.amorepacific.com/pibo/api/menu",
-    })
+    const { menuApi } = userApi
 
-    callApi.then((response) => {
+    menuApi().then((response) => {
       let newMenuList = []
       const PIMSProduct = response.menuList.find((menu) => menu.menuId === "PIMS_PRODUCT")
 
