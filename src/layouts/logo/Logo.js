@@ -31,13 +31,13 @@ const LogoNext = ({ className, withLink, linkTo, title, src }) => {
       {withLink ? (
         <Link href={linkTo}>
           <a>
-            {src && <Image src={src} alt="BO Office" width={20} height={30} />}
+            {src && <Image src={src} alt="BO Office" width={200} height={100} />}
             {title && <h3>{title}</h3>}
           </a>
         </Link>
       ) : (
         <Fragment>
-          {src && <Image src={src} alt="BO Office" width={20} height={30} />}
+          {src && <Image src={src} alt="BO Office" width={200} height={100} />}
           {title && <h3>{title}</h3>}
         </Fragment>
       )}

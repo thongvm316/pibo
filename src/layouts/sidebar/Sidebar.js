@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
-import NextLink from "next/link"
-import PropTypes from "prop-types"
-import FeatherIcon from "feather-icons-react"
+import React, { useEffect, useState } from 'react';
+import NextLink from 'next/link';
+import PropTypes from 'prop-types';
+import FeatherIcon from 'feather-icons-react';
 import {
   Box,
   Drawer,
@@ -11,11 +11,11 @@ import {
   ListItemText,
   ListItemButton,
   ListSubheader,
-} from "@mui/material"
-import axiosClient from "@/api-client/axiosClient"
-import userApi from "@/api-client/userApi"
-import Logo from "../logo/Logo"
-import { hasChildren } from "./utils"
+} from '@mui/material';
+import axiosClient from '@/api-client/axiosClient';
+import userApi from '@/api-client/userApi';
+import Logo from '../logo/Logo';
+import { hasChildren } from './utils';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
   return (
@@ -24,15 +24,15 @@ const SingleLevel = ({ subMenuList, nestedLevel }) => {
         <ListItemText primary={subMenuList.menuNm} />
       </ListItemButton>
     </NextLink>
-  )
-}
+  );
+};
 
 const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   return (
     <List
@@ -56,42 +56,42 @@ const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
         </List>
       </Collapse>
     </List>
-  )
-}
+  );
+};
 
 const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
-  const Component = hasChildren(subMenuList) ? MultiLevel : SingleLevel
+  const Component = hasChildren(subMenuList) ? MultiLevel : SingleLevel;
 
-  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} subHeader={subHeader} />
-}
+  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} subHeader={subHeader} />;
+};
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
-  const [menuList, setMenuList] = React.useState([])
+  const [menuList, setMenuList] = React.useState([]);
 
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"))
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
-    const { menuApi } = userApi
+    const { menuApi } = userApi;
 
     menuApi().then((response) => {
-      let newMenuList = []
-      const PIMSProduct = response.menuList.find((menu) => menu.menuId === "PIMS_PRODUCT")
+      let newMenuList = [];
+      const PIMSProduct = response.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
 
       if (PIMSProduct) {
-        const PIMSProductMenu = PIMSProduct.subMenu
-        newMenuList = newMenuList.concat(PIMSProductMenu)
+        const PIMSProductMenu = PIMSProduct.subMenu;
+        newMenuList = newMenuList.concat(PIMSProductMenu);
       }
 
-      const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== "PIMS_PRODUCT")
-      newMenuList = newMenuList.concat(notPIMSProductList)
+      const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== 'PIMS_PRODUCT');
+      newMenuList = newMenuList.concat(notPIMSProductList);
 
-      setMenuList(newMenuList)
-    })
-  }, [])
+      setMenuList(newMenuList);
+    });
+  }, []);
 
   const SidebarContent = (
     <Box p={2} height="100%">
-      <Logo linkTo="/" title="PIBO" />
+      <Logo linkTo="/" src="/static/images/logos/mainlogo.png" />
       <Box>
         <List>
           {menuList.map((subMenuList, index) => (
@@ -100,7 +100,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
         </List>
       </Box>
     </Box>
-  )
+  );
 
   if (lgUp) {
     return (
@@ -110,15 +110,15 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
         variant="persistent"
         PaperProps={{
           sx: {
-            width: "265px",
-            border: "0 !important",
-            boxShadow: "0px 7px 30px 0px rgb(113 122 131 / 11%)",
+            width: '265px',
+            border: '0 !important',
+            boxShadow: '0px 7px 30px 0px rgb(113 122 131 / 11%)',
           },
         }}
       >
         {SidebarContent}
       </Drawer>
-    )
+    );
   }
   return (
     <Drawer
@@ -127,21 +127,21 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
       onClose={onSidebarClose}
       PaperProps={{
         sx: {
-          width: "265px",
-          border: "0 !important",
+          width: '265px',
+          border: '0 !important',
         },
       }}
       variant="temporary"
     >
       {SidebarContent}
     </Drawer>
-  )
-}
+  );
+};
 
 Sidebar.propTypes = {
   isMobileSidebarOpen: PropTypes.bool,
   onSidebarClose: PropTypes.func,
   isSidebarOpen: PropTypes.bool,
-}
+};
 
-export default Sidebar
+export default Sidebar;

@@ -10,6 +10,11 @@ const authApi = {
     const url = "/pibo/api/logout"
     return axiosClient.get(url)
   },
+
+  getProfile: () => {
+    const url = '/pibo/api/users'
+    return axiosClient.get(url)
+  }
 }
 
 export default authApi
