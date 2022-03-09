@@ -55,7 +55,7 @@ export default function Login() {
           alignItems="center"
         >
           {/* <FeatherIcon icon="log-in" width={"100"} height="100" /> */}
-          <Logo linkTo="/" title="BackOffice" />
+          <Logo linkTo="/" title="PIBO" />
           <Typography variant="h1">{t("login-to-your-account")}</Typography>
         </Grid>
         <form onSubmit={handleSubmit(handleLoginClick)}>

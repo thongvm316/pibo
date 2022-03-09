@@ -91,7 +91,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
 
   const SidebarContent = (
     <Box p={2} height="100%">
-      <Logo linkTo="/" title="Back Office" />
+      <Logo linkTo="/" title="PIBO" />
       <Box>
         <List>
           {menuList.map((subMenuList, index) => (
