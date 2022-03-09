@@ -1,5 +1,6 @@
 import { Button, Grid, Icon, Paper, TextField, Typography } from "@mui/material"
 import axiosClient from "@/api-client/axiosClient"
+import authApi from "@/api-client/authApi"
 import React, { useEffect, useState } from "react"
 import FeatherIcon from "feather-icons-react"
 import { Controller, useForm } from "react-hook-form"
@@ -7,7 +8,6 @@ import { useRouter } from "next/router"
 
 export default function Login() {
   const router = useRouter()
-
   const [result, setResult] = useState("")
 
   const { control, handleSubmit } = useForm({
@@ -17,6 +17,21 @@ export default function Login() {
     },
   })
 
+  const handleLoginClick = (data) => {
+    const loginApi = authApi.loginApi({
+      id: data.username,
+      password: data.password,
+    })
+
+    loginApi.then((response) => setResult(response.result))
+  }
+
+  useEffect(() => {
+    if (result && result === "S") {
+      router.push("/")
+    }
+  }, [result])
+
   const paperStyle = { padding: 20, width: 400 }
   const marginStyle = { margin: "20px 0" }
   const gridStyle = {
@@ -25,25 +40,6 @@ export default function Login() {
     alignItems: "center",
     height: "100%",
   }
-
-  const handleLoginClick = (data) => {
-    const callApi = axiosClient({
-      method: "post",
-      url: "https://i-dev-piboapi.amorepacific.com/pibo/api/login",
-      data: {
-        id: data.username,
-        password: data.password,
-      },
-    })
-
-    callApi.then((response) => setResult(response.result))
-  }
-
-  useEffect(() => {
-    if (result && result === "S") {
-      router.push("/")
-    }
-  }, [result])
 
   return (
     <Grid container item style={gridStyle}>

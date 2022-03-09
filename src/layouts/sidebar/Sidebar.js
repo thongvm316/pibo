@@ -1,26 +1,20 @@
 import React, { useEffect, useState } from "react"
 import NextLink from "next/link"
 import PropTypes from "prop-types"
+import FeatherIcon from "feather-icons-react"
 import {
   Box,
   Drawer,
   useMediaQuery,
   List,
-  Link,
-  Button,
-  Typography,
-  ListItem,
   Collapse,
-  ListItemIcon,
   ListItemText,
-  ListSubheader,
   ListItemButton,
+  ListSubheader,
 } from "@mui/material"
-import FeatherIcon from "feather-icons-react"
-import Logo from "../logo/Logo"
-import Menuitems from "./MenuItems"
-import { useRouter } from "next/router"
 import axiosClient from "@/api-client/axiosClient"
+import userApi from "@/api-client/userApi"
+import Logo from "../logo/Logo"
 import { hasChildren } from "./utils"
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
@@ -33,7 +27,7 @@ const SingleLevel = ({ subMenuList, nestedLevel }) => {
   )
 }
 
-const MultiLevel = ({ subMenuList, nestedLevel }) => {
+const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
@@ -41,7 +35,15 @@ const MultiLevel = ({ subMenuList, nestedLevel }) => {
   }
 
   return (
-    <React.Fragment>
+    <List
+      subheader={
+        subHeader && (
+          <ListSubheader component="div" color="primary">
+            {subMenuList.menuId}
+          </ListSubheader>
+        )
+      }
+    >
       <ListItemButton onClick={handleClick} sx={{ pl: nestedLevel }}>
         <ListItemText primary={subMenuList.menuNm} />
         {open ? <FeatherIcon icon="chevron-up" /> : <FeatherIcon icon="chevron-down" />}
@@ -53,50 +55,53 @@ const MultiLevel = ({ subMenuList, nestedLevel }) => {
           ))}
         </List>
       </Collapse>
-    </React.Fragment>
+    </List>
   )
 }
 
-const MenuItem = ({ subMenuList, nestedLevel }) => {
+const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
   const Component = hasChildren(subMenuList) ? MultiLevel : SingleLevel
-  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} />
+
+  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} subHeader={subHeader} />
 }
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
-  const [open, setOpen] = React.useState(true)
   const [menuList, setMenuList] = React.useState([])
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"))
 
-  const handleClick = (index) => {
-    setOpen({ [index]: true })
-  }
-  let curl = useRouter()
-  const location = curl.pathname
-
   useEffect(() => {
-    const callApi = axiosClient({
-      method: "get",
-      url: "https://i-dev-piboapi.amorepacific.com/pibo/api/menu",
-    })
+    const { menuApi } = userApi
 
-    callApi.then((response) => setMenuList(response.menuList))
+    menuApi().then((response) => {
+      let newMenuList = []
+      const PIMSProduct = response.menuList.find((menu) => menu.menuId === "PIMS_PRODUCT")
+
+      if (PIMSProduct) {
+        const PIMSProductMenu = PIMSProduct.subMenu
+        newMenuList = newMenuList.concat(PIMSProductMenu)
+      }
+
+      const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== "PIMS_PRODUCT")
+      newMenuList = newMenuList.concat(notPIMSProductList)
+
+      setMenuList(newMenuList)
+    })
   }, [])
 
   const SidebarContent = (
-    <Box p={3} height="100%">
+    <Box p={2} height="100%">
       <Logo linkTo="/" title="Back Office" />
-      <Box mt={2}>
+      <Box>
         <List>
           {menuList.map((subMenuList, index) => (
-            <MenuItem key={index} subMenuList={subMenuList} nestedLevel={2} />
+            <MenuItem key={index} subMenuList={subMenuList} nestedLevel={2} subHeader={false} />
           ))}
         </List>
       </Box>
-
-      {/* <Buynow /> */}
     </Box>
   )
+
   if (lgUp) {
     return (
       <Drawer
