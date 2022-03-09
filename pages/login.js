@@ -35,17 +35,16 @@ export default function Login() {
     try {
       await login(data);
       console.log('redirect to dashboard');
-      // console.log(user || "no data")
     } catch (error) {
       console.log('login failed', error);
     }
   };
 
-  useEffect(() => {
-    if (result && result === 'S') {
-      router.push('/');
-    }
-  }, [result]);
+  // useEffect(() => {
+  //   if (result && result === 'S') {
+  //     router.push('/');
+  //   }
+  // }, [result]);
 
   const paperStyle = { padding: 20, width: 400 };
   const marginStyle = { margin: '20px 0' };
@@ -105,6 +104,7 @@ export default function Login() {
           <Button type="submit" variant="contained" style={marginStyle} fullWidth>
             {t('login')}
           </Button>
+          <p>User: {JSON.stringify(user || {}, null, 4)}</p>
         </form>
       </Paper>
     </Grid>

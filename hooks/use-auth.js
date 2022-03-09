@@ -13,6 +13,8 @@ export function useAuth() {
     revalidateOnFocus: false, // no fetch profile when change tab
   });
 
+  const firstTimeLoading = user === undefined && error === undefined;
+
   async function login(data) {
     await authApi.loginApi({
       id: data.id,
@@ -31,5 +33,6 @@ export function useAuth() {
     error,
     login,
     logout,
+    firstTimeLoading,
   };
 }
