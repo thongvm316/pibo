@@ -34,13 +34,13 @@ Index.getLayout = function getLayout(page) {
     <FullLayout>
       <EmptyLayout>{page}</EmptyLayout>
     </FullLayout>
-  )
-}
+  );
+};
 
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, 'common')),
       // Will be passed to the page component as props
     },
   };
