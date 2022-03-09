@@ -37,11 +37,11 @@ Index.getLayout = function getLayout(page) {
   )
 }
 
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ["common"])),
       // Will be passed to the page component as props
     },
-  };
+  }
 }

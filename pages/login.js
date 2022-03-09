@@ -4,8 +4,11 @@ import React, { useEffect, useState } from "react"
 import FeatherIcon from "feather-icons-react"
 import { Controller, useForm } from "react-hook-form"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
+import Logo from "src/layouts/logo/Logo"
 
 export default function Login() {
+  const { t } = useTranslation("common")
   const router = useRouter()
 
   const [result, setResult] = useState("")
@@ -48,9 +51,16 @@ export default function Login() {
   return (
     <Grid container item style={gridStyle}>
       <Paper elevation={10} style={paperStyle}>
-        <Grid textAlign="center">
-          <FeatherIcon icon="log-in" width={"100"} height="100" />
-          <Typography variant="h1">Login to your account</Typography>
+        <Grid
+          container
+          direction="column"
+          textAlign="center"
+          justifyItems="center"
+          alignItems="center"
+        >
+          {/* <FeatherIcon icon="log-in" width={"100"} height="100" /> */}
+          <Logo linkTo="/" title="BackOffice" />
+          <Typography variant="h1">{t("login-to-your-account")}</Typography>
         </Grid>
         <form onSubmit={handleSubmit(handleLoginClick)}>
           <Controller
@@ -85,7 +95,7 @@ export default function Login() {
             )}
           />
           <Button type="submit" variant="contained" style={marginStyle} fullWidth>
-            Login
+            {t("login")}
           </Button>
         </form>
       </Paper>
