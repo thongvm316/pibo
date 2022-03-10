@@ -16,11 +16,13 @@ export function useAuth() {
   const firstTimeLoading = user === undefined && error === undefined;
 
   async function login(data) {
-    await authApi.loginApi({
+    const login = await authApi.loginApi({
       id: data.id,
       password: data.password,
     });
     await mutate();
+
+    return login;
   }
   async function logout() {
     await authApi.logoutApi();

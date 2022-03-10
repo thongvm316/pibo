@@ -1,23 +1,22 @@
-import { Button, Grid, Icon, Paper, TextField, Typography } from '@mui/material';
-import axiosClient from '@/api-client/axiosClient';
-import authApi from '@/api-client/authApi';
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import { useAuth } from '@/hooks/use-auth';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import userApi from '@/api-client/userApi';
 import React, { useEffect, useState } from 'react';
-import FeatherIcon from 'feather-icons-react';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import Logo from 'src/layouts/logo/Logo';
-import { useAuth } from '@/hooks/use-auth';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Login() {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const [result, setResult] = useState('');
+  const { login } = useAuth({ revalidateOnMount: false });
+  const { menuApi } = userApi;
 
-  const { user, login } = useAuth({
-    revalidateOnMount: false,
-  });
+  const [loginInfo, setLoginInfo] = useState({});
+  const [_, setMenuList] = useLocalStorage('menuList', []);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -27,26 +26,29 @@ export default function Login() {
   });
 
   const handleLoginClick = async (data) => {
-    // const loginApi = authApi.loginApi({
-    //   id: data.username,
-    //   password: data.password,
-    // })
-
-    // loginApi.then((response) => setResult(response.result))
     try {
-      await login(data);
-      console.log('redirect to dashboard');
+      const loginApi = await login(data);
+      setLoginInfo(loginApi);
     } catch (error) {
-      console.log('login failed', error);
+      alert(error);
     }
   };
 
-  // useEffect(() => {
-  //   if (result && result === 'S') {
-  //     router.push('/');
-  //   }
-  // }, [result]);
+  useEffect(async () => {
+    if (loginInfo.result) {
+      switch (loginInfo.result) {
+        case 'S':
+          const menu = await menuApi();
+          setMenuList(menu);
+          router.push('/');
+          break;
 
+        default:
+          alert(loginInfo.message);
+          break;
+      }
+    }
+  }, [loginInfo]);
 
   const paperStyle = { padding: 20, width: 400 };
   const marginStyle = { margin: '20px 0' };
@@ -67,7 +69,6 @@ export default function Login() {
           justifyItems="center"
           alignItems="center"
         >
-          {/* <FeatherIcon icon="log-in" width={"100"} height="100" /> */}
           <Logo linkTo="/" src="/static/images/logos/logo.png" title="PIBO" />
           <Typography variant="h1">{t('login-to-your-account')}</Typography>
         </Grid>
