@@ -1,7 +1,7 @@
-import React from "react";
-import FeatherIcon from "feather-icons-react";
-import Image from "next/image";
-import userimg from "../../../assets/images/users/user2.jpg";
+import React from 'react';
+import FeatherIcon from 'feather-icons-react';
+import Image from 'next/image';
+import userimg from '../../../assets/images/users/user2.jpg';
 import {
   Box,
   Menu,
@@ -12,8 +12,11 @@ import {
   ListItemText,
   Button,
   Divider,
-} from "@mui/material";
+} from '@mui/material';
+import { useAuth } from '@/hooks/use-auth';
+
 const ProfileDD = () => {
+  const { logout } = useAuth();
   const [anchorEl4, setAnchorEl4] = React.useState(null);
 
   const handleClick4 = (event) => {
@@ -23,6 +26,15 @@ const ProfileDD = () => {
   const handleClose4 = () => {
     setAnchorEl4(null);
   };
+
+  const handleLogoutClick = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <>
       <Button
@@ -33,28 +45,17 @@ const ProfileDD = () => {
         onClick={handleClick4}
       >
         <Box display="flex" alignItems="center">
-          <Image
-            src={userimg}
-            alt={userimg}
-            width="30"
-            height="30"
-            className="roundedCircle"
-          />
+          <Image src={userimg} alt={userimg} width="30" height="30" className="roundedCircle" />
           <Box
             sx={{
               display: {
-                xs: "none",
-                sm: "flex",
+                xs: 'none',
+                sm: 'flex',
               },
-              alignItems: "center",
+              alignItems: 'center',
             }}
           >
-            <Typography
-              color="textSecondary"
-              variant="h5"
-              fontWeight="400"
-              sx={{ ml: 1 }}
-            >
+            <Typography color="textSecondary" variant="h5" fontWeight="400" sx={{ ml: 1 }}>
               Hi,
             </Typography>
             <Typography
@@ -77,18 +78,14 @@ const ProfileDD = () => {
         open={Boolean(anchorEl4)}
         onClose={handleClose4}
         sx={{
-          "& .MuiMenu-paper": {
-            width: "385px",
+          '& .MuiMenu-paper': {
+            width: '385px',
           },
         }}
       >
         <Box>
           <Box p={2} pt={0}>
-            <List
-              component="nav"
-              aria-label="secondary mailbox folder"
-              onClick={handleClose4}
-            >
+            <List component="nav" aria-label="secondary mailbox folder" onClick={handleClose4}>
               <ListItemButton>
                 <ListItemText primary="Edit Profile" />
               </ListItemButton>
@@ -105,11 +102,9 @@ const ProfileDD = () => {
           </Box>
           <Divider />
           <Box p={2}>
-            <Link to="/">
-              <Button fullWidth variant="contained" color="primary">
-                Logout
-              </Button>
-            </Link>
+            <Button fullWidth variant="contained" color="primary" onClick={handleLogoutClick}>
+              Logout
+            </Button>
           </Box>
         </Box>
       </Menu>
