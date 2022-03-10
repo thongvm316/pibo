@@ -10,16 +10,26 @@ export default function Auth({ children }) {
 
   useEffect(() => {
     if (!firstTimeLoading && !user?.userList) {
-      router.push('/login');
+      // router.push('/login');
     }
   }, [router, user, firstTimeLoading]);
 
-  if (!user?.userList)
+  if (!user?.userList) {
+    const boxStyle = {
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      position: 'absolute',
+      justifyContent: 'center',
+      alignItems: 'center',
+    };
+
     return (
-      <Box>
+      <Box sx={boxStyle}>
         <CircularProgress />
       </Box>
     );
+  }
 
   return <div>{children}</div>;
 }
