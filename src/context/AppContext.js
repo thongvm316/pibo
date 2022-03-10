@@ -1,59 +1,59 @@
 // src/context/state.js
-import { useReducer, createContext, useContext } from "react"
+import { useReducer, createContext, useContext } from 'react';
 
-const AppContext = createContext()
+const AppContext = createContext();
 
 const initialState = {
   tabLists: [
     {
-      text: "Home",
-      linkTo: "/layout/home",
+      text: 'Home',
+      linkTo: '/alert',
     },
     {
-      text: "AboutUs",
-      linkTo: "/layout/about-us",
+      text: 'AboutUs',
+      linkTo: '/about',
     },
     {
-      text: "Causes",
-      linkTo: "/layout/causes",
+      text: 'Causes',
+      linkTo: '/pagination/',
     },
   ],
   selectTab: null,
-}
+};
 
 const reducer = (state, action) => {
-  const { type, payload } = action
+  const { type, payload } = action;
   switch (type) {
-    case "addTab":
+    case 'addTab':
       return {
         ...state,
         tabLists: state.tabLists.concat(payload),
-      }
-    case "deleteTab":
+      };
+    case 'deleteTab':
       return {
         ...state,
         tabLists: state.tabLists.filter((item) => item.text !== payload),
-      }
-    case "changeTab":
+      };
+    case 'changeTab':
       return {
         ...state,
         selectTab: payload,
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
 export function AppWrapper({ children }) {
-  const [tabLists, dispatch] = useReducer(reducer, initialState)
+  const [tabLists, dispatch] = useReducer(reducer, initialState);
 
   return (
     <AppContext.Provider value={{ state: tabLists, dispatch: dispatch }}>
       {children}
     </AppContext.Provider>
-  )
+  );
 }
 
 export function useAppContext() {
-  return useContext(AppContext)
+  return useContext(AppContext);
 }

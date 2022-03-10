@@ -1,18 +1,13 @@
-import React from "react"
-import FeatherIcon from "feather-icons-react"
-import { AppBar, Box, IconButton, Toolbar } from "@mui/material"
-import PropTypes from "prop-types"
+import React from 'react';
+import FeatherIcon from 'feather-icons-react';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
+import PropTypes from 'prop-types';
 // Dropdown Component
-import ProfileDD from "./ProfileDD"
-import MultiTab from "../tab/Tab"
-import { useAppContext } from "@/src/context/AppContext"
+import ProfileDD from './ProfileDD';
+import MultiTab from '../tab/Tab';
+import { useAppContext } from '@/src/context/AppContext';
 
 const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
-  const {
-    state: { tabLists, selectTab },
-    dispatch,
-  } = useAppContext()
-
   return (
     <AppBar sx={sx} position={position} elevation={0} className={customClass}>
       <Toolbar>
@@ -23,8 +18,8 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
           onClick={toggleMobileSidebar}
           sx={{
             display: {
-              lg: "none",
-              xs: "flex",
+              lg: 'none',
+              xs: 'flex',
             },
           }}
         >
@@ -38,8 +33,8 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
         <ProfileDD />
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
 Header.propTypes = {
   sx: PropTypes.object,
@@ -47,6 +42,6 @@ Header.propTypes = {
   position: PropTypes.string,
   toggleSidebar: PropTypes.func,
   toggleMobileSidebar: PropTypes.func,
-}
+};
 
-export default Header
+export default Header;
