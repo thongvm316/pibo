@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import Logo from 'src/layouts/logo/Logo';
 import { useAuth } from '@/hooks/use-auth';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Login() {
   const { t } = useTranslation('common');
@@ -46,6 +47,7 @@ export default function Login() {
   //   }
   // }, [result]);
 
+
   const paperStyle = { padding: 20, width: 400 };
   const marginStyle = { margin: '20px 0' };
   const gridStyle = {
@@ -66,7 +68,7 @@ export default function Login() {
           alignItems="center"
         >
           {/* <FeatherIcon icon="log-in" width={"100"} height="100" /> */}
-          <Logo linkTo="/" src="/static/images/logos/mainlogo.png" />
+          <Logo linkTo="/" src="/static/images/logos/logo.png" title="PIBO" />
           <Typography variant="h1">{t('login-to-your-account')}</Typography>
         </Grid>
         <form onSubmit={handleSubmit(handleLoginClick)}>
@@ -104,9 +106,17 @@ export default function Login() {
           <Button type="submit" variant="contained" style={marginStyle} fullWidth>
             {t('login')}
           </Button>
-          <p>User: {JSON.stringify(user || {}, null, 4)}</p>
         </form>
       </Paper>
     </Grid>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, 'common')),
+      // Will be passed to the page component as props
+    },
+  };
 }
