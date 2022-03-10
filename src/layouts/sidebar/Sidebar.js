@@ -16,6 +16,7 @@ import axiosClient from '@/api-client/axiosClient';
 import userApi from '@/api-client/userApi';
 import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
+import useLocalStorage from '@/hooks/useLocalStorage';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
   return (
@@ -66,12 +67,14 @@ const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
 };
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
+  const [storageMenuList] = useLocalStorage('menuList');
   const [menuList, setMenuList] = React.useState([]);
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
-    const { menuApi } = userApi;
+    let newMenuList = [];
+    const PIMSProduct = storageMenuList.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
 
     // menuApi().then((response) => {
     //   let newMenuList = []
@@ -93,7 +96,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
 
   const SidebarContent = (
     <Box p={2} height="100%">
-      <Logo linkTo="/" src="/static/images/logos/mainlogo.png" />
+      <Logo linkTo="/" src="/static/images/logos/logo.png" title="PIBO" />
       <Box>
         <List>
           {menuList.map((subMenuList, index) => (

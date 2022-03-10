@@ -1,7 +1,8 @@
-import React from "react";
-import FeatherIcon from "feather-icons-react";
-import Image from "next/image";
-import userimg from "../../../assets/images/users/user2.jpg";
+import React from 'react';
+import FeatherIcon from 'feather-icons-react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import userimg from '../../../assets/images/users/user2.jpg';
 import {
   Box,
   Menu,
@@ -12,9 +13,13 @@ import {
   ListItemText,
   Button,
   Divider,
-} from "@mui/material";
+} from '@mui/material';
+import { useAuth } from '@/hooks/use-auth';
+
 const ProfileDD = () => {
   const [anchorEl4, setAnchorEl4] = React.useState(null);
+  const { user, logout } = useAuth();
+  const router = useRouter();
 
   const handleClick4 = (event) => {
     setAnchorEl4(event.currentTarget);
@@ -23,6 +28,17 @@ const ProfileDD = () => {
   const handleClose4 = () => {
     setAnchorEl4(null);
   };
+
+  console.log(user);
+  const handleLogOut = async() => {
+    try {
+      await logout();
+      router.push('/login');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Button
@@ -33,28 +49,17 @@ const ProfileDD = () => {
         onClick={handleClick4}
       >
         <Box display="flex" alignItems="center">
-          <Image
-            src={userimg}
-            alt={userimg}
-            width="30"
-            height="30"
-            className="roundedCircle"
-          />
+          <Image src={userimg} alt={userimg} width="30" height="30" className="roundedCircle" />
           <Box
             sx={{
               display: {
-                xs: "none",
-                sm: "flex",
+                xs: 'none',
+                sm: 'flex',
               },
-              alignItems: "center",
+              alignItems: 'center',
             }}
           >
-            <Typography
-              color="textSecondary"
-              variant="h5"
-              fontWeight="400"
-              sx={{ ml: 1 }}
-            >
+            <Typography color="textSecondary" variant="h5" fontWeight="400" sx={{ ml: 1 }}>
               Hi,
             </Typography>
             <Typography
@@ -64,7 +69,7 @@ const ProfileDD = () => {
                 ml: 1,
               }}
             >
-              Julia
+              Admin
             </Typography>
             <FeatherIcon icon="chevron-down" width="20" height="20" />
           </Box>
@@ -77,18 +82,14 @@ const ProfileDD = () => {
         open={Boolean(anchorEl4)}
         onClose={handleClose4}
         sx={{
-          "& .MuiMenu-paper": {
-            width: "385px",
+          '& .MuiMenu-paper': {
+            width: '385px',
           },
         }}
       >
         <Box>
           <Box p={2} pt={0}>
-            <List
-              component="nav"
-              aria-label="secondary mailbox folder"
-              onClick={handleClose4}
-            >
+            <List component="nav" aria-label="secondary mailbox folder" onClick={handleClose4}>
               <ListItemButton>
                 <ListItemText primary="Edit Profile" />
               </ListItemButton>
@@ -106,7 +107,7 @@ const ProfileDD = () => {
           <Divider />
           <Box p={2}>
             <Link to="/">
-              <Button fullWidth variant="contained" color="primary">
+              <Button fullWidth variant="contained" color="primary" onClick={handleLogOut}>
                 Logout
               </Button>
             </Link>
