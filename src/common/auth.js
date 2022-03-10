@@ -2,6 +2,7 @@ import { useAuth } from '@/hooks/use-auth';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CircularProgress } from '@mui/material';
+import { Box } from '@mui/system';
 
 export default function Auth({ children }) {
   const router = useRouter();
