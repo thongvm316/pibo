@@ -1,20 +1,16 @@
-import React from "react";
-import {
-  experimentalStyled,
-  useMediaQuery,
-  Container,
-  Box,
-} from "@mui/material";
-import Header from "./header/Header";
-import Sidebar from "./sidebar/Sidebar";
-import Footer from "./footer/Footer";
+import React from "react"
+import { experimentalStyled, useMediaQuery, Container, Box } from "@mui/material"
+import Header from "./header/Header"
+import Sidebar from "./sidebar/Sidebar"
+import Footer from "./footer/Footer"
+import { AppWrapper } from "@/src/context/AppContext"
 
 const MainWrapper = experimentalStyled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
   overflow: "hidden",
   width: "100%",
-}));
+}))
 
 const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
@@ -28,40 +24,42 @@ const PageWrapper = experimentalStyled("div")(({ theme }) => ({
   [theme.breakpoints.down("lg")]: {
     paddingTop: "64px",
   },
-}));
+}))
 
 const FullLayout = ({ children }) => {
-  const [isSidebarOpen, setSidebarOpen] = React.useState(true);
-  const [isMobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const [isSidebarOpen, setSidebarOpen] = React.useState(true)
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = React.useState(false)
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"))
   return (
-    <MainWrapper>
-      <Header
-        sx={{
-          paddingLeft: isSidebarOpen && lgUp ? "265px" : "",
-          backgroundColor: "#fbfbfb",
-        }}
-        toggleMobileSidebar={() => setMobileSidebarOpen(true)}
-      />
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        isMobileSidebarOpen={isMobileSidebarOpen}
-        onSidebarClose={() => setMobileSidebarOpen(false)}
-      />
-      <PageWrapper>
-        <Container
-          maxWidth={false}
+    <AppWrapper>
+      <MainWrapper>
+        <Header
           sx={{
-            paddingTop: "20px",
-            paddingLeft: isSidebarOpen && lgUp ? "280px!important" : "",
+            paddingLeft: isSidebarOpen && lgUp ? "265px" : "",
+            backgroundColor: "#fbfbfb",
           }}
-        >
-          <Box sx={{ minHeight: "calc(100vh - 170px)" }}>{children}</Box>
-          <Footer />
-        </Container>
-      </PageWrapper>
-    </MainWrapper>
-  );
-};
+          toggleMobileSidebar={() => setMobileSidebarOpen(true)}
+        />
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onSidebarClose={() => setMobileSidebarOpen(false)}
+        />
+        <PageWrapper>
+          <Container
+            maxWidth={false}
+            sx={{
+              paddingTop: "20px",
+              paddingLeft: isSidebarOpen && lgUp ? "280px!important" : "",
+            }}
+          >
+            <Box sx={{ minHeight: "calc(100vh - 170px)" }}>{children}</Box>
+            <Footer />
+          </Container>
+        </PageWrapper>
+      </MainWrapper>
+    </AppWrapper>
+  )
+}
 
-export default FullLayout;
+export default FullLayout

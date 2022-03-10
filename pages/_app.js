@@ -8,6 +8,7 @@ import theme from "../src/theme/theme"
 import createEmotionCache from "src/createEmotionCache"
 import "styles/globals.scss"
 import { appWithTranslation } from "next-i18next"
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 

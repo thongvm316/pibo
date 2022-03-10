@@ -1,12 +1,5 @@
-import * as React from "react";
-import {
-  Grid,
-  Button,
-  Box,
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import * as React from "react"
+import { Grid, Button, Box, Card, CardContent, Typography } from "@mui/material"
 
 export default function About() {
   return (
@@ -17,13 +10,12 @@ export default function About() {
           <CardContent>
             <Typography variant="h4">About Card</Typography>
             <Typography variant="body1">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
+              This impressive paella is a perfect party dish and a fun meal to cook together with
+              your guests. Add 1 cup of frozen peas along with the mussels, if you like.
             </Typography>
           </CardContent>
         </Card>
       </Grid>
     </Grid>
-  );
+  )
 }

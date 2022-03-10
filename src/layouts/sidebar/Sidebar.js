@@ -12,7 +12,6 @@ import {
   ListItemButton,
   ListSubheader,
 } from "@mui/material"
-import axiosClient from "@/api-client/axiosClient"
 import userApi from "@/api-client/userApi"
 import Logo from "../logo/Logo"
 import { hasChildren } from "./utils"
@@ -73,20 +72,22 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   useEffect(() => {
     const { menuApi } = userApi
 
-    menuApi().then((response) => {
-      let newMenuList = []
-      const PIMSProduct = response.menuList.find((menu) => menu.menuId === "PIMS_PRODUCT")
+    // menuApi().then((response) => {
+    //   let newMenuList = []
+    //   const PIMSProduct = response.menuList.find((menu) => menu.menuId === "PIMS_PRODUCT")
 
-      if (PIMSProduct) {
-        const PIMSProductMenu = PIMSProduct.subMenu
-        newMenuList = newMenuList.concat(PIMSProductMenu)
-      }
+    //   if (PIMSProduct) {
+    //     const PIMSProductMenu = PIMSProduct.subMenu
+    //     newMenuList = newMenuList.concat(PIMSProductMenu)
+    //   }
 
-      const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== "PIMS_PRODUCT")
-      newMenuList = newMenuList.concat(notPIMSProductList)
+    //   const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== "PIMS_PRODUCT")
+    //   newMenuList = newMenuList.concat(notPIMSProductList)
 
-      setMenuList(newMenuList)
-    })
+    //   setMenuList(newMenuList)
+    // })
+
+    setMenuList(JSON.parse(localStorage.getItem("menuList")))
   }, [])
 
   const SidebarContent = (
