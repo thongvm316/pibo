@@ -1,12 +1,13 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useAuth } from '@/hooks/use-auth';
-import userApi from '@/api-client/userApi';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import userApi from '@/api-client/userApi';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import Logo from 'src/layouts/logo/Logo';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Login() {
   const { t } = useTranslation('common');
@@ -68,18 +69,18 @@ export default function Login() {
           justifyItems="center"
           alignItems="center"
         >
-          <Logo linkTo="/" src="/static/images/logos/mainlogo.png" />
+          <Logo linkTo="/" src="/static/images/logos/logo.png" title="PIBO" />
           <Typography variant="h1">{t('login-to-your-account')}</Typography>
         </Grid>
         <form onSubmit={handleSubmit(handleLoginClick)}>
           <Controller
             name="id"
-            rules={{ required: 'Please enter id' }}
+            rules={{ required: 'Please enter username' }}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="ID"
+                label="Username"
                 margin="normal"
                 error={!!error}
                 helperText={error ? error.message : null}
@@ -110,4 +111,13 @@ export default function Login() {
       </Paper>
     </Grid>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, 'common')),
+      // Will be passed to the page component as props
+    },
+  };
 }

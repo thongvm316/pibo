@@ -1,16 +1,16 @@
 import { useAuth } from '@/hooks/use-auth';
+import { Box } from '@mui/system';
+import { CircularProgress } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { CircularProgress } from '@mui/material';
-import { Box } from '@mui/system';
 
 export default function Auth({ children }) {
   const router = useRouter();
-  const { user, firstTimeLoading, error } = useAuth();
+  const { user, firstTimeLoading } = useAuth();
 
   useEffect(() => {
     if (!firstTimeLoading && !user?.userList) {
-      // router.push('/login');
+      router.push('/login');
     }
   }, [router, user, firstTimeLoading]);
 

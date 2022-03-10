@@ -1,6 +1,7 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import userimg from '../../../assets/images/users/user2.jpg';
 import {
   Box,
@@ -16,8 +17,9 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 
 const ProfileDD = () => {
-  const { logout } = useAuth();
   const [anchorEl4, setAnchorEl4] = React.useState(null);
+  const { user, logout } = useAuth();
+  const router = useRouter();
 
   const handleClick4 = (event) => {
     setAnchorEl4(event.currentTarget);
@@ -27,11 +29,13 @@ const ProfileDD = () => {
     setAnchorEl4(null);
   };
 
-  const handleLogoutClick = async () => {
+  console.log(user);
+  const handleLogOut = async() => {
     try {
       await logout();
+      router.push('/login');
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   };
 
@@ -65,7 +69,7 @@ const ProfileDD = () => {
                 ml: 1,
               }}
             >
-              Julia
+              Admin
             </Typography>
             <FeatherIcon icon="chevron-down" width="20" height="20" />
           </Box>
@@ -102,9 +106,11 @@ const ProfileDD = () => {
           </Box>
           <Divider />
           <Box p={2}>
-            <Button fullWidth variant="contained" color="primary" onClick={handleLogoutClick}>
-              Logout
-            </Button>
+            <Link to="/">
+              <Button fullWidth variant="contained" color="primary" onClick={handleLogOut}>
+                Logout
+              </Button>
+            </Link>
           </Box>
         </Box>
       </Menu>
