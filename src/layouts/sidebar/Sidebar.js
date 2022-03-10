@@ -16,6 +16,7 @@ import axiosClient from '@/api-client/axiosClient';
 import userApi from '@/api-client/userApi';
 import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
+import useLocalStorage from '@/hooks/useLocalStorage';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
   return (
@@ -66,27 +67,26 @@ const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
 };
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
+  const [storageMenuList] = useLocalStorage('menuList');
   const [menuList, setMenuList] = React.useState([]);
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
-    const { menuApi } = userApi;
+    let newMenuList = [];
+    const PIMSProduct = storageMenuList.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
 
-    menuApi().then((response) => {
-      let newMenuList = [];
-      const PIMSProduct = response.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
+    if (PIMSProduct) {
+      const PIMSProductMenu = PIMSProduct.subMenu;
+      newMenuList = newMenuList.concat(PIMSProductMenu);
+    }
 
-      if (PIMSProduct) {
-        const PIMSProductMenu = PIMSProduct.subMenu;
-        newMenuList = newMenuList.concat(PIMSProductMenu);
-      }
+    const notPIMSProductList = storageMenuList.menuList.filter(
+      (menu) => menu.menuId !== 'PIMS_PRODUCT'
+    );
+    newMenuList = newMenuList.concat(notPIMSProductList);
 
-      const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== 'PIMS_PRODUCT');
-      newMenuList = newMenuList.concat(notPIMSProductList);
-
-      setMenuList(newMenuList);
-    });
+    setMenuList(newMenuList);
   }, []);
 
   const SidebarContent = (

@@ -14,9 +14,9 @@ const LogoArea = styled("div")`
   }
 
   h3 {
-    color: #ff9900;
+    color: #000;
     text-transform: capitalize;
-    font-size: 20px;
+    font-size: 60px;
     font-weight: 700;
     margin: 0 0 0 10px;
     @media (max-width: 768px) {
@@ -31,13 +31,13 @@ const LogoNext = ({ className, withLink, linkTo, title, src }) => {
       {withLink ? (
         <Link href={linkTo}>
           <a>
-            {src && <Image src={src} alt="BO Office" width={200} height={100} />}
+            {src && <Image src={src} alt="BO Office" width={80} height={80} />}
             {title && <h3>{title}</h3>}
           </a>
         </Link>
       ) : (
         <Fragment>
-          {src && <Image src={src} alt="BO Office" width={200} height={100} />}
+          {src && <Image src={src} alt="BO Office" width={80} height={80} />}
           {title && <h3>{title}</h3>}
         </Fragment>
       )}
