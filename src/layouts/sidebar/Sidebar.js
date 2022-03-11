@@ -19,23 +19,22 @@ import { useAppContext } from '@/src/context/AppContext';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
   const {
-    state: { tabLists, selectTab },
+    state: { tabLists },
     dispatch,
   } = useAppContext();
 
-  const handleTabsList = (indexTab) => {
+  const handleTabsList = () => {
     const hasTabInLists = tabLists.map((item) => item?.menuId).includes(subMenuList?.menuId);
 
     if (!hasTabInLists) {
       dispatch({ type: 'addTab', payload: subMenuList });
-      dispatch({ type: 'changeTab', payload: indexTab === null ? 0 : indexTab + 1 });
     }
   };
 
   return (
     <NextLink href={subMenuList.menuId.toLowerCase()}>
-      <ListItemButton sx={{ pl: nestedLevel }}>
-        <ListItemText primary={subMenuList.menuNm} onClick={() => handleTabsList(selectTab)} />
+      <ListItemButton sx={{ pl: nestedLevel }} onClick={handleTabsList}>
+        <ListItemText primary={subMenuList.menuNm} />
       </ListItemButton>
     </NextLink>
   );

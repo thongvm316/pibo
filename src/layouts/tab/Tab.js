@@ -23,7 +23,10 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 export default function BasicTabs(props) {
   const router = useRouter();
+
   const [isPreventClick, setIsPreventClick] = React.useState(false);
+  const [isDetectRemoveTab, setIsDetectRemoveTab] = React.useState(false);
+  const [value, setValue] = React.useState(0);
 
   const handleOnMouseEnter = (e) => {
     setIsPreventClick(true);
@@ -34,23 +37,44 @@ export default function BasicTabs(props) {
   };
 
   const {
-    state: { tabLists, selectTab },
+    state: { tabLists },
     dispatch,
   } = props;
 
   const handleChange = (event, newValue) => {
-    dispatch({ type: 'changeTab', payload: newValue });
+    if (isPreventClick) return;
+    setValue(newValue);
   };
 
-  const handleDeleteTab = (param, selectTab) => {
+  const handleDeleteTab = (param, index) => {
+    setIsPreventClick(false);
+    setIsDetectRemoveTab(true);
+
     dispatch({ type: 'deleteTab', payload: param });
-    dispatch({ type: 'changeTab', payload: selectTab > 0 ? selectTab - 1 : null });
+
+    // Tabs: A B C D
+    if (value === tabLists.length - 1) {
+      setValue(value > 0 ? value - 1 : 0); // at D - del D
+    } else if (value > index) {
+      setValue(value - 1); // at B - del C or D
+    }
   };
 
   const handleClick = (url) => {
     if (isPreventClick) return;
     router.push(url);
   };
+
+  // go to last item when delete lastIndex in tabLists
+  React.useEffect(() => {
+    if (!isDetectRemoveTab) return;
+    setIsDetectRemoveTab(false);
+
+    if (value === tabLists.length - 1) {
+      const lastItemInTabList = tabLists[tabLists.length - 1];
+      if (lastItemInTabList) router.push(`/${lastItemInTabList?.menuId.toLowerCase()}`);
+    }
+  }, [isDetectRemoveTab]);
 
   return (
     <>
@@ -66,7 +90,7 @@ export default function BasicTabs(props) {
           }}
         >
           <StyledTabs
-            value={selectTab !== null ? selectTab : 0}
+            value={value}
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
@@ -79,13 +103,13 @@ export default function BasicTabs(props) {
                   <ClearIcon
                     onMouseEnter={handleOnMouseEnter}
                     onMouseLeave={handleOnMouseLeave}
-                    onClick={() => handleDeleteTab(item.menuId, selectTab)}
+                    onClick={() => handleDeleteTab(item.menuId, i)}
                     sx={{ fontSize: 12 }}
                   />
                 }
                 iconPosition="end"
                 key={i}
-                onClick={() => handleClick(item.menuId.toLowerCase())}
+                onClick={() => handleClick(`/${item.menuId.toLowerCase()}`)}
                 label={item.menuNm}
               />
             ))}

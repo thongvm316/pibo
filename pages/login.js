@@ -41,7 +41,7 @@ export default function Login() {
           try {
             const menu = await menuApi();
             setMenuList(menu);
-            router.push('/');
+            router.push('/pims_prd_1');
           } catch (error) {
             alert(error);
           }
