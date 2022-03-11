@@ -11,10 +11,10 @@ export default class MyDocument extends Document {
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <meta charset="utf-8" />
-          <meta http-equiv="Content-Script-Type" content="text/javascript" />
-          <meta http-equiv="Content-Style-Type" content="text/css" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta charSet="utf-8" />
+          <meta httpEquiv="Content-Script-Type" content="text/javascript" />
+          <meta httpEquiv="Content-Style-Type" content="text/css" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           {/* add AUIGrid */}
           <link href="/static/AUIGrid/AUIGrid_style.css" rel="stylesheet" />
           <script src="/static/AUIGrid/AUIGridLicense.js" />
