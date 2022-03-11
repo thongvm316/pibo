@@ -18,7 +18,7 @@ import { useAuth } from '@/hooks/use-auth';
 
 const ProfileDD = () => {
   const [anchorEl4, setAnchorEl4] = React.useState(null);
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const router = useRouter();
 
   const handleClick4 = (event) => {
@@ -32,9 +32,9 @@ const ProfileDD = () => {
   const handleLogOut = async () => {
     try {
       await logout();
-      router.push('/login');
+      localStorage.clear();
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
