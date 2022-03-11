@@ -38,9 +38,13 @@ export default function Login() {
     if (loginInfo.result) {
       switch (loginInfo.result) {
         case 'S':
-          const menu = await menuApi();
-          setMenuList(menu);
-          router.push('/');
+          try {
+            const menu = await menuApi();
+            setMenuList(menu);
+            router.push('/');
+          } catch (error) {
+            alert(error);
+          }
           break;
 
         default:

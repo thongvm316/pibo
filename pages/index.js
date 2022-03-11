@@ -10,9 +10,14 @@ import { footerLayout } from '@/assets/data/footerLayout';
 import ProductPerfomance from '../src/components/dashboard/ProductPerfomance';
 import SalesOverview from '../src/components/dashboard/SalseOverview';
 import DailyActivity from '../src/components/dashboard/DailyActivity';
+import { useAuth} from 'hooks/use-auth'
 
 export default function Home() {
   //variable keep Id after create grid
+
+  const { user } = useAuth()
+
+  console.log(user)
   var myGridID;
   useEffect(() => {
     // 그리드 속성 설정
@@ -42,6 +47,7 @@ export default function Home() {
       }
     );
   }
+
   return (
     <Box>
       <Grid container spacing={0}>
