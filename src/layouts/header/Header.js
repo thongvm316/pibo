@@ -1,10 +1,11 @@
-import React from "react";
-import FeatherIcon from "feather-icons-react";
-import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
-import PropTypes from "prop-types";
+import React from 'react';
+import FeatherIcon from 'feather-icons-react';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
+import PropTypes from 'prop-types';
 // Dropdown Component
-import SearchDD from "./SearchDD";
-import ProfileDD from "./ProfileDD";
+import ProfileDD from './ProfileDD';
+import MultiTab from '../tab/Tab';
+import { useAppContext } from '@/src/context/AppContext';
 
 const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
   return (
@@ -17,25 +18,19 @@ const Header = ({ sx, customClass, toggleMobileSidebar, position }) => {
           onClick={toggleMobileSidebar}
           sx={{
             display: {
-              lg: "none",
-              xs: "flex",
+              lg: 'none',
+              xs: 'flex',
             },
           }}
         >
           <FeatherIcon icon="menu" width="20" height="20" />
         </IconButton>
-        {/* ------------------------------------------- */}
-        {/* Search Dropdown */}
-        {/* ------------------------------------------- */}
-        <SearchDD />
-        {/* ------------ End Menu icon ------------- */}
+
+        <MultiTab {...useAppContext()} />
 
         <Box flexGrow={1} />
 
         <ProfileDD />
-        {/* ------------------------------------------- */}
-        {/* Profile Dropdown */}
-        {/* ------------------------------------------- */}
       </Toolbar>
     </AppBar>
   );

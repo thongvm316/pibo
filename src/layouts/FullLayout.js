@@ -3,6 +3,7 @@ import { experimentalStyled, useMediaQuery, Container, Box } from '@mui/material
 import Header from './header/Header';
 import Sidebar from './sidebar/Sidebar';
 import Footer from './footer/Footer';
+import { AppWrapper } from '@/src/context/AppContext';
 import Auth from '../common/auth';
 
 const MainWrapper = experimentalStyled('div')(() => ({
@@ -32,32 +33,34 @@ const FullLayout = ({ children }) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   return (
     <Auth>
-      <MainWrapper>
-        <Header
-          sx={{
-            paddingLeft: isSidebarOpen && lgUp ? '265px' : '',
-            backgroundColor: '#fbfbfb',
-          }}
-          toggleMobileSidebar={() => setMobileSidebarOpen(true)}
-        />
-        <Sidebar
-          isSidebarOpen={isSidebarOpen}
-          isMobileSidebarOpen={isMobileSidebarOpen}
-          onSidebarClose={() => setMobileSidebarOpen(false)}
-        />
-        <PageWrapper>
-          <Container
-            maxWidth={false}
+      <AppWrapper>
+        <MainWrapper>
+          <Header
             sx={{
-              paddingTop: '20px',
-              paddingLeft: isSidebarOpen && lgUp ? '280px!important' : '',
+              paddingLeft: isSidebarOpen && lgUp ? '265px' : '',
+              backgroundColor: '#fbfbfb',
             }}
-          >
-            <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
-            <Footer />
-          </Container>
-        </PageWrapper>
-      </MainWrapper>
+            toggleMobileSidebar={() => setMobileSidebarOpen(true)}
+          />
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            isMobileSidebarOpen={isMobileSidebarOpen}
+            onSidebarClose={() => setMobileSidebarOpen(false)}
+          />
+          <PageWrapper>
+            <Container
+              maxWidth={false}
+              sx={{
+                paddingTop: '20px',
+                paddingLeft: isSidebarOpen && lgUp ? '280px!important' : '',
+              }}
+            >
+              <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
+              <Footer />
+            </Container>
+          </PageWrapper>
+        </MainWrapper>
+      </AppWrapper>
     </Auth>
   );
 };
