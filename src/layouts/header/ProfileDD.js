@@ -29,8 +29,7 @@ const ProfileDD = () => {
     setAnchorEl4(null);
   };
 
-  console.log(user);
-  const handleLogOut = async() => {
+  const handleLogOut = async () => {
     try {
       await logout();
       router.push('/login');

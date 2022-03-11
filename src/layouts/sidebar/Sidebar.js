@@ -12,17 +12,30 @@ import {
   ListItemButton,
   ListSubheader,
 } from '@mui/material';
-import axiosClient from '@/api-client/axiosClient';
-import userApi from '@/api-client/userApi';
 import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { useAppContext } from '@/src/context/AppContext';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
+  const {
+    state: { tabLists, selectTab },
+    dispatch,
+  } = useAppContext();
+
+  const handleTabsList = (indexTab) => {
+    const hasTabInLists = tabLists.map((item) => item?.menuId).includes(subMenuList?.menuId);
+
+    if (!hasTabInLists) {
+      dispatch({ type: 'addTab', payload: subMenuList });
+      dispatch({ type: 'changeTab', payload: indexTab === null ? 0 : indexTab + 1 });
+    }
+  };
+
   return (
     <NextLink href={subMenuList.menuId.toLowerCase()}>
       <ListItemButton sx={{ pl: nestedLevel }}>
-        <ListItemText primary={subMenuList.menuNm} />
+        <ListItemText primary={subMenuList.menuNm} onClick={() => handleTabsList(selectTab)} />
       </ListItemButton>
     </NextLink>
   );
@@ -69,29 +82,23 @@ const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const [storageMenuList] = useLocalStorage('menuList');
   const [menuList, setMenuList] = React.useState([]);
-
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
     let newMenuList = [];
     const PIMSProduct = storageMenuList.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
 
-    // menuApi().then((response) => {
-    //   let newMenuList = []
-    //   const PIMSProduct = response.menuList.find((menu) => menu.menuId === "PIMS_PRODUCT")
+    if (PIMSProduct) {
+      const PIMSProductMenu = PIMSProduct.subMenu;
+      newMenuList = newMenuList.concat(PIMSProductMenu);
+    }
 
-    //   if (PIMSProduct) {
-    //     const PIMSProductMenu = PIMSProduct.subMenu
-    //     newMenuList = newMenuList.concat(PIMSProductMenu)
-    //   }
+    const notPIMSProductList = storageMenuList.menuList.filter(
+      (menu) => menu.menuId !== 'PIMS_PRODUCT'
+    );
 
-    //   const notPIMSProductList = response.menuList.filter((menu) => menu.menuId !== "PIMS_PRODUCT")
-    //   newMenuList = newMenuList.concat(notPIMSProductList)
-
-    //   setMenuList(newMenuList)
-    // })
-
-    setMenuList(JSON.parse(localStorage.getItem('menuList')));
+    newMenuList = newMenuList.concat(notPIMSProductList);
+    setMenuList(newMenuList);
   }, []);
 
   const SidebarContent = (

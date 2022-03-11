@@ -1,23 +1,9 @@
-// src/context/state.js
 import { useReducer, createContext, useContext } from 'react';
 
 const AppContext = createContext();
 
 const initialState = {
-  tabLists: [
-    {
-      text: 'Home',
-      linkTo: '/alert',
-    },
-    {
-      text: 'AboutUs',
-      linkTo: '/about',
-    },
-    {
-      text: 'Causes',
-      linkTo: '/pagination/',
-    },
-  ],
+  tabLists: [],
   selectTab: null,
 };
 
@@ -32,7 +18,7 @@ const reducer = (state, action) => {
     case 'deleteTab':
       return {
         ...state,
-        tabLists: state.tabLists.filter((item) => item.text !== payload),
+        tabLists: state.tabLists.filter((item) => item.menuId !== payload),
       };
     case 'changeTab':
       return {
