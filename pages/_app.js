@@ -21,7 +21,7 @@ function MyApp(props) {
     <CacheProvider value={emotionCache}>
       <SWRConfig value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}>
         <Head>
-          <title>Admin Page</title>
+          <title>PIBO Dashboard</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>

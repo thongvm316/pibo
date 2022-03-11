@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FeatherIcon from 'feather-icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -68,7 +68,7 @@ const ProfileDD = () => {
                 ml: 1,
               }}
             >
-              Admin
+              {/* <span>You are authenticated as: {user}</span> */}
             </Typography>
             <FeatherIcon icon="chevron-down" width="20" height="20" />
           </Box>
