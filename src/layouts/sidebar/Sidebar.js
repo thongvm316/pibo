@@ -13,7 +13,7 @@ import {
   ListSubheader,
 } from '@mui/material';
 import axiosClient from '@/api-client/axiosClient';
-import userApi from '@/api-client/userApi';
+import menuApi from '@/api-client/userApi';
 import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';

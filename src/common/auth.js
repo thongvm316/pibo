@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 export default function Auth({ children }) {
   const router = useRouter();
-  const { user, firstTimeLoading } = useAuth();
+  const { user, firstTimeLoading, error } = useAuth();
 
   useEffect(() => {
     if (!firstTimeLoading && !user?.userList) {

@@ -79,7 +79,7 @@ export default function Login() {
         <form onSubmit={handleSubmit(handleLoginClick)}>
           <Controller
             name="id"
-            rules={{ required: 'Please enter username' }}
+            rules={{ required: t('enter-username') }}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
@@ -94,12 +94,12 @@ export default function Login() {
           />
           <Controller
             name="password"
-            rules={{ required: 'Please enter password' }}
+            rules={{ required: t('enter-password') }}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Password"
+                label={t('password')}
                 type="password"
                 margin="normal"
                 error={!!error}
