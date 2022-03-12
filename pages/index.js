@@ -6,10 +6,7 @@ import { Box, Grid } from '@mui/material';
 import ProductPerfomance from '../src/components/dashboard/ProductPerfomance';
 import SalesOverview from '../src/components/dashboard/SalseOverview';
 import DailyActivity from '../src/components/dashboard/DailyActivity';
-import ProductPerfomance from '../src/components/dashboard/ProductPerfomance';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import FullLayout from '@/src/layouts/FullLayout';
 import TableTest from '@/src/components/dashboard/TableTest';
 
 export default function Home() {
