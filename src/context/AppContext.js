@@ -4,7 +4,6 @@ const AppContext = createContext();
 
 const initialState = {
   tabLists: [],
-  selectTab: null,
 };
 
 const reducer = (state, action) => {
@@ -19,11 +18,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         tabLists: state.tabLists.filter((item) => item.menuId !== payload),
-      };
-    case 'changeTab':
-      return {
-        ...state,
-        selectTab: payload,
       };
     default:
       return state;
