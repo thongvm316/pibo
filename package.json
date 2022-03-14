@@ -32,9 +32,9 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "next build:dev",
     "start": "next start",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules",
+    "build": "next build && next export"
   },
   "devDependencies": {
     "prettier": "^2.5.1"
