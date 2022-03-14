@@ -26,7 +26,6 @@ export default function BasicTabs(props) {
 
   const [isPreventClick, setIsPreventClick] = React.useState(false);
   const [isDetectRemoveTab, setIsDetectRemoveTab] = React.useState(false);
-  const [value, setValue] = React.useState(0);
 
   const handleOnMouseEnter = (e) => {
     setIsPreventClick(true);
@@ -37,13 +36,13 @@ export default function BasicTabs(props) {
   };
 
   const {
-    state: { tabLists },
+    state: { tabLists, activeTab },
     dispatch,
   } = props;
 
   const handleChange = (event, newValue) => {
     if (isPreventClick) return;
-    setValue(newValue);
+    dispatch({ type: 'changeTab', payload: newValue });
   };
 
   const handleDeleteTab = (param, index) => {
@@ -53,10 +52,12 @@ export default function BasicTabs(props) {
     dispatch({ type: 'deleteTab', payload: param });
 
     // Tabs: A B C D
-    if (value === tabLists.length - 1) {
-      setValue(value > 0 ? value - 1 : 0); // at D - del D
-    } else if (value > index) {
-      setValue(value - 1); // at B - del C or D
+    if (activeTab === tabLists.length - 1) {
+      // at D - del D
+      dispatch({ type: 'changeTab', payload: activeTab > 0 ? activeTab - 1 : 0 });
+    } else if (activeTab > index) {
+      // at B - del C or D
+      dispatch({ type: 'changeTab', payload: activeTab - 1 });
     }
   };
 
@@ -70,7 +71,7 @@ export default function BasicTabs(props) {
     if (!isDetectRemoveTab) return;
     setIsDetectRemoveTab(false);
 
-    if (value === tabLists.length - 1) {
+    if (activeTab === tabLists.length - 1) {
       const lastItemInTabList = tabLists[tabLists.length - 1];
       if (lastItemInTabList) router.push(`/${lastItemInTabList?.menuId.toLowerCase()}`);
     }
@@ -90,7 +91,7 @@ export default function BasicTabs(props) {
           }}
         >
           <StyledTabs
-            value={value}
+            value={activeTab}
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
