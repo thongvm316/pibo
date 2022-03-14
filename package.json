@@ -2,6 +2,10 @@
   "name": "nextjs",
   "version": "5.0.0",
   "private": true,
+  "engines": {
+    "node": "16.13.2",
+    "npm": "8.1.2"
+  },
   "dependencies": {
     "@emotion/cache": "11.6.0",
     "@emotion/react": "11.7.0",
@@ -29,8 +33,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build:dev",
-    "start": "next start",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "start": "next start"
   },
   "devDependencies": {
     "prettier": "^2.5.1"
