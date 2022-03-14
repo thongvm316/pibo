@@ -30,6 +30,7 @@ const SingleLevel = ({ subMenuList, nestedLevel }) => {
 
     if (!hasTabInLists) {
       dispatch({ type: 'addTab', payload: subMenuList });
+      dispatch({ type: 'changeTab', payload: tabLists.length > 0 ? tabLists.length : 0 });
     }
   };
 
