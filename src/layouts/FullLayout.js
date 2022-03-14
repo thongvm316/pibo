@@ -32,36 +32,36 @@ const FullLayout = ({ children }) => {
   const [isMobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   return (
-    <Auth>
-      <AppWrapper>
-        <MainWrapper>
-          <Header
+    // <Auth>
+    <AppWrapper>
+      <MainWrapper>
+        <Header
+          sx={{
+            paddingLeft: isSidebarOpen && lgUp ? '265px' : '',
+            backgroundColor: '#fbfbfb',
+          }}
+          toggleMobileSidebar={() => setMobileSidebarOpen(true)}
+        />
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onSidebarClose={() => setMobileSidebarOpen(false)}
+        />
+        <PageWrapper>
+          <Container
+            maxWidth={false}
             sx={{
-              paddingLeft: isSidebarOpen && lgUp ? '265px' : '',
-              backgroundColor: '#fbfbfb',
+              paddingTop: '20px',
+              paddingLeft: isSidebarOpen && lgUp ? '280px!important' : '',
             }}
-            toggleMobileSidebar={() => setMobileSidebarOpen(true)}
-          />
-          <Sidebar
-            isSidebarOpen={isSidebarOpen}
-            isMobileSidebarOpen={isMobileSidebarOpen}
-            onSidebarClose={() => setMobileSidebarOpen(false)}
-          />
-          <PageWrapper>
-            <Container
-              maxWidth={false}
-              sx={{
-                paddingTop: '20px',
-                paddingLeft: isSidebarOpen && lgUp ? '280px!important' : '',
-              }}
-            >
-              <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
-              <Footer />
-            </Container>
-          </PageWrapper>
-        </MainWrapper>
-      </AppWrapper>
-    </Auth>
+          >
+            <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
+            <Footer />
+          </Container>
+        </PageWrapper>
+      </MainWrapper>
+    </AppWrapper>
+    // </Auth>
   );
 };
 
