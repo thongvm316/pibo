@@ -32,7 +32,7 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "next build:dev",
+    "build": "next build",
     "start": "next start",
     "clean": "rm -rf node_modules"
   },
