@@ -17,11 +17,25 @@ import menuApi from '@/api-client/userApi';
 import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { useAppContext } from '@/src/context/AppContext';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
+  const {
+    state: { tabLists },
+    dispatch,
+  } = useAppContext();
+
+  const handleTabsList = () => {
+    const hasTabInLists = tabLists.map((item) => item?.menuId).includes(subMenuList?.menuId);
+
+    if (!hasTabInLists) {
+      dispatch({ type: 'addTab', payload: subMenuList });
+    }
+  };
+
   return (
     <NextLink href={subMenuList.menuId.toLowerCase()}>
-      <ListItemButton sx={{ pl: nestedLevel }}>
+      <ListItemButton sx={{ pl: nestedLevel }} onClick={handleTabsList}>
         <ListItemText primary={subMenuList.menuNm} />
       </ListItemButton>
     </NextLink>
@@ -69,7 +83,6 @@ const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const [storageMenuList] = useLocalStorage('menuList');
   const [menuList, setMenuList] = React.useState([]);
-
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
@@ -84,8 +97,8 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
     const notPIMSProductList = storageMenuList.menuList.filter(
       (menu) => menu.menuId !== 'PIMS_PRODUCT'
     );
-    newMenuList = newMenuList.concat(notPIMSProductList);
 
+    newMenuList = newMenuList.concat(notPIMSProductList);
     setMenuList(newMenuList);
   }, []);
 
