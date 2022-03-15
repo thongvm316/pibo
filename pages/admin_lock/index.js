@@ -94,6 +94,4 @@ const AdminLock = () => {
 
 export default AdminLock;
 
-AdminLock.getLayout = function getLayout(page) {
-  return <FullLayout>{page}</FullLayout>;
-};
+AdminLock.Layout = FullLayout;

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import Logo from 'src/layouts/logo/Logo';
+import Logo from '@/components/logo/Logo';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Login() {
