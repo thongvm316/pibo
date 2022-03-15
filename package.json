@@ -36,13 +36,8 @@
     "dev": "next",
     "start": "next start",
     "clean": "rm -rf node_modules",
-<<<<<<< HEAD
-    "build": "next build",
-    "build:static": "next build && next export"
-=======
     "lint": "next lint",
     "build": "next build"
->>>>>>> 19a2602334f800318ff267eb9a86076933b564a9
   },
   "devDependencies": {
     "@types/node": "^17.0.21",
