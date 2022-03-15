@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import axiosClient from '@/api-client/axiosClient';
 import menuApi from '@/api-client/userApi';
-import Logo from '@/components/Logo/Logo';
+import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useAppContext } from '@/context/AppContext';
@@ -52,13 +52,8 @@ const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
 
   return (
     <List
-      subheader={
-        subHeader && (
-          <ListSubheader component="div" color="primary">
-            {subMenuList.menuId}
-          </ListSubheader>
-        )
-      }
+      subheader={subHeader && <ListSubheader>{subMenuList.menuId}</ListSubheader>}
+      disablePadding
     >
       <ListItemButton onClick={handleClick} sx={{ pl: nestedLevel }}>
         <ListItemText primary={subMenuList.menuNm} />
