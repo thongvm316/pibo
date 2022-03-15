@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import axios from 'axios';
-import BaseCard from '../../../components/baseCard/BaseCard';
+import BaseCard from 'components/baseCard/BaseCard';
 import { columnLayout } from '@/public/assets/data/columnLayout';
 import { footerLayout } from '@/public/assets/data/footerLayout';
 
