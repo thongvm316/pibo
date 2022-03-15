@@ -14,6 +14,9 @@ import 'styles/globals.scss';
 import 'styles/managerManagement/admin_lock.scss';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
+//date picker
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateFnsAdapter from '@mui/lab/AdapterDateFns';
 
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -27,8 +30,10 @@ function MyApp(props) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
+          <LocalizationProvider dateAdapter={DateFnsAdapter}>
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </LocalizationProvider>
         </ThemeProvider>
       </SWRConfig>
     </CacheProvider>

@@ -8,6 +8,7 @@ import SalesOverview from '../src/components/dashboard/SalseOverview';
 import DailyActivity from '../src/components/dashboard/DailyActivity';
 import { useTranslation } from 'next-i18next';
 import TableTest from '@/src/components/dashboard/TableTest';
+import CustomDatePicker from '@/src/components/DateRangePicker';
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         </Grid>
         <Grid item xs={12} lg={12}>
           <TableTest />
+          <CustomDatePicker />
         </Grid>
       </Grid>
     </Box>
