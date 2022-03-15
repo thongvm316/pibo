@@ -6,10 +6,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme/theme';
 import createEmotionCache from 'src/createEmotionCache';
-import 'styles/globals.scss';
 import { appWithTranslation } from 'next-i18next';
 import { SWRConfig } from 'swr';
 import axiosClient from '@/api-client/axiosClient';
+
+import 'styles/globals.scss';
+import 'styles/managerManagement/admin_lock.scss';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
