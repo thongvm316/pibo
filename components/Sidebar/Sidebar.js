@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import FeatherIcon from 'feather-icons-react';
 import {
   Box,
   Drawer,
@@ -10,14 +9,13 @@ import {
   Collapse,
   ListItemText,
   ListItemButton,
-  ListSubheader,
+  ListItemIcon,
 } from '@mui/material';
-import axiosClient from '@/api-client/axiosClient';
-import menuApi from '@/api-client/userApi';
 import Logo from '../logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useAppContext } from '@/context/AppContext';
+import { ExpandLess, ExpandMore, Groups, Pageview } from '@mui/icons-material';
 
 const SingleLevel = ({ subMenuList, nestedLevel }) => {
   const {
@@ -37,13 +35,16 @@ const SingleLevel = ({ subMenuList, nestedLevel }) => {
   return (
     <NextLink href={subMenuList.menuId.toLowerCase()}>
       <ListItemButton sx={{ pl: nestedLevel }} onClick={handleTabsList}>
+        <ListItemIcon>
+          <Pageview />
+        </ListItemIcon>
         <ListItemText primary={subMenuList.menuNm} />
       </ListItemButton>
     </NextLink>
   );
 };
 
-const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
+const MultiLevel = ({ subMenuList, nestedLevel, icon }) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -51,18 +52,20 @@ const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
   };
 
   return (
-    <List
-      subheader={subHeader && <ListSubheader>{subMenuList.menuId}</ListSubheader>}
-      disablePadding
-    >
+    <List disablePadding>
       <ListItemButton onClick={handleClick} sx={{ pl: nestedLevel }}>
+        {icon && (
+          <ListItemIcon>
+            <Groups />
+          </ListItemIcon>
+        )}
         <ListItemText primary={subMenuList.menuNm} />
-        {open ? <FeatherIcon icon="chevron-up" /> : <FeatherIcon icon="chevron-down" />}
+        {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {subMenuList.subMenu.map((subMenu, key) => (
-            <MenuItem key={key} subMenuList={subMenu} nestedLevel={nestedLevel + 2} />
+            <MenuItem key={key} subMenuList={subMenu} nestedLevel={nestedLevel + 2} icon={true} />
           ))}
         </List>
       </Collapse>
@@ -70,10 +73,10 @@ const MultiLevel = ({ subMenuList, nestedLevel, subHeader }) => {
   );
 };
 
-const MenuItem = ({ subMenuList, nestedLevel, subHeader }) => {
+const MenuItem = ({ subMenuList, nestedLevel, icon }) => {
   const Component = hasChildren(subMenuList) ? MultiLevel : SingleLevel;
 
-  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} subHeader={subHeader} />;
+  return <Component subMenuList={subMenuList} nestedLevel={nestedLevel} icon={icon} />;
 };
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
@@ -104,7 +107,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
       <Box>
         <List>
           {menuList.map((subMenuList, index) => (
-            <MenuItem key={index} subMenuList={subMenuList} nestedLevel={2} subHeader={false} />
+            <MenuItem key={index} subMenuList={subMenuList} nestedLevel={2} />
           ))}
         </List>
       </Box>
