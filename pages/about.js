@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Grid, Button, Box, Card, CardContent, Typography } from '@mui/material';
-import FullLayout from '@/src/layouts/FullLayout';
+import FullLayout from '@/components/Layout/FullLayout';
 
 export default function About() {
   return (
@@ -20,7 +20,4 @@ export default function About() {
     </Grid>
   );
 }
-
-About.getLayout = function getLayout(page) {
-  return <FullLayout>{page}</FullLayout>;
-};
+About.Layout = FullLayout;

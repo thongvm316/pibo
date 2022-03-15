@@ -1,5 +1,5 @@
-import FullLayout from '@/src/layouts/FullLayout';
-import TestRender from '@/src/components/TestRender';
+import FullLayout from '@/components/Layout/FullLayout';
+import TestRender from '@/components/TestRender';
 
 const Prd3 = () => {
   return (
@@ -12,6 +12,4 @@ const Prd3 = () => {
 
 export default Prd3;
 
-Prd3.getLayout = function getLayout(page) {
-  return <FullLayout>{page}</FullLayout>;
-};
+Prd3.Layout = FullLayout;

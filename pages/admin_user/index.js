@@ -1,7 +1,7 @@
 import axiosClient from '@/api-client/axiosClient';
 import { useAuth } from '@/hooks/use-auth';
 import BaseCard from '@/src/components/baseCard/BaseCard';
-import FullLayout from '@/src/layouts/FullLayout';
+import FullLayout from '@/components/Layout/FullLayout';
 import { useEffect } from 'react';
 import gridConfigs from './gridConfigs';
 
@@ -45,8 +45,6 @@ const AdminUser = () => {
   );
 };
 
-AdminUser.getLayout = function getLayout(page) {
-  return <FullLayout>{page}</FullLayout>;
-};
+AdminUser.Layout = FullLayout;
 
 export default AdminUser;
