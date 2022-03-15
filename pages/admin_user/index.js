@@ -1,6 +1,6 @@
 import axiosClient from '@/api-client/axiosClient';
 import { useAuth } from '@/hooks/use-auth';
-import BaseCard from '@/src/components/baseCard/BaseCard';
+import BaseCard from '@/components/baseCard/BaseCard';
 import FullLayout from '@/components/Layout/FullLayout';
 import { useEffect } from 'react';
 import gridConfigs from './gridConfigs';
