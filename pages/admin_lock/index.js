@@ -13,19 +13,29 @@ import Grid from '@mui/material/Grid';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SearchIcon from '@mui/icons-material/Search';
 
-import { columnLayout } from '@/assets/data/columnLayout';
-import { footerLayout } from '@/assets/data/footerLayout';
+import { columnLayout, gridPros } from './Table/config';
+import { dummyData } from './Table/dummyData';
 
 const AdminLock = () => {
   var myGridID;
   useEffect(() => {
-    var gridPros = {
-      editable: true,
-      enableFilter: true,
-      autoGridHeight: true,
-      usePaging: true,
-    };
     myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
+
+    AUIGrid.bind(myGridID, 'pageChange', function (event) {
+      console.log('pageChange');
+      const ellapseEl = document.getElementById('ellapse');
+      if (ellapseEl) {
+        ellapseEl.innerHTML =
+          '페이지 변경 이벤트 : ' +
+          event.oldPage +
+          ' → ' +
+          event.currentPage +
+          ', 전체 페이지 수 : ' +
+          event.totalPageCount;
+      }
+    });
+
+    AUIGrid.setGridData(myGridID, dummyData);
   }, []);
 
   return (
@@ -34,39 +44,43 @@ const AdminLock = () => {
         계정 잠금 해제 관리
       </Typography>
 
-      <Paper variant="outlined" sx={{ mx: 3, mb: 2 }} className="admin-lock-filter">
+      <Box sx={{ mx: 3, mb: 2 }} className="admin-lock-filter">
         <Grid container>
-          <Grid item container justifyContent="space-between" xs={6}>
-            {/* <Box className="admin-lock-filter__id" sx={{ display: 'flex' }}></Box> */}
-
-            <Typography variant="subtitle1" component="div">
+          <Grid item container justifyContent="flex-start" alignItems="center" xs={6}>
+            <Typography
+              className="admin-lock-filter__title"
+              sx={{ mr: 2, p: 1 }}
+              variant="subtitle1"
+              component="div"
+            >
               ID
             </Typography>
 
-            <TextField />
+            <TextField size="small" />
           </Grid>
 
-          <Grid item xs={6}>
-            <Box className="admin-lock-filter__id" sx={{ display: 'flex' }}>
-              <Typography variant="subtitle1" component="div">
-                잠금여부
-              </Typography>
+          <Grid item container justifyContent="flex-start" alignItems="center" xs={6}>
+            <Typography
+              className="admin-lock-filter__title"
+              sx={{ mr: 2, p: 1 }}
+              variant="subtitle1"
+              component="div"
+            >
+              잠금여부
+            </Typography>
 
-              <TextField />
-            </Box>
+            <TextField size="small" />
           </Grid>
         </Grid>
+      </Box>
 
-        {/* <Box className="admin-lock-filter__status" sx={{ display: 'flex' }}>
-          <Typography variant="subtitle1" component="div">
-            잠금여부
-          </Typography>
-
-          <TextField />
-        </Box> */}
-      </Paper>
-
-      <Stack spacing={1} sx={{ mx: 3, mb: 2 }} className="admin-lock-action" direction="row">
+      <Stack
+        spacing={1}
+        sx={{ mx: 3, mb: 2 }}
+        className="admin-lock-action"
+        justifyContent="center"
+        direction="row"
+      >
         <Button
           variant="contained"
           className="admin-lock-action__initial"
@@ -84,8 +98,7 @@ const AdminLock = () => {
         </Button>
       </Stack>
 
-      <Box sx={{ maxWidth: '80%', mx: 3, mb: 2 }}>
-        <div id="grid_wrap_admin-lock" />
+      <Box sx={{ maxWidth: '80%', mx: 3, mb: 2 }} id="grid_wrap_admin-lock">
         {/* Add pagination */}
       </Box>
     </Paper>

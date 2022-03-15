@@ -19,6 +19,19 @@ function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout || ((page) => page);
 
+  // remove AUI trial
+  React.useEffect(() => {
+    const auiElement = document.querySelector('.aui-grid');
+
+    if (auiElement) {
+      auiElement.childNodes.forEach((item) => {
+        if (item.textContent.includes('AUIGrid Trial DEMO Ver.')) {
+          item.style.display = 'none';
+        }
+      });
+    }
+  }, []);
+
   return (
     <CacheProvider value={emotionCache}>
       <SWRConfig value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}>
