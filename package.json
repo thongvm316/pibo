@@ -33,6 +33,7 @@
   "scripts": {
     "dev": "next",
     "start": "next start",
+    "clean": "rm -rf node_modules",
     "build": "next build"
   },
   "devDependencies": {
