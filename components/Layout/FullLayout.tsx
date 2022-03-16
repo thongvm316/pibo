@@ -2,7 +2,7 @@ import React from 'react';
 import { experimentalStyled, useMediaQuery, Container, Box } from '@mui/material';
 import Header from '../Header/Header';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import Footer from '../Footer/Footer';
+import Footer from '../Footer';
 import { AppWrapper } from '@/context/AppContext';
 import Auth from '../../common/auth';
 import { LayoutProps } from '@/models';
