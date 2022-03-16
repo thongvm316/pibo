@@ -1,5 +1,4 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import { useAuth } from '@/hooks/use-auth';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import userApi from '@/api-client/userApi';
 import React, { useEffect, useState } from 'react';
@@ -8,11 +7,13 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import Logo from 'src/layouts/logo/Logo';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useAuth } from '@/context/auth';
 
 export default function Login() {
+  const { login } = useAuth();
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { login } = useAuth({ revalidateOnMount: false });
+  useAuth;
   const { menuApi } = userApi;
 
   const [loginInfo, setLoginInfo] = useState({});
@@ -27,32 +28,36 @@ export default function Login() {
 
   const handleLoginClick = async (data) => {
     try {
-      const loginApi = await login(data);
-      setLoginInfo(loginApi);
+      let isLoginSuccess = await login(data);
+      if (isLoginSuccess) {
+        router.replace('/pims_prd_1');
+      } else {
+        router.replace('/login');
+      }
     } catch (error) {
       alert(error);
     }
   };
 
-  useEffect(async () => {
-    if (loginInfo.result) {
-      switch (loginInfo.result) {
-        case 'S':
-          try {
-            const menu = await menuApi();
-            setMenuList(menu);
-            router.push('/pims_prd_1');
-          } catch (error) {
-            alert(error);
-          }
-          break;
+  // useEffect(async () => {
+  //   if (loginInfo.result) {
+  //     switch (loginInfo.result) {
+  //       case 'S':
+  //         try {
+  //           const menu = await menuApi();
+  //           setMenuList(menu);
+  //           router.push('/pims_prd_1');
+  //         } catch (error) {
+  //           alert(error);
+  //         }
+  //         break;
 
-        default:
-          alert(loginInfo.message);
-          break;
-      }
-    }
-  }, [loginInfo]);
+  //       default:
+  //         alert(loginInfo.message);
+  //         break;
+  //     }
+  //   }
+  // }, [loginInfo]);
 
   const paperStyle = { padding: 20, width: 400 };
   const marginStyle = { margin: '20px 0' };

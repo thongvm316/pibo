@@ -12,6 +12,8 @@ import axiosClient from '@/api-client/axiosClient';
 
 import 'styles/globals.scss';
 import 'styles/managerManagement/admin_lock.scss';
+import { AuthProvider } from '@/context/auth';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -27,8 +29,10 @@ function MyApp(props) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
+          <AuthProvider>
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </AuthProvider>
         </ThemeProvider>
       </SWRConfig>
     </CacheProvider>

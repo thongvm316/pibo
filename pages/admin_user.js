@@ -1,11 +1,11 @@
 import axiosClient from '@/api-client/axiosClient';
-import { useAuth } from '@/hooks/use-auth';
+// import { useAuth } from '@/hooks/use-auth';
 import BaseCard from '@/src/components/baseCard/BaseCard';
 import FullLayout from '@/src/layouts/FullLayout';
 import { useEffect } from 'react';
 
 const AdminUser = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   const columnLayout = [
     {

@@ -25,7 +25,7 @@ export default function TableTest() {
       axios.get('/static/data/revenue_region.json').then(
         (res) => {
           var gridData = res.data;
-          console.log(gridData);
+          // console.log(gridData);
           AUIGrid.setGridData(myGridID, gridData);
           AUIGrid.setFooter(myGridID, footerLayout);
         },
