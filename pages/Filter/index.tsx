@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import BaseCard from '@/components/BaseCard/BaseCard.js';
+import React, { useState } from 'react';
 import FullLayout from '@/components/Layout/FullLayout';
 import { Box, Grid, Paper, TextField, Autocomplete, Button, InputAdornment } from '@mui/material';
 import FilterSection from '@/components/Filter';
@@ -8,9 +7,8 @@ import DateRangePicker from '@mui/lab/DateRangePicker';
 import { MdRestore, MdSearch, MdOutlineCalendarToday } from 'react-icons/md';
 
 const Product = () => {
-  const [value, setValue] = useState([null, null]);
-  const [regDate, setRegDate] = useState([null, null])
-  const [modDate, setModDate] = useState([null, null])
+  const [regDate, setRegDate] = useState<[any, any]>([null, null]);
+  const [modDate, setModDate] = useState<[any, any]>([null, null]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -74,8 +72,6 @@ const Product = () => {
         <Grid item xs={2} sm={6} md={6}>
           <FilterSection title="상품명" label="All">
             <DateRangePicker
-              // startText="Check-in"
-              // endText="Check-out"
               value={regDate}
               endText=""
               startText=""
@@ -119,8 +115,6 @@ const Product = () => {
         <Grid item xs={2} sm={6} md={6}>
           <FilterSection title="수정자" label="All">
             <DateRangePicker
-              // startText="Check-in"
-              // endText="Check-out"
               endText=""
               startText=""
               value={modDate}

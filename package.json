@@ -32,10 +32,7 @@
   "scripts": {
     "dev": "next",
     "start": "next start",
-    "clean": "rm -rf node_modules",
-    "lint": "next lint",
-    "build": "next build",
-    "deploy": "serverless"
+    "build": "next build"
   },
   "devDependencies": {
     "@types/node": "^17.0.21",
