@@ -35,7 +35,7 @@
     "clean": "rm -rf node_modules",
     "lint": "next lint",
     "build": "next build",
-    "deploy": "serverless"
+    "tf-next": "tf-next build"
   },
   "devDependencies": {
     "@types/node": "^17.0.21",
