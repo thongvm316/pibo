@@ -5000,3 +5000,41 @@ export const dummyData = [
     price: 172800,
   },
 ];
+
+export const fakeData = [
+  {
+    userId: 'AP35000841',
+    linDttm: '2022-03-17 12:07:56',
+    linIp: '172.20.36.18',
+    acctLockCancDttm: '',
+    aponCnsnNo: null,
+  },
+  {
+    userId: 'test2',
+    linDttm: '2022-03-17 12:19:35',
+    linIp: '172.20.36.18',
+    acctLockCancDttm: '',
+    aponCnsnNo: null,
+  },
+  {
+    userId: 'test3',
+    linDttm: '2022-03-17 12:19:45',
+    linIp: '172.20.36.18',
+    acctLockCancDttm: '',
+    aponCnsnNo: null,
+  },
+  {
+    userId: 'AP55000122',
+    linDttm: '2022-03-17 12:05:08',
+    linIp: '172.20.36.18',
+    acctLockCancDttm: '2022-03-17 12:08:24',
+    aponCnsnNo: 'apon002',
+  },
+  {
+    userId: 'test1',
+    linDttm: '2022-03-17 12:19:10',
+    linIp: '172.20.36.18',
+    acctLockCancDttm: '2022-03-17 16:46:41',
+    aponCnsnNo: 'lorempicsum',
+  },
+];

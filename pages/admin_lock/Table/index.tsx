@@ -1,26 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { columnLayout, gridPros } from './config';
-import { dummyData } from './dummyData';
-import useUnlockHistory from '@/hooks/manager-management/account-unlock/useUnlockHistory';
+import { dummyData, fakeData } from './dummyData';
+import { convertDataStructure } from './utils';
+import useUnlockHistory from '../hooks/useUnlockHistory';
 
 const Table = ({ formData }) => {
-  const { data, isLoading, isError } = useUnlockHistory({
+  const { getData, unLockUser } = useUnlockHistory({
     ...formData,
     unlockFlg: formData.unlockFlg === 'all' ? '' : formData.unlockFlg,
   });
 
-  //   const requestData = async () => {
-  //     AUIGrid.showAjaxLoader(myGridID);
-
-  //     console.log(data, isLoading, isError);
-
-  //     AUIGrid.removeAjaxLoader(myGridID);
-  //   };
-
-  let myGridID: any;
-  const createAUIGrid = () => {
+  const createAUIGridAndGetData = async () => {
+    let myGridID: any;
     myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
 
     AUIGrid.bind(myGridID, 'pageChange', function (event: any) {
@@ -36,11 +29,20 @@ const Table = ({ formData }) => {
       }
     });
 
-    AUIGrid.setGridData(myGridID, dummyData);
+    // AUIGrid.setGridData(myGridID, convertDataStructure(fakeData));
+    // unLockUser({ userId: 'test1', aponCnsnNo: 'lorempicsum' });
+
+    try {
+      const { lockCancelHistory: data } = await getData();
+      AUIGrid.setGridData(myGridID, convertDataStructure(data));
+    } catch (error) {
+      throw error;
+    }
   };
 
   useEffect(() => {
-    createAUIGrid();
+    // createAUIGridAndGetData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div id="grid_wrap_admin-lock"></div>;
