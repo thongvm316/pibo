@@ -33,7 +33,7 @@ const SingleLevel = ({ subMenuList, nestedLevel }) => {
   };
 
   return (
-    <NextLink href={subMenuList.menuId.toLowerCase()}>
+    <NextLink passHref href={subMenuList.menuId.toLowerCase()}>
       <ListItemButton sx={{ pl: nestedLevel }} onClick={handleTabsList}>
         <ListItemIcon>
           <Pageview />
