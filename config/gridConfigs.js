@@ -28,8 +28,3 @@ export const gridProps = {
   pagingMode: 'simple',
   pageRowCount: 10,
 };
-
-export const gridConfigs = {
-  columnLayout,
-  gridProps,
-};
