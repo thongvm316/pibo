@@ -8,7 +8,6 @@ import { gridProps } from '../../config/gridConfigs';
 
 const AdminUser = () => {
   const { isAuthenticated } = useAuth();
-  const testData = useRef(null);
 
   const [open, setOpen] = useState(false);
   const [detailUser, setDetailUser] = useState({});
@@ -27,7 +26,7 @@ const AdminUser = () => {
       },
     },
     {
-      dataField: 'userNm',
+      dataField: 'authGrpNm',
       headerText: '관리자 권한',
     },
     {
@@ -35,11 +34,11 @@ const AdminUser = () => {
       headerText: '잠금 여부',
     },
     {
-      dataField: 'lastLoginDate',
+      dataField: 'lstlinDttm',
       headerText: '마지막 로그인일시',
     },
     {
-      dataField: 'lastModifyDate',
+      dataField: 'lschTsp',
       headerText: '최종 수정일시',
     },
   ];
@@ -49,9 +48,15 @@ const AdminUser = () => {
       async function handleGetUsers() {
         try {
           const { data } = await authApi.getUserList();
-          const getId = testData.current.id;
-          const tableData = AUIGrid.create(`#${getId}`, columnLayout, gridProps);
-          AUIGrid.setGridData(tableData, data.userList);
+          const tableData = AUIGrid.create(`#table_data`, columnLayout, gridProps);
+
+          const gridData = data.userList.map((val) => {
+            const listAuthGrpNm = val.userAuthList.flatMap((e) => e.authGrpNm);
+
+            return { ...val, authGrpNm: listAuthGrpNm.join(', ') };
+          });
+
+          AUIGrid.setGridData(tableData, gridData);
           AUIGrid.bind(tableData, 'pageChange', async () => {
             await authApi.getUserList();
           });
@@ -124,7 +129,7 @@ const AdminUser = () => {
 
   return (
     <BaseCard title="관리자 관리">
-      <div id="table_data" ref={testData} />
+      <div id="table_data" />
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle}>
           <div id="modal_data" />
