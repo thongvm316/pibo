@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FullLayout from '@/components/Layout/FullLayout';
 import { Box, Grid, Paper, TextField, Autocomplete, Button, InputAdornment } from '@mui/material';
 import FilterSection from '@/components/Filter';
-import TableTest from '@/components/Dashboard/TableTest';
+// import TableTest from '@/components/Dashboard/TableTest';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import { MdRestore, MdSearch, MdOutlineCalendarToday } from 'react-icons/md';
 import Attribute from '@/components/Filter/attribute';
@@ -29,7 +29,7 @@ const Product = () => {
           <Classification />
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
-          <Attribute />
+          {/* <Attribute /> */}
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
           <Notice />
@@ -166,7 +166,7 @@ const Product = () => {
           조회
         </Button>
       </Box>
-      <TableTest />
+      {/* <TableTest /> */}
     </Box>
   );
 };
