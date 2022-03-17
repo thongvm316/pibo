@@ -29,4 +29,9 @@ const gridProps = {
   pageRowCount: 10,
 };
 
-export default { columnLayout, gridProps };
+const gridConfigs = {
+  columnLayout,
+  gridProps,
+};
+
+export default gridConfigs;
