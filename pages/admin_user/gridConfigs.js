@@ -1,4 +1,4 @@
-const columnLayout = [
+export const columnLayout = [
   {
     dataField: 'userId',
     headerText: '관리자 계정',
@@ -33,5 +33,3 @@ const gridConfigs = {
   columnLayout,
   gridProps,
 };
-
-export default gridConfigs;
