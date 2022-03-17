@@ -29,7 +29,7 @@ const Product = () => {
           <Classification />
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
-          {/* <Attribute /> */}
+          <Attribute />
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
           <Notice />
