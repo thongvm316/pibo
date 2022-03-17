@@ -1,22 +1,20 @@
-import 'styles/globals.scss';
-import 'public/static/AUIGrid/AUIGrid_style.css';
+import * as React from 'react';
+import Head from 'next/head';
 import Script from 'next/script';
+import 'styles/globals.scss';
+import 'styles/globals.scss';
+import theme from '../styles/theme/theme';
+import 'styles/managerManagement/admin_lock.scss';
+import CssBaseline from '@mui/material/CssBaseline';
+import 'public/static/AUIGrid/AUIGrid_style.css';
 
 import { EmptyLayout } from '@/components/Layout';
 import { AppPropsWithLayout } from '@/models';
-import { appWithTranslation } from 'next-i18next';
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../styles/theme/theme';
 import createEmotionCache from '@/styles/createEmotionCache';
 import { SWRConfig } from 'swr';
 import axiosClient from '@/api-client/axiosClient';
-import 'styles/globals.scss';
-import 'styles/managerManagement/admin_lock.scss';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 //date picker
@@ -55,4 +53,4 @@ function MyApp({
   );
 }
 
-export default appWithTranslation(MyApp);
+export default MyApp
