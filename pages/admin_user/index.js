@@ -4,7 +4,7 @@ import FullLayout from '@/components/Layout/FullLayout';
 import authApi from '@/api-client/authApi';
 import { useAuth } from '@/context/auth';
 import { Box, Modal, Typography } from '@mui/material';
-import gridConfigs from './gridConfigs';
+import gridConfigs from './gridConfigs'
 
 const AdminUser = () => {
   const { isAuthenticated } = useAuth();
