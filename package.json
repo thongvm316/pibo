@@ -35,11 +35,13 @@
   "scripts": {
     "dev": "next",
     "start": "next start",
-    "build": "next build"
+    "build": "next build",
+    "lint": "next lint"
   },
   "devDependencies": {
     "@types/node": "^17.0.21",
     "eslint": "^8.11.0",
+    "eslint-config-next": "12.1.0",
     "husky": "^7.0.4",
     "prettier": "^2.5.1",
     "typescript": "^4.6.2"
