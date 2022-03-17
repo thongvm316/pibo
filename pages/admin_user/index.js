@@ -62,7 +62,7 @@ const AdminUser = () => {
 
       handleGetUsers();
     }
-  }, [isAuthenticated]);
+  }, []);
 
   const modalLayout = [
     {

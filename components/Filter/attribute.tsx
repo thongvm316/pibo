@@ -27,12 +27,12 @@ const Attribute = ({ data }: any) => {
 
 export default Attribute;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await axiosClient.get('/pibo/pims/bo/pip/attribute-groups');
-  const data = res.data;
-  return {
-    props: {
-      data: data,
-    },
-  };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   const res = await axiosClient.get('/pibo/pims/bo/pip/attribute-groups');
+//   const data = res.data;
+//   return {
+//     props: {
+//       data: data,
+//     },
+//   };
+// };

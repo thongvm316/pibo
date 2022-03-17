@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     loadUserFromCookies();
-  }, [router]);
+  }, []);
 
   const login = async (data) => {
     const { data: res, headers } = await authApi.loginApi(data);
