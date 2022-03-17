@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import FullLayout from '@/src/layouts/FullLayout';
+import FullLayout from 'components/layouts/FullLayout';
 
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -13,8 +13,7 @@ import Grid from '@mui/material/Grid';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SearchIcon from '@mui/icons-material/Search';
 
-import { columnLayout } from '@/assets/data/columnLayout';
-import { footerLayout } from '@/assets/data/footerLayout';
+import { columnLayout } from 'public/assets/data/columnLayout';
 
 const AdminLock = () => {
   useEffect(() => {
