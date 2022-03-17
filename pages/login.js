@@ -1,12 +1,10 @@
-import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import useLocalStorage from '@/hooks/useLocalStorage';
-import userApi from '@/api-client/userApi';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import Logo from '@/components/logo/Logo';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import Logo from '@/components/logo/Logo';
 import { useAuth } from '@/context/auth';
 
 export default function Login() {
@@ -14,10 +12,6 @@ export default function Login() {
   const { t } = useTranslation('common');
   const router = useRouter();
   useAuth;
-  const { menuApi } = userApi;
-
-  const [loginInfo, setLoginInfo] = useState({});
-  const [_, setMenuList] = useLocalStorage('menuList', []);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -31,33 +25,11 @@ export default function Login() {
       let isLoginSuccess = await login(data);
       if (isLoginSuccess) {
         router.replace('/pims_prd_1');
-      } else {
-        router.replace('/login');
       }
     } catch (error) {
       alert(error);
     }
   };
-
-  // useEffect(async () => {
-  //   if (loginInfo.result) {
-  //     switch (loginInfo.result) {
-  //       case 'S':
-  //         try {
-  //           const menu = await menuApi();
-  //           setMenuList(menu);
-  //           router.push('/pims_prd_1');
-  //         } catch (error) {
-  //           alert(error);
-  //         }
-  //         break;
-
-  //       default:
-  //         alert(loginInfo.message);
-  //         break;
-  //     }
-  //   }
-  // }, [loginInfo]);
 
   const paperStyle = { padding: 20, width: 400 };
   const marginStyle = { margin: '20px 0' };

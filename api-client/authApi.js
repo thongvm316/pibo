@@ -17,9 +17,10 @@ const authApi = {
   },
 
   getUser: (userId) => {
-    const url = '/pibo/api/user/' + userId;
+    const url = `/pibo/api/user/${userId}`;
     return axiosClient.get(url);
   },
+
   unlockUser: () => {
     const url = '/pibo/api/user/unlock';
     return axiosClient.post(url);
