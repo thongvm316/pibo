@@ -80,11 +80,12 @@ const MenuItem = ({ subMenuList, nestedLevel, icon }) => {
 };
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
-  const [storageMenuList] = useLocalStorage('menuList');
+  let [storageMenuList] = useLocalStorage('menuList');
   const [menuList, setMenuList] = React.useState([]);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
+    storageMenuList = storageMenuList ?? { menuList: [] };
     let newMenuList = [];
     const PIMSProduct = storageMenuList.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
 
