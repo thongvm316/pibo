@@ -21,7 +21,7 @@ export const columnLayout = [
   },
 ];
 
-const gridProps = {
+export const gridProps = {
   showRowNumColumn: false,
   autoGridHeight: true,
   usePaging: true,
@@ -29,7 +29,7 @@ const gridProps = {
   pageRowCount: 10,
 };
 
-const gridConfigs = {
+export const gridConfigs = {
   columnLayout,
   gridProps,
 };
