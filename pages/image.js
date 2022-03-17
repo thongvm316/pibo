@@ -1,5 +1,5 @@
 import { Grid, ImageList, ImageListItem } from '@mui/material';
-import BaseCard from '../src/components/baseCard/BaseCard';
+import BaseCard from '@/components/baseCard/BaseCard';
 import Image from 'next/image';
 
 function srcset(image, size, rows = 1, cols = 1) {

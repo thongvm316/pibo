@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import Logo from '@/components/logo/Logo';
+import Logo from '@/components/Logo/Logo';
 import { useAuth } from '@/context/auth';
 
 export default function Login() {

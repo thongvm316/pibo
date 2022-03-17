@@ -85,6 +85,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     storageMenuList = storageMenuList ?? { menuList: [] };
     let newMenuList = [];
     const PIMSProduct = storageMenuList.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');
