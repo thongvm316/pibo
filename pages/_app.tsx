@@ -12,7 +12,6 @@ import theme from '../styles/theme/theme';
 import createEmotionCache from '@/styles/createEmotionCache';
 import { SWRConfig } from 'swr';
 import axiosClient from '@/api-client/axiosClient';
-
 import 'styles/globals.scss';
 import 'styles/managerManagement/admin_lock.scss';
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -20,6 +19,7 @@ const clientSideEmotionCache = createEmotionCache();
 //date picker
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateFnsAdapter from '@mui/lab/AdapterDateFns';
+import { AuthProvider } from '@/context/auth';
 
 function MyApp({
   Component,
@@ -37,9 +37,11 @@ function MyApp({
             <meta name="viewport" content="initial-scale=1, width=device-width" />
           </Head>
           <LocalizationProvider dateAdapter={DateFnsAdapter}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <AuthProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </AuthProvider>
           </LocalizationProvider>
         </SWRConfig>
       </ThemeProvider>

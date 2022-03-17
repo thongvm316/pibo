@@ -14,11 +14,11 @@ import {
   Button,
   Divider,
 } from '@mui/material';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/context/auth';
 
 const ProfileDD = () => {
   const [anchorEl4, setAnchorEl4] = React.useState(null);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const router = useRouter();
 
   const handleClick4 = (event) => {
@@ -59,7 +59,7 @@ const ProfileDD = () => {
             }}
           >
             <Typography color="textSecondary" variant="h5" fontWeight="400" sx={{ ml: 1 }}>
-              Hi,
+            Hi, {user?.userNm}
             </Typography>
             <Typography
               variant="h5"

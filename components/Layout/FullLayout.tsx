@@ -2,10 +2,11 @@ import React from 'react';
 import { experimentalStyled, useMediaQuery, Container, Box } from '@mui/material';
 import Header from '../Header/Header';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import Footer from '../Footer/Footer';
+import Footer from '../Footer';
 import { AppWrapper } from '@/context/AppContext';
-import Auth from '../../common/auth';
 import { LayoutProps } from '@/models';
+import { useAuth } from '@/context/auth';
+import { useRouter } from 'next/router';
 
 const MainWrapper = experimentalStyled('div')(() => ({
   display: 'flex',
@@ -32,37 +33,40 @@ const FullLayout = ({ children }: LayoutProps) => {
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
+  const { user, firstTimeLogin } = useAuth();
+  const router = useRouter();
+  if (!user && !firstTimeLogin) {
+    router.replace('/login');
+  }
   return (
-    <Auth>
-      <AppWrapper>
-        <MainWrapper>
-          <Header
+    <AppWrapper>
+      <MainWrapper>
+        <Header
+          sx={{
+            paddingLeft: isSidebarOpen && lgUp ? '265px' : '',
+            backgroundColor: '#fbfbfb',
+          }}
+          toggleMobileSidebar={() => setMobileSidebarOpen(true)}
+        />
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onSidebarClose={() => setMobileSidebarOpen(false)}
+        />
+        <PageWrapper>
+          <Container
+            maxWidth={false}
             sx={{
-              paddingLeft: isSidebarOpen && lgUp ? '265px' : '',
-              backgroundColor: '#fbfbfb',
+              paddingTop: '20px',
+              paddingLeft: isSidebarOpen && lgUp ? '280px!important' : '',
             }}
-            toggleMobileSidebar={() => setMobileSidebarOpen(true)}
-          />
-          <Sidebar
-            isSidebarOpen={isSidebarOpen}
-            isMobileSidebarOpen={isMobileSidebarOpen}
-            onSidebarClose={() => setMobileSidebarOpen(false)}
-          />
-          <PageWrapper>
-            <Container
-              maxWidth={false}
-              sx={{
-                paddingTop: '20px',
-                paddingLeft: isSidebarOpen && lgUp ? '280px!important' : '',
-              }}
-            >
-              <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
-              <Footer />
-            </Container>
-          </PageWrapper>
-        </MainWrapper>
-      </AppWrapper>
-    </Auth>
+          >
+            <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
+            <Footer />
+          </Container>
+        </PageWrapper>
+      </MainWrapper>
+    </AppWrapper>
   );
 };
 

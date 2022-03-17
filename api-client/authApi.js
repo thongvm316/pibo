@@ -16,14 +16,14 @@ const authApi = {
     return axiosClient.get(url);
   },
 
-  getUser: () => {
-    const url = '/pibo/api/user/{userId}';
+  getUser: (userId) => {
+    const url = '/pibo/api/user/' + userId;
     return axiosClient.get(url);
   },
   unlockUser: () => {
     const url = '/pibo/api/user/unlock';
-    return axiosClient.post(url)
-  }
+    return axiosClient.post(url);
+  },
 };
 
 export default authApi;

@@ -4,10 +4,10 @@ import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Box, Grid } from '@mui/material';
-import ProductPerfomance from '@/components/dashboard/ProductPerfomance';
-import SalesOverview from '@/components/dashboard/SalseOverview';
-import DailyActivity from '@/components/dashboard/DailyActivity';
-import TableTest from '@/components/dashboard/TableTest';
+import ProductPerfomance from '@/components/Dashboard/ProductPerfomance';
+import SalesOverview from '@/components/Dashboard/SalseOverview';
+import DailyActivity from '@/components/Dashboard/DailyActivity';
+import TableTest from '@/components/Dashboard/TableTest';
 import CustomDatePicker from '@/components/DateRangePicker';
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from '@/models';
