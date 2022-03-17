@@ -9,9 +9,8 @@ const options = [
   { label: 'Pulp Fiction', id: 2 },
 ];
 
-const Attribute = ({ data }: any) => {
-  console.log('abc', data);
-
+const Attribute = () => {
+  
   return (
     <FilterSection title="속성그룹" label="All">
       <Autocomplete
@@ -27,12 +26,3 @@ const Attribute = ({ data }: any) => {
 
 export default Attribute;
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const res = await axiosClient.get('/pibo/pims/bo/pip/attribute-groups');
-//   const data = res.data;
-//   return {
-//     props: {
-//       data: data,
-//     },
-//   };
-// };
