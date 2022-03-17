@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import FullLayout from '@/component/Layout/FullLayout';
 
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -88,6 +87,6 @@ const AdminLock = () => {
     </Paper>
   );
 };
-AdminLock.Layout = FullLayout;
+// AdminLock.Layout = FullLayout;
 
 export default AdminLock;
