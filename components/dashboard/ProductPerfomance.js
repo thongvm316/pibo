@@ -9,7 +9,7 @@ import {
   TableRow,
   Chip,
 } from "@mui/material";
-import BaseCard from "components/baseCard/BaseCard";
+import BaseCard from "@/components/BaseCard";
 
 const products = [
   {

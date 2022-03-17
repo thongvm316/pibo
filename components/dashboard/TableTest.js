@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import axios from 'axios';
-import BaseCard from 'components/baseCard/BaseCard';
+import BaseCard from '@/components/BaseCard';
 import { columnLayout } from '@/public/assets/data/columnLayout';
 import { footerLayout } from '@/public/assets/data/footerLayout';
 
@@ -25,7 +25,7 @@ export default function TableTest() {
       axios.get('/static/data/revenue_region.json').then(
         (res) => {
           var gridData = res.data;
-          console.log(gridData);
+          // console.log(gridData);
           AUIGrid.setGridData(myGridID, gridData);
           AUIGrid.setFooter(myGridID, footerLayout);
         },
