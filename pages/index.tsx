@@ -7,7 +7,7 @@ import { Box, Grid } from '@mui/material';
 // import ProductPerfomance from '@/components/Dashboard/ProductPerfomance';
 // import SalesOverview from '@/components/Dashboard/SalseOverview';
 // import DailyActivity from '@/components/Dashboard/DailyActivity';
-import TableTest from '@/components/Dashboard/TableTest';
+// import TableTest from '@/components/Dashboard/TableTest';
 import CustomDatePicker from '@/components/DateRangePicker';
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from '@/models';
@@ -28,7 +28,7 @@ const Home: NextPageWithLayout = () => {
           {/* <ProductPerfomance /> */}
         </Grid>
         <Grid item xs={12} lg={12}>
-          <TableTest />
+          {/* <TableTest /> */}
           <CustomDatePicker />
         </Grid>
       </Grid>
