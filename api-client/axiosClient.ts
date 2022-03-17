@@ -1,7 +1,7 @@
 import axios from 'axios';
 import queryString from 'query-string';
 
-const axiosClient = axios.create({
+const axiosClient: any = axios.create({
   baseURL: process.env.SERVER_API,
   headers: {
     'content-type': 'application/json',
@@ -22,12 +22,12 @@ const axiosClient = axios.create({
 // )
 
 axiosClient.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     if (response.status === 401 && response.data?.message === '잘못된 토큰 정보입니다')
       location.href = '/login';
     return response;
   },
-  (error) => {
+  (error: any) => {
     return Promise.reject(error);
   }
 );
