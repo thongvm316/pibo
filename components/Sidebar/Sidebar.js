@@ -11,7 +11,7 @@ import {
   ListItemButton,
   ListItemIcon,
 } from '@mui/material';
-import Logo from '../logo/Logo';
+import Logo from '@/components/Logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useAppContext } from '@/context/AppContext';
