@@ -3,13 +3,25 @@ import BaseCard from '@/components/baseCard/BaseCard';
 import FullLayout from '@/components/Layout/FullLayout';
 import authApi from '@/api-client/authApi';
 import { useAuth } from '@/context/auth';
-import { Box, Modal, Typography } from '@mui/material';
+import {
+  Box,
+  Modal,
+  Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { gridProps } from '../../config/gridConfigs';
+import useSWR from 'swr';
 
 const AdminUser = () => {
   const { isAuthenticated } = useAuth();
 
   const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   const [detailUser, setDetailUser] = useState({});
 
   const columnLayout = [
@@ -20,8 +32,9 @@ const AdminUser = () => {
         type: 'LinkRenderer',
         linkField: 'userId',
         baseUrl: 'javascript',
-        jsCallback: () => {
+        jsCallback: (rowIndex, columnIndex, value, item) => {
           setOpen(true);
+          setUserId(value);
         },
       },
     },
@@ -42,6 +55,17 @@ const AdminUser = () => {
       headerText: '최종 수정일시',
     },
   ];
+
+  const fetchProfile = async (url, userId) => {
+    if (userId) {
+      try {
+        const res = await authApi.getUser(userId);
+        return res.data;
+      } catch (err) {}
+    } else return null;
+  };
+
+  const { data: profile } = useSWR(['/api/user', userId], fetchProfile);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -132,7 +156,51 @@ const AdminUser = () => {
       <div id="table_data" />
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle}>
-          <div id="modal_data" />
+          <Typography>User detail information inquiry</Typography>
+          {profile ? (
+            <TableContainer component={Paper}>
+              <Table size="small" aria-label="a dense table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Account</TableCell>
+                    <TableCell colSpan={3}>{profile?.userId}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell colSpan={3}>{profile?.userNm}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Dept name</TableCell>
+                    <TableCell colSpan={3}>{profile?.orgNm}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Permission</TableCell>
+                    <TableCell colSpan={3}>
+                      {profile?.userAuthList?.map((item) => item?.authGrpNm).join(', ')}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>TELL</TableCell>
+                    <TableCell colSpan={3}>{profile?.cellPhn}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>HP</TableCell>
+                    <TableCell colSpan={3}>{profile?.wirePhn}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Email</TableCell>
+                    <TableCell colSpan={3}>{profile?.userEmail}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Last login date</TableCell>
+                    <TableCell>{profile?.lstlinDttm}</TableCell>
+                    <TableCell>Last modified date</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+              </Table>
+            </TableContainer>
+          ) : null}
         </Box>
       </Modal>
     </BaseCard>

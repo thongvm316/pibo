@@ -32,7 +32,7 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <SWRConfig value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}>
+        <SWRConfig value={{provider: () => new Map() }}>
           <Head>
             <title>PIBO Dashboard</title>
             <meta name="viewport" content="initial-scale=1, width=device-width" />
