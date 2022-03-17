@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Box, Grid } from '@mui/material';
-import ProductPerfomance from '@/components/Dashboard/ProductPerfomance';
+// import ProductPerfomance from '@/components/Dashboard/ProductPerfomance';
 import SalesOverview from '@/components/Dashboard/SalseOverview';
 import DailyActivity from '@/components/Dashboard/DailyActivity';
 import TableTest from '@/components/Dashboard/TableTest';
@@ -25,7 +25,7 @@ const Home: NextPageWithLayout = () => {
           <DailyActivity />
         </Grid>
         <Grid item xs={12} lg={8}>
-          <ProductPerfomance />
+          {/* <ProductPerfomance /> */}
         </Grid>
         <Grid item xs={12} lg={12}>
           <TableTest />
