@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import axiosClient from '@/api-client/axiosClient';
 
 //api here is an axios instance which has the baseURL set according to the env.
@@ -8,26 +8,35 @@ import axiosClient from '@/api-client/axiosClient';
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
+  const [firstTimeLogin, setFirstTimeLogin] = useState(true);
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadUserFromCookies() {
+      console.log('hello');
       const pauth = Cookies.get('pauth');
       const pid = Cookies.get('pid');
       if (pauth) {
         try {
           console.log("Got a token in the cookies, let's see if it is valid");
           axiosClient.defaults.headers.Authorization = `Bearer ${pauth}`;
-          const { data: user, status } = await axiosClient.get(`/pibo/api/user/${pid}`);
-          if (user) setUser(user);
+          const { data: user } = await axiosClient.get(`/pibo/api/user/${pid}`);
+          if (user) {
+            setUser(user);
+          } else {
+            router.replace('/login');
+          }
           const { data: menu } = await axiosClient.get(`/pibo/api/menu`);
           localStorage.setItem('menuList', JSON.stringify(menu));
           if (menu) setMenu(menu.menuList);
         } catch (err) {
-          Router.replace('/login');
+          router.replace('/login');
         }
+      } else {
+        router.replace('/login');
       }
       setLoading(false);
     }
@@ -48,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('menuList', JSON.stringify(menu));
       return true;
     }
+    setFirstTimeLogin(false);
     return false;
   };
 
@@ -59,8 +69,18 @@ export const AuthProvider = ({ children }) => {
     window.location.pathname = '/login';
   };
 
+  // const getMenuList = async () => {
+  //   try {
+  //     const { data: menu } = await axiosClient.get(`/pibo/api/menu`);
+  //     setMenu(menu.menuList);
+  //     localStorage.setItem('menuList', JSON.stringify(menu));
+  //   } catch (err) {}
+  // };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated: !!user, user, login, loading, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated: !!user, user, login, loading, logout, firstTimeLogin }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -68,10 +88,10 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => useContext(AuthContext);
 
-export const ProtectRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading || (!isAuthenticated && window.location.pathname !== '/login')) {
-    return <div>Loading</div>;
-  }
-  return children;
-};
+// export const ProtectRoute = ({ children }) => {
+//   const { user } = useAuth();
+//   if (!user) {
+//     console.log(user)
+//   }
+//   return children;
+// };
