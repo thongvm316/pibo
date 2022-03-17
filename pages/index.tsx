@@ -5,8 +5,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Box, Grid } from '@mui/material';
 // import ProductPerfomance from '@/components/Dashboard/ProductPerfomance';
-import SalesOverview from '@/components/Dashboard/SalseOverview';
-import DailyActivity from '@/components/Dashboard/DailyActivity';
+// import SalesOverview from '@/components/Dashboard/SalseOverview';
+// import DailyActivity from '@/components/Dashboard/DailyActivity';
 import TableTest from '@/components/Dashboard/TableTest';
 import CustomDatePicker from '@/components/DateRangePicker';
 import { ReactElement } from 'react';
