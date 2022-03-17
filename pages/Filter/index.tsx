@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import FullLayout from '@/components/Layout/FullLayout';
 import { Box, Grid, Paper, TextField, Autocomplete, Button, InputAdornment } from '@mui/material';
 import FilterSection from '@/components/Filter';
-import TableTest from '@/components/Dashboard/TableTest';
+// import TableTest from '@/components/Dashboard/TableTest';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import { MdRestore, MdSearch, MdOutlineCalendarToday } from 'react-icons/md';
+import Attribute from '@/components/Filter/attribute';
+import Brands from '@/components/Filter/brands';
+import Classification from '@/components/Filter/classification';
+import Notice from '@/components/Filter/notice';
 
 const Product = () => {
   const [regDate, setRegDate] = useState<[any, any]>([null, null]);
@@ -19,48 +23,16 @@ const Product = () => {
         sx={{ marginBottom: 2 }}
       >
         <Grid item xs={2} sm={3} md={3}>
-          <FilterSection title="브랜드" label="All">
-            <Autocomplete
-              size="small"
-              disablePortal
-              id="search brand"
-              options={options}
-              renderInput={(params) => <TextField {...params} hiddenLabel placeholder="전체" />}
-            />
-          </FilterSection>
+          <Brands />
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
-          <FilterSection title="분류" label="All">
-            <Autocomplete
-              size="small"
-              disablePortal
-              id="search brand"
-              options={options}
-              renderInput={(params) => <TextField {...params} hiddenLabel placeholder="전체" />}
-            />
-          </FilterSection>
+          <Classification />
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
-          <FilterSection title="속성그룹" label="All">
-            <Autocomplete
-              size="small"
-              disablePortal
-              id="search brand"
-              options={options}
-              renderInput={(params) => <TextField {...params} hiddenLabel placeholder="전체" />}
-            />
-          </FilterSection>
+          <Attribute />
         </Grid>
         <Grid item xs={2} sm={3} md={3}>
-          <FilterSection title="고시품목" label="All">
-            <Autocomplete
-              size="small"
-              disablePortal
-              id="search brand"
-              options={options}
-              renderInput={(params) => <TextField {...params} hiddenLabel placeholder="전체" />}
-            />
-          </FilterSection>
+          <Notice />
         </Grid>
       </Grid>
       <Grid
@@ -194,7 +166,7 @@ const Product = () => {
           조회
         </Button>
       </Box>
-      <TableTest />
+      {/* <TableTest /> */}
     </Box>
   );
 };

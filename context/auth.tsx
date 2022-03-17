@@ -3,11 +3,17 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import axiosClient from '@/api-client/axiosClient';
 
-//api here is an axios instance which has the baseURL set according to the env.
+export type AuthContextType = {
+  isAuthenticated: any;
+  user: any;
+  login: any;
+  loading: any;
+  firstTimeLogin: any;
+  logout: any;
+};
+const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthContext = createContext({});
-
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }: any) {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [firstTimeLogin, setFirstTimeLogin] = useState(true);
@@ -31,7 +37,8 @@ export const AuthProvider = ({ children }) => {
           }
           const { data: menu } = await axiosClient.get(`/pibo/api/menu`);
           localStorage.setItem('menuList', JSON.stringify(menu));
-          if (menu) setMenu(menu.menuList);
+          if (menu)
+            setMenu(menu.menuList);
         } catch (err) {
           router.replace('/login');
         }
@@ -43,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     loadUserFromCookies();
   }, []);
 
-  const login = async (data) => {
+  const login = async (data: { id: string; password: string; }) => {
     const { data: res, headers } = await axiosClient.post('/pibo/api/login', data);
     if (res.result === 'S') {
       Cookies.set('pauth', headers?.pauth, { expires: 60 });
@@ -56,6 +63,8 @@ export const AuthProvider = ({ children }) => {
       setMenu(menu.menuList);
       localStorage.setItem('menuList', JSON.stringify(menu));
       return true;
+    } else {
+      alert(res.message);
     }
     setFirstTimeLogin(false);
     return false;
@@ -76,7 +85,6 @@ export const AuthProvider = ({ children }) => {
   //     localStorage.setItem('menuList', JSON.stringify(menu));
   //   } catch (err) {}
   // };
-
   return (
     <AuthContext.Provider
       value={{ isAuthenticated: !!user, user, login, loading, logout, firstTimeLogin }}
@@ -84,7 +92,7 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export const useAuth = () => useContext(AuthContext);
 

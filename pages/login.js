@@ -1,23 +1,14 @@
-import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import useLocalStorage from '@/hooks/useLocalStorage';
-import userApi from '@/api-client/userApi';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import Logo from '@/components/logo/Logo';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import Logo from '@/components/Logo/Logo';
 import { useAuth } from '@/context/auth';
 
 export default function Login() {
   const { login } = useAuth();
-  const { t } = useTranslation('common');
   const router = useRouter();
   useAuth;
-  const { menuApi } = userApi;
-
-  const [loginInfo, setLoginInfo] = useState({});
-  const [_, setMenuList] = useLocalStorage('menuList', []);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -31,33 +22,11 @@ export default function Login() {
       let isLoginSuccess = await login(data);
       if (isLoginSuccess) {
         router.replace('/pims_prd_1');
-      } else {
-        router.replace('/login');
       }
     } catch (error) {
       alert(error);
     }
   };
-
-  // useEffect(async () => {
-  //   if (loginInfo.result) {
-  //     switch (loginInfo.result) {
-  //       case 'S':
-  //         try {
-  //           const menu = await menuApi();
-  //           setMenuList(menu);
-  //           router.push('/pims_prd_1');
-  //         } catch (error) {
-  //           alert(error);
-  //         }
-  //         break;
-
-  //       default:
-  //         alert(loginInfo.message);
-  //         break;
-  //     }
-  //   }
-  // }, [loginInfo]);
 
   const paperStyle = { padding: 20, width: 400 };
   const marginStyle = { margin: '20px 0' };
@@ -79,17 +48,17 @@ export default function Login() {
           alignItems="center"
         >
           <Logo linkTo="/" src="/static/images/logos/logo.png" title="PIBO" />
-          <Typography variant="h1">{t('login-to-your-account')}</Typography>
+          <Typography variant="h1">Login To Account</Typography>
         </Grid>
         <form onSubmit={handleSubmit(handleLoginClick)}>
           <Controller
             name="id"
-            rules={{ required: t('enter-username') }}
+            rules={{ required: 'Enter the ID' }}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Username"
+                label="ID"
                 margin="normal"
                 error={!!error}
                 helperText={error ? error.message : null}
@@ -99,12 +68,12 @@ export default function Login() {
           />
           <Controller
             name="password"
-            rules={{ required: t('enter-password') }}
+            rules={{ required: 'Enter the password' }}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label={t('password')}
+                label="Password"
                 type="password"
                 margin="normal"
                 error={!!error}
@@ -114,19 +83,10 @@ export default function Login() {
             )}
           />
           <Button type="submit" variant="contained" style={marginStyle} fullWidth>
-            {t('login')}
+            Login
           </Button>
         </form>
       </Paper>
     </Grid>
   );
-}
-
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, 'common')),
-      // Will be passed to the page component as props
-    },
-  };
 }

@@ -100,10 +100,11 @@ const AdminLock = () => {
 
   const getUnLockHistory = async () => {
     try {
-      AUIGrid.showAjaxLoader(myGridID);
+      // AUIGrid.showAjaxLoader(myGridID);
       const data = await getData();
+      // AUIGrid.removeAjaxLoader(myGridID);
+
       AUIGrid.setGridData(myGridID, convertDataStructure(data?.lockCancelHistory));
-      AUIGrid.removeAjaxLoader(myGridID);
     } catch (error) {
       console.log(error);
     }

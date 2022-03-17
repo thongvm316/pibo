@@ -5,7 +5,7 @@ import { columnLayout } from '@/public/assets/data/columnLayout';
 import { footerLayout } from '@/public/assets/data/footerLayout';
 
 export default function TableTest() {
-    var myGridID;
+    
     useEffect(() => {
       // 그리드 속성 설정
       var gridPros = {
@@ -22,6 +22,7 @@ export default function TableTest() {
     }, []);
 
     function getData() {
+      var myGridID;
       axios.get('/static/data/revenue_region.json').then(
         (res) => {
           var gridData = res.data;

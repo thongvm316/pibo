@@ -11,7 +11,7 @@ import {
   ListItemButton,
   ListItemIcon,
 } from '@mui/material';
-import Logo from '../logo/Logo';
+import Logo from '@/components/Logo/Logo';
 import { hasChildren } from './utils';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useAppContext } from '@/context/AppContext';
@@ -33,7 +33,7 @@ const SingleLevel = ({ subMenuList, nestedLevel }) => {
   };
 
   return (
-    <NextLink href={subMenuList.menuId.toLowerCase()}>
+    <NextLink passHref href={subMenuList.menuId.toLowerCase()}>
       <ListItemButton sx={{ pl: nestedLevel }} onClick={handleTabsList}>
         <ListItemIcon>
           <Pageview />
@@ -85,6 +85,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     storageMenuList = storageMenuList ?? { menuList: [] };
     let newMenuList = [];
     const PIMSProduct = storageMenuList.menuList.find((menu) => menu.menuId === 'PIMS_PRODUCT');

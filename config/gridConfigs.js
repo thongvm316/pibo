@@ -1,4 +1,4 @@
-const columnLayout = [
+export const columnLayout = [
   {
     dataField: 'userId',
     headerText: '관리자 계정',
@@ -21,12 +21,10 @@ const columnLayout = [
   },
 ];
 
-const gridProps = {
+export const gridProps = {
   showRowNumColumn: false,
   autoGridHeight: true,
   usePaging: true,
   pagingMode: 'simple',
   pageRowCount: 10,
 };
-
-export default { columnLayout, gridProps };

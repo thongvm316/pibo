@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+
 import createEmotionServer from '@emotion/server/create-instance';
 import theme from '../styles/theme/theme';
 import createEmotionCache from '../styles/createEmotionCache';
@@ -15,13 +16,12 @@ export default class MyDocument extends Document {
           <meta httpEquiv="Content-Script-Type" content="text/javascript" />
           <meta httpEquiv="Content-Style-Type" content="text/css" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          {/* add AUIGrid */}
-          <link href="/static/AUIGrid/AUIGrid_style.css" rel="stylesheet" />
+          {/* <link href="/static/AUIGrid/AUIGrid_style.css" rel="stylesheet" /> */}
           <script src="/static/AUIGrid/AUIGridLicense.js" />
           <script src="/static/AUIGrid/AUIGrid.js" />
           <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <link rel="shortcut icon" href="/static/images/logos/logo.png" />
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
