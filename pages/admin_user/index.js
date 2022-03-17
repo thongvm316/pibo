@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import BaseCard from '@/components/baseCard/BaseCard';
 import FullLayout from '@/components/Layout/FullLayout';
 import authApi from '@/api-client/authApi';
@@ -13,36 +13,38 @@ const AdminUser = () => {
   const [open, setOpen] = useState(false);
   const [detailUser, setDetailUser] = useState({});
 
-  const columnLayout = [
-    {
-      dataField: 'userId',
-      headerText: '관리자 계정',
-      renderer: {
-        type: 'LinkRenderer',
-        linkField: 'userId',
-        baseUrl: 'javascript',
-        jsCallback: () => {
-          setOpen(true);
+  useMemo(() => {
+    const columnLayout = [
+      {
+        dataField: 'userId',
+        headerText: '관리자 계정',
+        renderer: {
+          type: 'LinkRenderer',
+          linkField: 'userId',
+          baseUrl: 'javascript',
+          jsCallback: () => {
+            setOpen(true);
+          },
         },
       },
-    },
-    {
-      dataField: 'userNm',
-      headerText: '관리자 권한',
-    },
-    {
-      dataField: 'acctUsgYn',
-      headerText: '잠금 여부',
-    },
-    {
-      dataField: 'lastLoginDate',
-      headerText: '마지막 로그인일시',
-    },
-    {
-      dataField: 'lastModifyDate',
-      headerText: '최종 수정일시',
-    },
-  ];
+      {
+        dataField: 'userNm',
+        headerText: '관리자 권한',
+      },
+      {
+        dataField: 'acctUsgYn',
+        headerText: '잠금 여부',
+      },
+      {
+        dataField: 'lastLoginDate',
+        headerText: '마지막 로그인일시',
+      },
+      {
+        dataField: 'lastModifyDate',
+        headerText: '최종 수정일시',
+      },
+    ];
+  },[]);
 
   useEffect(() => {
     if (isAuthenticated) {

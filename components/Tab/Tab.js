@@ -75,7 +75,7 @@ export default function BasicTabs(props) {
       const lastItemInTabList = tabLists[tabLists.length - 1];
       if (lastItemInTabList) router.push(`/${lastItemInTabList?.menuId.toLowerCase()}`);
     }
-  }, [isDetectRemoveTab]);
+  }, [isDetectRemoveTab, activeTab, router, tabLists]);
 
   return (
     <>
