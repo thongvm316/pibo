@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
     loadUserFromCookies();
-  }, []);
+  }, [router]);
 
   const login = async (data) => {
     const { data: res, headers } = await axiosClient.post('/pibo/api/login', data);
