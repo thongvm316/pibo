@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import BaseCard from '@/components/baseCard/BaseCard';
 import FullLayout from '@/components/Layout/FullLayout';
 import authApi from '@/api-client/authApi';
+import { useAuth } from '@/context/auth';
 import { Box, Modal, Typography } from '@mui/material';
 import gridConfigs from './gridConfigs';
 
 const AdminUser = () => {
+  const { isAuthenticated } = useAuth();
+  const testData = useRef(null);
+
   const [open, setOpen] = useState(false);
   const [detailUser, setDetailUser] = useState({});
 
@@ -40,13 +44,25 @@ const AdminUser = () => {
     },
   ];
 
-  // useEffect(async () => {
-  //   const createDataGrid = AUIGrid.create('#table_data', columnLayout, gridConfigs.gridProps);
-  //   await AUIGrid.setGridData(createDataGrid, user.userList);
-  //   AUIGrid.bind(createDataGrid, 'pageChange', async () => {
-  //     await authApi.getUserList();
-  //   });
-  // });
+  useEffect(() => {
+    if (isAuthenticated) {
+      async function handleGetUsers() {
+        try {
+          const { data } = await authApi.getUserList();
+          const getId = testData.current.id;
+          const tableData = AUIGrid.create(`#${getId}`, columnLayout, gridConfigs.gridProps);
+          AUIGrid.setGridData(tableData, data.userList);
+          AUIGrid.bind(tableData, 'pageChange', async () => {
+            await authApi.getUserList();
+          });
+        } catch (error) {
+          alert(error);
+        }
+      }
+
+      handleGetUsers();
+    }
+  }, [isAuthenticated]);
 
   const modalLayout = [
     {
@@ -108,7 +124,7 @@ const AdminUser = () => {
 
   return (
     <BaseCard title="관리자 관리">
-      <div id="table_data" />
+      <div id="table_data" ref={testData} />
       <Modal open={open} onClose={handleClose}>
         <Box sx={boxStyle}>
           <div id="modal_data" />
