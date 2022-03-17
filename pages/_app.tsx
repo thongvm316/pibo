@@ -1,5 +1,5 @@
 import 'styles/globals.scss';
-import 'static/AUIGrid/AUIGrid_style.css';
+import 'public/static/AUIGrid/AUIGrid_style.css';
 import Script from 'next/script';
 
 import { EmptyLayout } from '@/components/Layout';
