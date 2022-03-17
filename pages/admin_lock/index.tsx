@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 
-import FullLayout from '@/src/layouts/FullLayout';
+import FullLayout from '@/components/Layout/FullLayout';
 
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -9,34 +9,25 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Table from './Table';
 
 import ReplayIcon from '@mui/icons-material/Replay';
 import SearchIcon from '@mui/icons-material/Search';
 
-import { columnLayout, gridPros } from './Table/config';
-import { dummyData } from './Table/dummyData';
-
 const AdminLock = () => {
-  var myGridID;
-  useEffect(() => {
-    myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
+  const [formData, setFormData] = useState({
+    userId: '',
+    unlockFlg: 'all',
+  });
 
-    AUIGrid.bind(myGridID, 'pageChange', function (event) {
-      console.log('pageChange');
-      const ellapseEl = document.getElementById('ellapse');
-      if (ellapseEl) {
-        ellapseEl.innerHTML =
-          '페이지 변경 이벤트 : ' +
-          event.oldPage +
-          ' → ' +
-          event.currentPage +
-          ', 전체 페이지 수 : ' +
-          event.totalPageCount;
-      }
-    });
-
-    AUIGrid.setGridData(myGridID, dummyData);
-  }, []);
+  const handleChange = (event: any) => {
+    setFormData((values) => ({
+      ...values,
+      [event.target.name || 'unlockFlg']: event.target.value,
+    }));
+  };
 
   return (
     <Paper className="admin-lock" variant="outlined">
@@ -56,7 +47,7 @@ const AdminLock = () => {
               ID
             </Typography>
 
-            <TextField size="small" />
+            <TextField size="small" name="userId" onChange={handleChange} />
           </Grid>
 
           <Grid item container justifyContent="flex-start" alignItems="center" xs={6}>
@@ -69,7 +60,18 @@ const AdminLock = () => {
               잠금여부
             </Typography>
 
-            <TextField size="small" />
+            <Select
+              sx={{ minWidth: 120 }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              size="small"
+              value={formData.unlockFlg}
+              onChange={handleChange}
+            >
+              <MenuItem value="all">전체</MenuItem>
+              <MenuItem value="Y">잠금상태</MenuItem>
+              <MenuItem value="N">해제완료</MenuItem>
+            </Select>
           </Grid>
         </Grid>
       </Box>
@@ -98,8 +100,8 @@ const AdminLock = () => {
         </Button>
       </Stack>
 
-      <Box sx={{ maxWidth: '80%', mx: 3, mb: 2 }} id="grid_wrap_admin-lock">
-        {/* Add pagination */}
+      <Box sx={{ maxWidth: '100%', mx: 3, mb: 2 }}>
+        <Table formData={formData} />
       </Box>
     </Paper>
   );

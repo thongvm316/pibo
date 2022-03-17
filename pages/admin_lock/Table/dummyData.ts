@@ -6,7 +6,7 @@ export const dummyData = [
     flag: 'japan.png',
     product: 'LG G3',
     color: 'Green',
-    quantity: 3,
+    quantity: 2,
     price: 500000,
   },
   {

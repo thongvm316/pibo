@@ -2,22 +2,18 @@ export const columnLayout = [
   {
     dataField: 'id',
     headerText: '사용자 계정',
-    // width: 120,
   },
   {
     dataField: 'name',
     headerText: 'IP',
-    // width: 140,
   },
   {
     dataField: 'country',
     headerText: '잠금 일시',
-    // width: 120,
   },
   {
     dataField: 'flag',
     headerText: '해제 일시',
-    // width: 100,
   },
   {
     dataField: 'product',
@@ -27,27 +23,27 @@ export const columnLayout = [
   {
     dataField: 'color',
     headerText: '해제',
-    // width: 100,
   },
   {
     dataField: 'price',
     headerText: 'PIC',
     dataType: 'numeric',
-    // width: 120,
   },
   {
     dataField: 'quantity',
     headerText: 'Unblocking',
     dataType: 'numeric',
-    // width: 100,
+    renderer: {
+      type: 'ButtonRenderer',
+      onClick: function (event: any) {
+        console.log(event);
+      },
+    },
   },
-  // {
-  //   dataField: 'date',
-  //   headerText: 'Date',
-  // },
 ];
 
 export const gridPros = {
   usePaging: true,
   headerHeight: 40,
+  pageRowCount: 10,
 };
