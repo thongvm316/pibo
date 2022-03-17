@@ -1,4 +1,7 @@
-import '../styles/globals.scss';
+import 'styles/globals.scss';
+import 'static/AUIGrid/AUIGrid_style.css';
+import Script from 'next/script';
+
 import { EmptyLayout } from '@/components/Layout';
 import { AppPropsWithLayout } from '@/models';
 import { appWithTranslation } from 'next-i18next';
@@ -36,6 +39,9 @@ function MyApp({
             <title>PIBO Dashboard</title>
             <meta name="viewport" content="initial-scale=1, width=device-width" />
           </Head>
+          {/* add AUIGrid */}
+          <Script src="/static/AUIGrid/AUIGridLicense.js" />
+          <Script src="/static/AUIGrid/AUIGrid.js" />
           <LocalizationProvider dateAdapter={DateFnsAdapter}>
             <AuthProvider>
               <Layout>

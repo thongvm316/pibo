@@ -17,7 +17,6 @@ import { columnLayout } from '@/assets/data/columnLayout';
 import { footerLayout } from '@/assets/data/footerLayout';
 
 const AdminLock = () => {
-  var myGridID;
   useEffect(() => {
     var gridPros = {
       editable: true,
@@ -25,7 +24,7 @@ const AdminLock = () => {
       autoGridHeight: true,
       usePaging: true,
     };
-    myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
+    AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
   }, []);
 
   return (
