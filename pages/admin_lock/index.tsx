@@ -88,7 +88,13 @@ const AdminLock = () => {
           setOpen(true);
           setUserId(userId);
         },
-        visibleFunction: function (rowIndex, columnIndex, value, item, dataField) {
+        visibleFunction: function (
+          rowIndex: any,
+          columnIndex: any,
+          value: any,
+          item: any,
+          dataField: any
+        ) {
           if (item.acctLockCancDttm) {
             return false;
           }
