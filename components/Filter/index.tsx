@@ -15,11 +15,17 @@ type FilterProps = {
 const FilterSection = ({ title, label, children }: FilterProps) => {
   return (
     <Paper>
-      <CardHeader title={title} titleTypographyProps={{ variant: 'h4', fontWeight: 'regular' }} sx={{ padding: 1}} />
+      <CardHeader
+        title={title}
+        titleTypographyProps={{ variant: 'subtitle2', fontWeight: 'fontWeightBold' }}
+        sx={{ padding: '4px' }}
+      />
       <Divider />
-      <CardContent>
-        {children}
-      </CardContent>
+      <CardContent sx={{
+        '&.MuiCardContent-root':{
+          padding: 1
+        }
+      }}>{children}</CardContent>
     </Paper>
   );
 };

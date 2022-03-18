@@ -17,7 +17,13 @@ const Notice = (props: Props) => {
         disablePortal
         id="search brand"
         options={options}
-        renderInput={(params) => <TextField {...params} hiddenLabel placeholder="전체" />}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            hiddenLabel
+            placeholder="전체"
+          />
+        )}
       />
     </FilterSection>
   );

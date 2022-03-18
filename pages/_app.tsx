@@ -38,8 +38,8 @@ function MyApp({
             <meta name="viewport" content="initial-scale=1, width=device-width" />
           </Head>
           {/* add AUIGrid */}
-          <Script src="/static/AUIGrid/AUIGridLicense.js" />
-          <Script src="/static/AUIGrid/AUIGrid.js" />
+          <Script src="/static/AUIGrid/AUIGridLicense.js" strategy="beforeInteractive" />
+          <Script src="/static/AUIGrid/AUIGrid.js" strategy="beforeInteractive" />
           <LocalizationProvider dateAdapter={DateFnsAdapter}>
             <AuthProvider>
               <Layout>
