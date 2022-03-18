@@ -14,7 +14,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '@/styles/createEmotionCache';
 import { SWRConfig } from 'swr';
-import axiosClient from '@/api-client/axiosClient';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 //date picker
@@ -32,14 +31,14 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <SWRConfig value={{provider: () => new Map() }}>
+        <SWRConfig value={{ provider: () => new Map() }}>
           <Head>
             <title>PIBO Dashboard</title>
             <meta name="viewport" content="initial-scale=1, width=device-width" />
           </Head>
           {/* add AUIGrid */}
-          {/* <Script src="/static/AUIGrid/AUIGridLicense.js" />
-          <Script src="/static/AUIGrid/AUIGrid.js" /> */}
+          <Script src="/static/AUIGrid/AUIGridLicense.js" strategy="beforeInteractive" />
+          <Script src="/static/AUIGrid/AUIGrid.js" strategy="beforeInteractive" />
           <LocalizationProvider dateAdapter={DateFnsAdapter}>
             <AuthProvider>
               <Layout>
