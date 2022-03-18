@@ -62,7 +62,7 @@ const AdminLock = () => {
       headerText: 'IP',
     },
     {
-      dataField: '',
+      dataField: 'linDttm',
       headerText: '잠금 일시',
     },
     {
@@ -75,7 +75,7 @@ const AdminLock = () => {
       width: 200,
     },
     {
-      dataField: 'price',
+      dataField: 'fscrId',
       headerText: 'PIC',
     },
     {
@@ -98,21 +98,20 @@ const AdminLock = () => {
     },
   ];
 
-  const getUnLockHistory = async () => {
-    try {
-      // AUIGrid.showAjaxLoader(myGridID);
-      const data = await getData();
-      // AUIGrid.removeAjaxLoader(myGridID);
+  // const getUnLockHistory = async () => {
+  //   try {
+  //     AUIGrid.showAjaxLoader(myGridID);
+  //     const data = await getData();
+  //     AUIGrid.removeAjaxLoader(myGridID);
 
-      AUIGrid.setGridData(myGridID, convertDataStructure(data?.lockCancelHistory));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     AUIGrid.setGridData(myGridID, convertDataStructure(data?.lockCancelHistory));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  let myGridID: any;
-  const createAUIGridAndGetData = () => {
-    myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
+  const createAUIGridAndGetData = async () => {
+    const myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
 
     AUIGrid.bind(myGridID, 'pageChange', function (event: any) {
       const ellapseEl = document.getElementById('ellapse');
@@ -127,7 +126,15 @@ const AdminLock = () => {
       }
     });
 
-    getUnLockHistory();
+    try {
+      AUIGrid.showAjaxLoader(myGridID);
+      const data = await getData();
+      AUIGrid.removeAjaxLoader(myGridID);
+
+      AUIGrid.setGridData(myGridID, convertDataStructure(data?.lockCancelHistory));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
