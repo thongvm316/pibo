@@ -1,17 +1,12 @@
-import React from "react"
-import { Box, Typography } from "@mui/material"
-import Link from "next/link"
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+
 const Footer = () => {
   return (
-    <Box sx={{ p: 3, textAlign: "center" }}>
-      <Typography>
-        © 2022 All rights reserved by{" "}
-        <Link href="https://cj.net">
-          <a>CJ Group</a>
-        </Link>{" "}
-      </Typography>
+    <Box sx={{ p: 3, textAlign: 'center' }}>
+      <Typography>PIBO ⓒ 2022 AMOREPACIFIC</Typography>
     </Box>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

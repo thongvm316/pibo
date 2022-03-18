@@ -70,9 +70,15 @@ const AdminUser = () => {
   useEffect(() => {
     if (isAuthenticated) {
       async function handleGetUsers() {
+        const tableData = AUIGrid.create(`#table_data`, columnLayout, gridProps);
+        AUIGrid.bind(tableData, 'pageChange', async () => {
+          await authApi.getUserList();
+        });
+
         try {
+          AUIGrid.showAjaxLoader(tableData);
           const { data } = await authApi.getUserList();
-          const tableData = AUIGrid.create(`#table_data`, columnLayout, gridProps);
+          AUIGrid.removeAjaxLoader(tableData);
 
           const gridData = data.userList.map((val) => {
             const listAuthGrpNm = val.userAuthList.flatMap((e) => e.authGrpNm);
@@ -81,9 +87,6 @@ const AdminUser = () => {
           });
 
           AUIGrid.setGridData(tableData, gridData);
-          AUIGrid.bind(tableData, 'pageChange', async () => {
-            await authApi.getUserList();
-          });
         } catch (error) {
           alert(error);
         }
@@ -92,48 +95,6 @@ const AdminUser = () => {
       handleGetUsers();
     }
   }, [isAuthenticated]);
-
-  const modalLayout = [
-    {
-      dataField: 'userId',
-      headerText: '관리자 계정',
-    },
-    {
-      dataField: 'userNm',
-      headerText: '관리자 권한',
-    },
-    {
-      dataField: 'orgNm',
-      headerText: 'Org Name',
-    },
-    {
-      dataField: 'cellTphn',
-      headerText: 'TEL',
-    },
-    {
-      dataField: 'userEmad',
-      headerText: 'Email',
-    },
-    {
-      dataField: 'lstlinDttm',
-      headerText: 'Last login date',
-    },
-    {
-      dataField: 'lstlinDttm',
-      headerText: 'Last modified date',
-    },
-  ];
-
-  // useEffect(async () => {
-  //   if (open) {
-  //     const getUser = await authApi.getUser('userId');
-  //     const findId = document.getElementById('#modal_data');
-  //     console.log('getUser', getUser);
-  //     console.log('findId', findId);
-  //     // console.log('findId', findId);
-  //     // AUIGrid.create('#modal_data', modalLayout);
-  //   }
-  // }, [open]);
 
   const handleClose = () => {
     setOpen(false);
@@ -181,21 +142,21 @@ const AdminUser = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell>TELL</TableCell>
-                    <TableCell colSpan={3}>{profile?.cellPhn}</TableCell>
+                    <TableCell colSpan={3}>{profile?.cellTphn}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>HP</TableCell>
-                    <TableCell colSpan={3}>{profile?.wirePhn}</TableCell>
+                    <TableCell colSpan={3}>{profile?.wireTphn}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Email</TableCell>
-                    <TableCell colSpan={3}>{profile?.userEmail}</TableCell>
+                    <TableCell colSpan={3}>{profile?.userEmad}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Last login date</TableCell>
                     <TableCell>{profile?.lstlinDttm}</TableCell>
                     <TableCell>Last modified date</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>{profile?.lschTsp}</TableCell>
                   </TableRow>
                 </TableHead>
               </Table>
