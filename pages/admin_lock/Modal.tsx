@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-const BasicModal = ({ open, setOpen, unLockUser, userId, createAUIGridAndGetData }) => {
+const BasicModal = ({ open, setOpen, unLockUser, userId, createAUIGridAndGetData }: any) => {
   const [inputData, setInputData] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -104,6 +104,7 @@ BasicModal.propTypes = {
   setOpen: PropTypes.func,
   userId: PropTypes.string,
   unLockUser: PropTypes.func,
+  createAUIGridAndGetData: PropTypes.func,
 };
 
 export default BasicModal;

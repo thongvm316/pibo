@@ -6,7 +6,7 @@ import { dummyData, fakeData } from './dummyData';
 import { convertDataStructure } from './utils';
 import useUnlockHistory from '../hooks/useUnlockHistory';
 
-const Table = ({ formData }) => {
+const Table = ({ formData }: any) => {
   const { getData, unLockUser } = useUnlockHistory({
     ...formData,
     unlockFlg: formData.unlockFlg === 'all' ? '' : formData.unlockFlg,
