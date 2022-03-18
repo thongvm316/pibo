@@ -22,7 +22,6 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     async function loadUserFromCookies() {
-      console.log('hello');
       const pauth = Cookies.get('pauth');
       const pid = Cookies.get('pid');
       if (pauth) {
@@ -63,6 +62,8 @@ export function AuthProvider({ children }: any) {
       setMenu(menu.menuList);
       localStorage.setItem('menuList', JSON.stringify(menu));
       return true;
+    } else {
+      alert(res.message);
     }
     setFirstTimeLogin(false);
     return false;
