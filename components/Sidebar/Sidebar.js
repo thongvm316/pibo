@@ -104,7 +104,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
   }, []);
 
   const SidebarContent = (
-    <Box p={2} height="100%">
+    <Box p={1} width="255px" height="100%">
       <Logo linkTo="/" src="/static/images/logos/logo.png" title="PIBO" />
       <Box>
         <List>
