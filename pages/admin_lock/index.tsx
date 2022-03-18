@@ -104,18 +104,6 @@ const AdminLock = () => {
     },
   ];
 
-  // const getUnLockHistory = async () => {
-  //   try {
-  //     AUIGrid.showAjaxLoader(myGridID);
-  //     const data = await getData();
-  //     AUIGrid.removeAjaxLoader(myGridID);
-
-  //     AUIGrid.setGridData(myGridID, convertDataStructure(data?.lockCancelHistory));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const createAUIGridAndGetData = async () => {
     const myGridID = AUIGrid.create('#grid_wrap_admin-lock', columnLayout, gridPros);
 
